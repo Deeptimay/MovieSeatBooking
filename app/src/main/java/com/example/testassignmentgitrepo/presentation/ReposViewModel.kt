@@ -7,7 +7,7 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.testassignmentgitrepo.data.model.Repo
+import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.domain.useCases.GitHubUseCaseWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

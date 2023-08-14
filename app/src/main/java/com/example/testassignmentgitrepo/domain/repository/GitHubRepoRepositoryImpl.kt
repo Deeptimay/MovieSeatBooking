@@ -20,7 +20,7 @@ import javax.inject.Inject
 @InstallIn(SingletonComponent::class)
 class GitHubRepoRepositoryImpl @Inject constructor(private val githubApi: GithubApi) :
     GitHubRepoRepository {
-    override suspend fun fetchAllTrendingGitHubRepo(query: String): LiveData<PagingData<Repo>> {
+    override fun fetchAllTrendingGitHubRepo(query: String): LiveData<PagingData<Repo>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
