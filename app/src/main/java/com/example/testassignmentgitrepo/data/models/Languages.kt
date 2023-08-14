@@ -1,4 +1,4 @@
-package com.example.testassignmentgitrepo.data.model
+package com.example.testassignmentgitrepo.data.models
 
 object Languages {
     val data = arrayOf(

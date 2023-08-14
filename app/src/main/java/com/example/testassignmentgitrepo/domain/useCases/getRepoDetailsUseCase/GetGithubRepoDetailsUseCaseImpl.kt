@@ -1,6 +1,6 @@
 package com.example.testassignmentgitrepo.domain.useCases.getRepoDetailsUseCase
 
-import com.example.testassignmentgitrepo.data.model.Repo
+import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.retrofitSetup.BaseResponse
 import com.example.testassignmentgitrepo.domain.repository.GitHubRepoRepository
 import kotlinx.coroutines.flow.Flow

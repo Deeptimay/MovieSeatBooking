@@ -1,4 +1,4 @@
-package com.example.testassignmentgitrepo.data.model
+package com.example.testassignmentgitrepo.data.models
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

@@ -2,7 +2,7 @@ package com.example.testassignmentgitrepo.domain.repository
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.testassignmentgitrepo.data.model.Repo
+import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.data.services.GithubApi
 import retrofit2.HttpException
 

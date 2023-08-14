@@ -6,7 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
-import com.example.testassignmentgitrepo.data.model.Repo
+import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.data.services.GithubApi
 import com.example.testassignmentgitrepo.retrofitSetup.BaseResponse
 import dagger.Module

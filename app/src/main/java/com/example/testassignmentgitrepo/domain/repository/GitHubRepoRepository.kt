@@ -2,7 +2,7 @@ package com.example.testassignmentgitrepo.domain.repository
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
-import com.example.testassignmentgitrepo.data.model.Repo
+import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.retrofitSetup.BaseResponse
 import dagger.Module
 import dagger.hilt.InstallIn
