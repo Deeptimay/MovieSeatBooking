@@ -1,4 +1,4 @@
-package com.example.testassignmentgitrepo
+package com.example.testassignmentgitrepo.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
