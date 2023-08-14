@@ -1,6 +1,6 @@
 package com.example.testassignmentgitrepo.di
 
-import com.example.testassignmentgitrepo.retrofitSetup.GithubApi
+import com.example.testassignmentgitrepo.data.services.GithubApi
 import com.example.testassignmentgitrepo.retrofitSetup.HttpClient
 import com.example.testassignmentgitrepo.retrofitSetup.LoggingInterceptor
 import dagger.Module
