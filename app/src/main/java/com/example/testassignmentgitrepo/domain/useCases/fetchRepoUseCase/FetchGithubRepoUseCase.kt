@@ -5,5 +5,5 @@ import androidx.paging.PagingData
 import com.example.testassignmentgitrepo.data.model.Repo
 
 interface FetchGithubRepoUseCase {
-    suspend fun getSearchResults(query: String): LiveData<PagingData<Repo>>
+    fun getSearchResults(query: String): LiveData<PagingData<Repo>>
 }

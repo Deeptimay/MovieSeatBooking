@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class FetchGithubRepoUseCaseImpl @Inject constructor(private val gitHubRepoRepository: GitHubRepoRepository) :
     FetchGithubRepoUseCase {
-    override suspend fun getSearchResults(query: String): LiveData<PagingData<Repo>> {
+    override fun getSearchResults(query: String): LiveData<PagingData<Repo>> {
         return gitHubRepoRepository.fetchAllTrendingGitHubRepo(query)
     }
 }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Module
 @InstallIn(SingletonComponent::class)
 interface GitHubRepoRepository {
-    suspend fun fetchAllTrendingGitHubRepo(query: String): LiveData<PagingData<Repo>>
+    fun fetchAllTrendingGitHubRepo(query: String): LiveData<PagingData<Repo>>
 
     suspend fun getGitHubRepoDetails(repoId: String): Flow<BaseResponse<Repo>>
 }
