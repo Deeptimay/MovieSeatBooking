@@ -3,7 +3,7 @@ package com.deeptimay.trendinggithubrepos.widget
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import com.deeptimay.trendinggithubrepos.R
+import com.example.testassignmentgitrepo.R
 import com.example.testassignmentgitrepo.util.FontType
 import com.example.testassignmentgitrepo.util.getTypeface
 import com.google.android.material.button.MaterialButton

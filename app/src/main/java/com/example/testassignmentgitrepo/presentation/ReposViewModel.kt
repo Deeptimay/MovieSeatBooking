@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReposViewModel @Inject constructor(
-    private val gitHubUseCaseWrapper: GitHubUseCaseWrapper
+    private val gitHubUseCaseWrapper: GitHubUseCaseWrapper,
 ) : ViewModel() {
 
     private val currentQuery = MutableLiveData(DEFAULT_QUERY)
@@ -24,7 +24,7 @@ class ReposViewModel @Inject constructor(
     fun getRepoDetailsMutableLiveData() = repoDetailsMutableLiveData
 
     val repos: LiveData<PagingData<Repo>> = currentQuery.switchMap { queryString ->
-        gitHubUseCaseWrapper.fetchGithubRepoUseCase.getSearchResults(queryString)
+        gitHubUseCaseWrapper.fetchGithubRepoUseCase.execute(queryString)
     }.cachedIn(viewModelScope)
 
     fun searchRepos(query: String) {
@@ -41,7 +41,7 @@ class ReposViewModel @Inject constructor(
 
     fun getRepoDetails(repoId: String) {
         viewModelScope.launch {
-            gitHubUseCaseWrapper.getGithubRepoDetailsUseCase.getRepoDetails(repoId)
+            gitHubUseCaseWrapper.getGithubRepoDetailsUseCase.execute(repoId)
                 .collect() { it ->
                     it?.let { repo ->
                         repo.status?.let { repoStatus ->

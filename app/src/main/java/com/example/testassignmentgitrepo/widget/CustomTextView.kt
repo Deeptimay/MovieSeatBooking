@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
-import com.deeptimay.trendinggithubrepos.R
+import com.example.testassignmentgitrepo.R
 import com.example.testassignmentgitrepo.util.FontType
 import com.example.testassignmentgitrepo.util.getTypeface
 

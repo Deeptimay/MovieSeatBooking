@@ -9,17 +9,15 @@ import androidx.paging.liveData
 import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.data.services.GithubApi
 import com.example.testassignmentgitrepo.retrofitSetup.BaseResponse
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
+@Singleton
 class GitHubRepoRepositoryImpl @Inject constructor(private val githubApi: GithubApi) :
     GitHubRepoRepository {
+
     override fun fetchAllTrendingGitHubRepo(query: String): LiveData<PagingData<Repo>> {
         return Pager(
             config = PagingConfig(

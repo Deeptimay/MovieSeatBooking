@@ -8,9 +8,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FetchGithubRepoUseCaseImpl @Inject constructor(private val gitHubRepoRepository: GitHubRepoRepository) :
+internal class FetchGithubRepoUseCaseImpl @Inject constructor(private val gitHubRepoRepository: GitHubRepoRepository) :
     FetchGithubRepoUseCase {
-    override fun getSearchResults(query: String): LiveData<PagingData<Repo>> {
+    override fun execute(query: String): LiveData<PagingData<Repo>> {
         return gitHubRepoRepository.fetchAllTrendingGitHubRepo(query)
     }
 }
