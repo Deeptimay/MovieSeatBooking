@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController)
 
-        navController.navigate(R.id.trendingRepoFragment)
+//        navController.navigate(R.id.trendingRepoFragment)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

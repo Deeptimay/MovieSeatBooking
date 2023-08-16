@@ -115,11 +115,6 @@ class TrendingRepoFragment : Fragment(), ReposAdapter.OnItemClickListener {
         binding.loadingLayout.containerShimmer.stopShimmer()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onItemClicked(repo: MappedRepo) {
         val gson = Gson()
         val repoJsonString = gson.toJson(repo)
