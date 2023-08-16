@@ -1,11 +1,9 @@
 package com.example.testassignmentgitrepo.domain.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.example.testassignmentgitrepo.data.mappers.RepoMapper
 import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.data.services.GithubApi
@@ -22,7 +20,7 @@ class GitHubRepoRepositoryImpl @Inject constructor(
 ) :
     GitHubRepoRepository {
 
-    override fun fetchAllTrendingGitHubRepo(query: String): LiveData<PagingData<MappedRepo>> {
+    override fun fetchAllTrendingGitHubRepo(query: String): Flow<PagingData<MappedRepo>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
@@ -30,7 +28,7 @@ class GitHubRepoRepositoryImpl @Inject constructor(
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { GithubPagingSource(githubApi, query, repoMapper) }
-        ).liveData
+        ).flow
     }
 
     override suspend fun getGitHubRepoDetails(repoId: String): Flow<BaseResponse<MappedRepo>> {

@@ -40,6 +40,7 @@
 
     <!-- Font sizes, https://material.io/guidelines/style/typography.html#typography-typeface -->
     <dimen name="md_text_size_micro">10sp</dimen>
+    <dimen name="md_text_size_mini">12sp</dimen>
     <dimen name="md_text_size_small">14sp</dimen>
     <dimen name="md_text_size_medium">16sp</dimen>
     <dimen name="md_text_size_large">20sp</dimen>

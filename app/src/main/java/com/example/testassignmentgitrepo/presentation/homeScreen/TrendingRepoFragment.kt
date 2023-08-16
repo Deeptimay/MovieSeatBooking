@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.example.testassignmentgitrepo.R
 import com.example.testassignmentgitrepo.data.models.MappedRepo
-import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.databinding.FragmentTrendingRepositoryBinding
 import com.example.testassignmentgitrepo.presentation.ReposViewModel
 import com.example.testassignmentgitrepo.presentation.SELECTED_REPO_ITEM
@@ -20,6 +22,7 @@ import com.example.testassignmentgitrepo.util.hide
 import com.example.testassignmentgitrepo.util.show
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TrendingRepoFragment : Fragment(), ReposAdapter.OnItemClickListener {
@@ -44,8 +47,12 @@ class TrendingRepoFragment : Fragment(), ReposAdapter.OnItemClickListener {
         displayLoadingState()
         setupAdapter()
 
-        viewModel.repos.observe(viewLifecycleOwner) {
-            reposAdapter.submitData(this.lifecycle, it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.repoListStateFlowData().collect { pagingData ->
+                    reposAdapter.submitData(this@TrendingRepoFragment.lifecycle, pagingData)
+                }
+            }
         }
 
         return binding.root

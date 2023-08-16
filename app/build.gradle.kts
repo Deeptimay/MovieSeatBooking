@@ -62,9 +62,7 @@ dependencies {
 
     //Standards
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.0")
-//    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")
     kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
-//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.21")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
@@ -91,7 +89,6 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
 
-
     //Multidex
     implementation("androidx.multidex:multidex:2.0.1")
 
@@ -108,7 +105,15 @@ dependencies {
     // testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("com.android.support.test:rules:1.0.2")
+    androidTestImplementation("com.android.support.test:runner:1.0.2")
+    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("org.mockito:mockito-core:3.11.0")
+    androidTestImplementation("org.mockito:mockito-android:2.13.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     testImplementation("com.google.dagger:hilt-android-testing:2.46")
-    kaptTest("com.google.dagger:hilt-compiler:2.44")
+    kaptTest("com.google.dagger:hilt-compiler:2.47")
+    testImplementation("com.google.truth:truth:1.1.3")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
 }
