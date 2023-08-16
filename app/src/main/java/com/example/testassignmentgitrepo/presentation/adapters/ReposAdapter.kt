@@ -1,6 +1,5 @@
 package com.example.testassignmentgitrepo.presentation.adapters
 
-import android.graphics.Color
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
@@ -13,18 +12,20 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.testassignmentgitrepo.data.models.Repo
+import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.databinding.ItemTrendingRepoBinding
 
 
 class ReposAdapter(private val onItemClickListener: OnItemClickListener) :
-    PagingDataAdapter<Repo, ReposAdapter.ViewHolder>(REPO_COMPARATOR) {
+    PagingDataAdapter<MappedRepo, ReposAdapter.ViewHolder>(REPO_COMPARATOR) {
 
     companion object {
-        private val REPO_COMPARATOR = object : DiffUtil.ItemCallback<Repo>() {
-            override fun areItemsTheSame(oldItem: Repo, newItem: Repo) = oldItem.id == newItem.id
+        private val REPO_COMPARATOR = object : DiffUtil.ItemCallback<MappedRepo>() {
+            override fun areItemsTheSame(oldItem: MappedRepo, newItem: MappedRepo) =
+                oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: Repo, newItem: Repo) = oldItem == newItem
+            override fun areContentsTheSame(oldItem: MappedRepo, newItem: MappedRepo) =
+                oldItem == newItem
         }
     }
 
@@ -47,7 +48,7 @@ class ReposAdapter(private val onItemClickListener: OnItemClickListener) :
 
     private fun createOnClickListener(
         binding: ItemTrendingRepoBinding,
-        repo: Repo,
+        repo: MappedRepo,
         position: Int
     ): View.OnClickListener {
         return View.OnClickListener {
@@ -58,7 +59,7 @@ class ReposAdapter(private val onItemClickListener: OnItemClickListener) :
     class ViewHolder(val binding: ItemTrendingRepoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(listener: View.OnClickListener, repo: Repo) {
+        fun bind(listener: View.OnClickListener, repo: MappedRepo) {
 
             binding.apply {
 
@@ -83,17 +84,12 @@ class ReposAdapter(private val onItemClickListener: OnItemClickListener) :
 
                 ViewCompat.setTransitionName(this.ivUserAvatar, "avatar_${repo.id}")
 
-                if (repo.isSelectedItem)
-                    binding.containerTrendingRepo.setBackgroundColor(Color.parseColor("#DC746C"))
-                else
-                    binding.containerTrendingRepo.setBackgroundColor(Color.parseColor("#ffffff"))
-
                 root.setOnClickListener(listener)
             }
         }
     }
 
     interface OnItemClickListener {
-        fun onItemClicked(repo: Repo)
+        fun onItemClicked(repo: MappedRepo)
     }
 }

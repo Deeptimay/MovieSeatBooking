@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.example.testassignmentgitrepo.R
+import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.databinding.FragmentTrendingRepositoryBinding
 import com.example.testassignmentgitrepo.presentation.ReposViewModel
@@ -119,7 +120,7 @@ class TrendingRepoFragment : Fragment(), ReposAdapter.OnItemClickListener {
         _binding = null
     }
 
-    override fun onItemClicked(repo: Repo) {
+    override fun onItemClicked(repo: MappedRepo) {
         val gson = Gson()
         val repoJsonString = gson.toJson(repo)
         val bundle = Bundle().apply {

@@ -6,7 +6,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
-import com.example.testassignmentgitrepo.data.models.Repo
+import com.example.testassignmentgitrepo.data.mappers.RepoMapper
+import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.data.services.GithubApi
 import com.example.testassignmentgitrepo.retrofitSetup.BaseResponse
 import kotlinx.coroutines.flow.Flow
@@ -15,25 +16,28 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GitHubRepoRepositoryImpl @Inject constructor(private val githubApi: GithubApi) :
+class GitHubRepoRepositoryImpl @Inject constructor(
+    private val githubApi: GithubApi,
+    private val repoMapper: RepoMapper
+) :
     GitHubRepoRepository {
 
-    override fun fetchAllTrendingGitHubRepo(query: String): LiveData<PagingData<Repo>> {
+    override fun fetchAllTrendingGitHubRepo(query: String): LiveData<PagingData<MappedRepo>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
                 maxSize = 1000,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { GithubPagingSource(githubApi, query) }
+            pagingSourceFactory = { GithubPagingSource(githubApi, query, repoMapper) }
         ).liveData
     }
 
-    override suspend fun getGitHubRepoDetails(repoId: String): Flow<BaseResponse<Repo>> {
+    override suspend fun getGitHubRepoDetails(repoId: String): Flow<BaseResponse<MappedRepo>> {
         return flow {
             emit(BaseResponse.Loading())
             try {
-                val response = githubApi.getRepoDetails(repoId)
+                val response = repoMapper.mapFromDomainModel(githubApi.getRepoDetails(repoId))
                 emit(BaseResponse.Success(true, "Success", response))
                 Log.d("TAG", response.toString())
             } catch (exp: Exception) {

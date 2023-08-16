@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.testassignmentgitrepo.data.models.Repo
+import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.databinding.FragmentRepositoryDetailsBinding
 import com.example.testassignmentgitrepo.presentation.ReposViewModel
 import com.example.testassignmentgitrepo.presentation.SELECTED_REPO_ITEM
@@ -49,7 +49,7 @@ class RepoDetailsFragment : Fragment() {
 
         arguments?.getString(SELECTED_REPO_ITEM)?.let {
             val gson = Gson()
-            val repo = gson.fromJson(it, Repo::class.java)
+            val repo = gson.fromJson(it, MappedRepo::class.java)
             repoId = repo.id.toString()
             viewModel.getRepoDetails(repoId)
         }
@@ -65,7 +65,7 @@ class RepoDetailsFragment : Fragment() {
 
     private fun observeAndInflateData() {
         viewModel.getRepoDetailsMutableLiveData()
-            .observe(viewLifecycleOwner) { baseResponse: BaseResponse<Repo>? ->
+            .observe(viewLifecycleOwner) { baseResponse: BaseResponse<MappedRepo>? ->
 
                 when (baseResponse) {
                     is BaseResponse.Error -> {

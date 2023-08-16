@@ -7,6 +7,7 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.domain.useCases.GitHubUseCaseWrapper
 import com.example.testassignmentgitrepo.retrofitSetup.BaseResponse
@@ -22,12 +23,12 @@ class ReposViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val currentQuery = MutableLiveData(DEFAULT_QUERY)
-    private val repoDetailsMutableLiveData: MutableLiveData<BaseResponse<Repo>> =
-        MutableLiveData<BaseResponse<Repo>>()
+    private val repoDetailsMutableLiveData: MutableLiveData<BaseResponse<MappedRepo>> =
+        MutableLiveData<BaseResponse<MappedRepo>>()
 
     fun getRepoDetailsMutableLiveData() = repoDetailsMutableLiveData
 
-    val repos: LiveData<PagingData<Repo>> = currentQuery.switchMap { queryString ->
+    val repos: LiveData<PagingData<MappedRepo>> = currentQuery.switchMap { queryString ->
         gitHubUseCaseWrapper.fetchGithubRepoUseCase.execute(queryString)
     }.cachedIn(viewModelScope)
 
