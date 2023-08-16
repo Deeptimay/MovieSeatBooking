@@ -31,7 +31,7 @@ class ReposLoadStateAdapter(private val retry: () -> Unit) :
         init {
             binding.lookUpButton.setOnClickListener {
                 retry.invoke()
-//                binding.loadingLayout.containerShimmer.show()
+                binding.loadingLayout.containerShimmer.show()
                 binding.loadingLayout.containerShimmer.startShimmer()
             }
         }
@@ -47,13 +47,13 @@ class ReposLoadStateAdapter(private val retry: () -> Unit) :
 
                     is LoadState.Loading -> {
                         binding.lookUpButton.hide()
-//                        binding.loadingLayout.containerShimmer.show()
+                        binding.loadingLayout.containerShimmer.show()
                         binding.loadingLayout.containerShimmer.startShimmer()
                     }
 
                     else -> {
                         binding.lookUpButton.hide()
-//                        binding.loadingLayout.containerShimmer.hide()
+                        binding.loadingLayout.containerShimmer.hide()
                         binding.loadingLayout.containerShimmer.stopShimmer()
                     }
                 }

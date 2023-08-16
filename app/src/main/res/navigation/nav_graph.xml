@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/trendingRepoFragment"
         android:name="com.example.testassignmentgitrepo.presentation.homeScreen.TrendingRepoFragment"
-        android:label="TrendingRepoFragment">
+        android:label="Trending Repo">
         <action
             android:id="@+id/action_trendingRepoFragment_to_repoDetailsFragment"
             app:destination="@id/repoDetailsFragment" />
@@ -16,5 +16,5 @@
     <fragment
         android:id="@+id/repoDetailsFragment"
         android:name="com.example.testassignmentgitrepo.presentation.detailsScreen.RepoDetailsFragment"
-        android:label="RepoDetailsFragment" />
+        android:label="Repo Details" />
 </navigation>

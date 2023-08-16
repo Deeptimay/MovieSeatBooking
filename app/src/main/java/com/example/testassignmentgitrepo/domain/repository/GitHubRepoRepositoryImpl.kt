@@ -32,11 +32,11 @@ class GitHubRepoRepositoryImpl @Inject constructor(private val githubApi: Github
     override suspend fun getGitHubRepoDetails(repoId: String): Flow<BaseResponse<Repo>> {
         return flow {
             emit(BaseResponse.Loading())
-            val response = githubApi.getRepoDetails(repoId)
-            if (response != null) {
+            try {
+                val response = githubApi.getRepoDetails(repoId)
                 emit(BaseResponse.Success(true, "Success", response))
                 Log.d("TAG", response.toString())
-            } else {
+            } catch (exp: Exception) {
                 emit(BaseResponse.Error(false, "Error", null))
             }
         }

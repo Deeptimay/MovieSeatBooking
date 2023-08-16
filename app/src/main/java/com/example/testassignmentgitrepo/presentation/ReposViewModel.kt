@@ -9,9 +9,12 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.domain.useCases.GitHubUseCaseWrapper
+import com.example.testassignmentgitrepo.retrofitSetup.BaseResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+const val SELECTED_REPO_ITEM = "selected_repo_item"
 
 @HiltViewModel
 class ReposViewModel @Inject constructor(
@@ -19,7 +22,8 @@ class ReposViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val currentQuery = MutableLiveData(DEFAULT_QUERY)
-    private val repoDetailsMutableLiveData: MutableLiveData<Repo> = MutableLiveData<Repo>()
+    private val repoDetailsMutableLiveData: MutableLiveData<BaseResponse<Repo>> =
+        MutableLiveData<BaseResponse<Repo>>()
 
     fun getRepoDetailsMutableLiveData() = repoDetailsMutableLiveData
 
@@ -42,16 +46,8 @@ class ReposViewModel @Inject constructor(
     fun getRepoDetails(repoId: String) {
         viewModelScope.launch {
             gitHubUseCaseWrapper.getGithubRepoDetailsUseCase.execute(repoId)
-                .collect() { it ->
-                    it?.let { repo ->
-                        repo.status?.let { repoStatus ->
-                            if (repoStatus) {
-                                repo.data?.let { repoData ->
-                                    repoDetailsMutableLiveData.postValue(repoData)
-                                }
-                            }
-                        }
-                    }
+                .collect { it ->
+                    repoDetailsMutableLiveData.postValue(it)
                 }
         }
     }

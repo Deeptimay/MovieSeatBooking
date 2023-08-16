@@ -4,19 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import com.example.testassignmentgitrepo.R
+import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.databinding.FragmentTrendingRepositoryBinding
 import com.example.testassignmentgitrepo.presentation.ReposViewModel
+import com.example.testassignmentgitrepo.presentation.SELECTED_REPO_ITEM
 import com.example.testassignmentgitrepo.presentation.adapters.ReposAdapter
 import com.example.testassignmentgitrepo.presentation.adapters.ReposLoadStateAdapter
 import com.example.testassignmentgitrepo.util.hide
 import com.example.testassignmentgitrepo.util.show
+import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 
-class TrendingRepoFragment : Fragment() {
+@AndroidEntryPoint
+class TrendingRepoFragment : Fragment(), ReposAdapter.OnItemClickListener {
 
     private var _binding: FragmentTrendingRepositoryBinding? = null
 
@@ -33,9 +38,6 @@ class TrendingRepoFragment : Fragment() {
     ): View {
         _binding = FragmentTrendingRepositoryBinding.inflate(inflater, container, false)
 
-        val toolbar: ActionBar? = (activity as AppCompatActivity).supportActionBar
-        toolbar?.title = "My Title"
-        toolbar?.setHomeButtonEnabled(false);
         viewModel = ViewModelProvider(this)[ReposViewModel::class.java]
 
         displayLoadingState()
@@ -51,7 +53,7 @@ class TrendingRepoFragment : Fragment() {
 
     private fun setupAdapter() {
 
-        reposAdapter = ReposAdapter()
+        reposAdapter = ReposAdapter(this)
         binding.apply {
             binding.rvRepository.apply {
                 setHasFixedSize(true)
@@ -87,16 +89,6 @@ class TrendingRepoFragment : Fragment() {
                         displayErrorState()
                     }
                 }
-
-                // no results found
-//                if (loadState.source.refresh is LoadState.NotLoading &&
-//                    loadState.append.endOfPaginationReached &&
-//                    reposAdapter.itemCount < 1
-//                ) {
-//                    displayErrorState()
-//                } else {
-//                    hideLoadingState()
-//                }
             }
         }
     }
@@ -125,5 +117,17 @@ class TrendingRepoFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onItemClicked(repo: Repo) {
+        val gson = Gson()
+        val repoJsonString = gson.toJson(repo)
+        val bundle = Bundle().apply {
+            putString(SELECTED_REPO_ITEM, repoJsonString)
+        }
+        findNavController().navigate(
+            R.id.action_trendingRepoFragment_to_repoDetailsFragment,
+            bundle
+        )
     }
 }

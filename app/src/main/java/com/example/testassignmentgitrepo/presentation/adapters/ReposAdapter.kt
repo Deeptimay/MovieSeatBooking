@@ -17,7 +17,8 @@ import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.databinding.ItemTrendingRepoBinding
 
 
-class ReposAdapter : PagingDataAdapter<Repo, ReposAdapter.ViewHolder>(REPO_COMPARATOR) {
+class ReposAdapter(private val onItemClickListener: OnItemClickListener) :
+    PagingDataAdapter<Repo, ReposAdapter.ViewHolder>(REPO_COMPARATOR) {
 
     companion object {
         private val REPO_COMPARATOR = object : DiffUtil.ItemCallback<Repo>() {
@@ -50,8 +51,7 @@ class ReposAdapter : PagingDataAdapter<Repo, ReposAdapter.ViewHolder>(REPO_COMPA
         position: Int
     ): View.OnClickListener {
         return View.OnClickListener {
-            snapshot()[position]?.isSelectedItem?.let { snapshot()[position]?.isSelectedItem = !it }
-            notifyItemChanged(position)
+            snapshot()[position]?.let { onItemClickListener.onItemClicked(it) }
         }
     }
 
@@ -91,5 +91,9 @@ class ReposAdapter : PagingDataAdapter<Repo, ReposAdapter.ViewHolder>(REPO_COMPA
                 root.setOnClickListener(listener)
             }
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClicked(repo: Repo)
     }
 }
