@@ -20,7 +20,7 @@ class RepoDetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _repoDetailsFlow = MutableStateFlow<UiState>(UiState.Loading)
-    private val repoDetailsFlow: StateFlow<UiState> = _repoDetailsFlow.asStateFlow()
+    val repoDetailsFlow: StateFlow<UiState> = _repoDetailsFlow.asStateFlow()
 
     internal lateinit var repoId: String
 

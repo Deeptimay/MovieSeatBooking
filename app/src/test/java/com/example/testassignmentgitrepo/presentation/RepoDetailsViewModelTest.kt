@@ -2,13 +2,13 @@ package com.example.testassignmentgitrepo.presentation
 
 import app.cash.turbine.test
 import com.example.testassignmentgitrepo.data.mappers.RepoMapper
+import com.example.testassignmentgitrepo.data.network.BaseResponse
+import com.example.testassignmentgitrepo.data.network.BaseResponse.*
 import com.example.testassignmentgitrepo.domain.models.MappedRepo
 import com.example.testassignmentgitrepo.domain.useCases.getRepoDetailsUseCase.FakeFetchGithubRepoUseCaseTest
 import com.example.testassignmentgitrepo.domain.useCases.getRepoDetailsUseCase.FakeGetGithubRepoDetailsUseCaseTest
 import com.example.testassignmentgitrepo.domain.useCases.getRepoDetailsUseCase.FakeGitHubApi
-import com.example.testassignmentgitrepo.data.network.BaseResponse
-import com.example.testassignmentgitrepo.data.network.BaseResponse.*
-import com.example.testassignmentgitrepo.presentation.homeScreen.ReposViewModel
+import com.example.testassignmentgitrepo.presentation.detailsScreen.RepoDetailsViewModel
 import com.example.testassignmentgitrepo.util.MainDispatcherRule
 import com.example.testassignmentgitrepo.util.UiState
 import junit.framework.Assert.assertEquals
@@ -25,16 +25,15 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
-class ReposViewModelTest() {
+class RepoDetailsViewModelTest() {
 
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private lateinit var viewModel: ReposViewModel
+    private lateinit var viewModel: RepoDetailsViewModel
     private lateinit var fakeFetchGithubRepoUseCaseTest: FakeFetchGithubRepoUseCaseTest
     private lateinit var fakeGetGithubRepoDetailsUseCaseTest: FakeGetGithubRepoDetailsUseCaseTest
-    private lateinit var gitHubUseCaseWrapper: GitHubUseCaseWrapper
     private var fakeGitHubApi: FakeGitHubApi = FakeGitHubApi()
 
     @Before
@@ -42,11 +41,7 @@ class ReposViewModelTest() {
 //        Dispatchers.setMain(mainDispatcherRule)
         fakeFetchGithubRepoUseCaseTest = FakeFetchGithubRepoUseCaseTest(fakeGitHubApi, RepoMapper())
         fakeGetGithubRepoDetailsUseCaseTest = FakeGetGithubRepoDetailsUseCaseTest()
-        gitHubUseCaseWrapper = GitHubUseCaseWrapper(
-            fakeFetchGithubRepoUseCaseTest,
-            fakeGetGithubRepoDetailsUseCaseTest
-        )
-        viewModel = ReposViewModel(gitHubUseCaseWrapper)
+        viewModel = RepoDetailsViewModel(fakeGetGithubRepoDetailsUseCaseTest)
     }
 
     @After
@@ -54,62 +49,15 @@ class ReposViewModelTest() {
 //        Dispatchers.resetMain()
     }
 
-//    @OptIn(ExperimentalCoroutinesApi::class)
-//    @Test
-//    fun `when initialized, repository emits loading and data`() = runTest {
-//
-//        val users = listOf(
-//            User(
-//                name = "User 1", age = 20
-//            ), User(
-//                name = "User 2", age = 30
-//            )
-//        )
-//
-//        assertEquals(UiState.Loading, viewModel.repoDetailsFlow.value)
-//
-//        repository.sendUsers(users)
-//
-//        viewModel.onRefresh()
-//
-//        assertSame(UiState.Success(users), viewModel.repoDetailsFlow.value)
-//    }
-
-//    @OptIn(ExperimentalCoroutinesApi::class)
-//    @Test
-//    fun `when initialized, repository emits loading and data (using turbine)`() = runTest {
-//
-//        val users = listOf(
-//            User(
-//                name = "User 1", age = 20
-//            ), User(
-//                name = "User 2", age = 30
-//            )
-//        )
-//
-//        viewModel.repoDetailsFlow.test {
-//            val firstItem = awaitItem()
-//            assertEquals(UiState.Loading, firstItem)
-//
-//            val secondItem = awaitItem()
-//            assertSame(UiState.Success(users), secondItem)
-//        }
-//    }
-
-//    var testDispatcher = StandardTestDispatcher()
-//
-//    @get:Rule
-//    val instantTaskExecutorRule = InstantTaskExecutorRule()
-//
-//    private lateinit var viewModel: ReposViewModel
-//    private lateinit var fakeFetchGithubRepoUseCaseTest: FakeFetchGithubRepoUseCaseTest
-//    private lateinit var fakeGetGithubRepoDetailsUseCaseTest: FakeGetGithubRepoDetailsUseCaseTest
-//    private lateinit var gitHubUseCaseWrapper: GitHubUseCaseWrapper
-//
-
     @Test
     fun `for success resource, repo details data must be available`() = runTest {
-        fakeGetGithubRepoDetailsUseCaseTest.emit(BaseResponse.Success(true, "success", MappedRepo()))
+        fakeGetGithubRepoDetailsUseCaseTest.emit(
+            BaseResponse.Success(
+                true,
+                "success",
+                MappedRepo()
+            )
+        )
         viewModel.repoDetailsFlow.test {
             val dataItem = awaitItem()
             assertSame(UiState.Success(MappedRepo()), dataItem)
