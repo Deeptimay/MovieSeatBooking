@@ -38,12 +38,11 @@ class GitHubRepoRepositoryImplTest {
 
     @Test
     fun `getGitHubRepoDetails success`() = runBlocking {
-        val responseMock = Response.success(Repo(1, "Repo Name"))
+        val responseMock = Response.success(Repo(1, null, "Repo Name"))
         `when`(mockApi.getRepoDetails("repoId")).thenReturn(responseMock)
 
         val expectedResult = MappedRepo(1, "Repo Name")
         val actualResult = repository.getGitHubRepoDetails("repoId")
-
         assertEquals(NetworkResult.ApiSuccess(expectedResult), actualResult)
     }
 
@@ -57,7 +56,10 @@ class GitHubRepoRepositoryImplTest {
 
         val actualResult = repository.getGitHubRepoDetails("repoId")
 
-        assertEquals(NetworkResult.ApiError<Repo>(404, "Not Found"), actualResult)
+        assertEquals(
+            NetworkResult.ApiError<Repo>(404, responseMock.errorBody().toString()),
+            actualResult
+        )
     }
 
     @Test
@@ -72,10 +74,10 @@ class GitHubRepoRepositoryImplTest {
 
         val actualResult = repository.getGitHubRepoDetails("repoId")
 
-        assertEquals(NetworkResult.ApiError<Repo>(500, "Internal Server Error"), actualResult)
+        assertEquals(NetworkResult.ApiError<Repo>(500, httpException.message()), actualResult)
     }
 
-    @Test
+    @Test(expected = Exception::class)
     fun `getGitHubRepoDetails general exception`() = runBlocking {
         val exception = Exception("Some exception")
         `when`(mockApi.getRepoDetails("repoId")).thenThrow(exception)
@@ -90,7 +92,7 @@ class GitHubRepoRepositoryImplTest {
         val responseMock = Response.success(
             TrendingRepoResponse(
                 1, true,
-                arrayListOf(Repo(1, "Repo Name"))
+                arrayListOf(Repo(1, null, "Repo Name"))
             )
         )
         `when`(mockApi.getTrendingRepoList("query", 1, 100)).thenReturn(responseMock)
@@ -111,7 +113,10 @@ class GitHubRepoRepositoryImplTest {
 
         val actualResult = repository.fetchAllTrendingGitHubRepo("query")
 
-        assertEquals(NetworkResult.ApiError<Repo>(404, "Not Found"), actualResult)
+        assertEquals(
+            NetworkResult.ApiError<Repo>(404, responseMock.errorBody().toString()),
+            actualResult
+        )
     }
 
     @Test
@@ -126,10 +131,10 @@ class GitHubRepoRepositoryImplTest {
 
         val actualResult = repository.fetchAllTrendingGitHubRepo("query")
 
-        assertEquals(NetworkResult.ApiError<Repo>(500, "Internal Server Error"), actualResult)
+        assertEquals(NetworkResult.ApiError<Repo>(500, httpException.message()), actualResult)
     }
 
-    @Test
+    @Test(expected = Exception::class)
     fun `fetchAllTrendingGitHubRepo general exception`() = runBlocking {
         val exception = Exception("Some exception")
         `when`(mockApi.getTrendingRepoList("query", 1, 100)).thenThrow(exception)

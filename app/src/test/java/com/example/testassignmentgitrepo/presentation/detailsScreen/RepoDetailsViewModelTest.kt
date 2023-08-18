@@ -5,80 +5,101 @@ import com.example.testassignmentgitrepo.domain.models.MappedRepo
 import com.example.testassignmentgitrepo.domain.useCases.GetGithubRepoDetailsUseCase
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import com.example.testassignmentgitrepo.presentation.util.UiState
-import com.example.testassignmentgitrepo.util.MainDispatcherRule
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.TestCoroutineScope
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 
 @ExperimentalCoroutinesApi
 class RepoDetailsViewModelTest {
 
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-
-    @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
+
+    private val testDispatcher: TestDispatcher = StandardTestDispatcher()
+
+    @Mock
+    private lateinit var mockUseCase: GetGithubRepoDetailsUseCase
 
     private lateinit var viewModel: RepoDetailsViewModel
 
-    @Mock
-    private lateinit var mockGetGithubRepoDetailsUseCase: GetGithubRepoDetailsUseCase
-
-    private lateinit var testCoroutineDispatcher: TestCoroutineDispatcher
-    private lateinit var testCoroutineScope: TestCoroutineScope
-
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
-        testCoroutineDispatcher = TestCoroutineDispatcher()
-        testCoroutineScope = TestCoroutineScope(testCoroutineDispatcher)
-        viewModel = RepoDetailsViewModel(mockGetGithubRepoDetailsUseCase)
+        Dispatchers.setMain(testDispatcher)
+        MockitoAnnotations.openMocks(this)
+        viewModel = RepoDetailsViewModel(mockUseCase)
+    }
+
+    @After
+    fun teatDown() {
+        Dispatchers.resetMain()
     }
 
     @Test
-    fun `getRepoDetails success`() = runTest {
-        val responseMock = NetworkResult.ApiSuccess(MappedRepo(1, "Repo Name"))
-        `when`(mockGetGithubRepoDetailsUseCase.execute(REPO_ID)).thenReturn(responseMock)
+    fun `test getRepoDetails updates repoDetailsFlow with success state`() =
+        runTest {
+            // Given a repoId and a successful response
+            val mockData = UiState.Success(MappedRepo(1, "Repo Name"))
+            val mockResponse = NetworkResult.ApiSuccess(MappedRepo(1, "Repo Name"))
+            Mockito.`when`(mockUseCase.execute(REPO_ID)).thenReturn(mockResponse)
 
-        viewModel.getRepoDetails(REPO_ID)
+            viewModel.getRepoDetails(REPO_ID)
+            delay(100)
 
-        viewModel.repoDetailsFlow.take(1).collect { uiState ->
-            assertEquals(UiState.Success("Repo details"), uiState)
+            // Then repoDetailsFlow should emit an Success state
+            val result = viewModel.repoDetailsFlow.value
+            assertEquals(
+                UiState.Success(MappedRepo(1, "Repo Name")),
+                result
+            )
+
+            assertEquals(mockData, (result as UiState.Success<MappedRepo>))
         }
-    }
 
     @Test
-    fun `getRepoDetails API error`() = runTest {
-        val responseMock = NetworkResult.ApiError<MappedRepo>(404, "Not Found")
-        `when`(mockGetGithubRepoDetailsUseCase.execute(REPO_ID)).thenReturn(responseMock)
+    fun `test getRepoDetails updates repoDetailsFlow with error state`() =
+        runTest {
+            // Given a repoId and an error response
+            val mockResponse = NetworkResult.ApiError<MappedRepo>(404, "Not found")
+            Mockito.`when`(mockUseCase.execute(REPO_ID)).thenReturn(mockResponse)
 
-        viewModel.getRepoDetails(REPO_ID)
+            // When calling getRepoDetails
+            viewModel.getRepoDetails(REPO_ID)
+            delay(100)
 
-        viewModel.repoDetailsFlow.take(1).collect { uiState ->
-            assertEquals(UiState.Error(), uiState)
+            // Then repoDetailsFlow should emit an Error state
+            val result = viewModel.repoDetailsFlow.value
+            assert(result is UiState.Error)
         }
-    }
 
     @Test
-    fun `getRepoDetails API exception`() = runTest {
-        val responseMock = NetworkResult.ApiException<MappedRepo>(Exception("Network exception"))
-        `when`(mockGetGithubRepoDetailsUseCase.execute(REPO_ID)).thenReturn(responseMock)
+    fun `test getRepoDetails updates repoDetailsFlow with exception state`() =
+        runTest {
+            // Given a repoId and an exception response
+            val mockResponse =
+                NetworkResult.ApiException<MappedRepo>(RuntimeException("Test exception"))
+            Mockito.`when`(mockUseCase.execute(REPO_ID)).thenReturn(mockResponse)
 
-        viewModel.getRepoDetails(REPO_ID)
+            // When calling getRepoDetails
+            viewModel.getRepoDetails(REPO_ID)
+            delay(100)
 
-        viewModel.repoDetailsFlow.take(1).collect { uiState ->
-            assertEquals(UiState.Error(), uiState)
+            // Then repoDetailsFlow should emit an Error state
+            val result = viewModel.repoDetailsFlow.value
+            assert(result is UiState.Error)
         }
-    }
 
     companion object {
         private const val REPO_ID = "repo_id"

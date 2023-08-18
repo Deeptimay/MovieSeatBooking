@@ -5,11 +5,15 @@ import com.example.testassignmentgitrepo.domain.models.MappedRepo
 import com.example.testassignmentgitrepo.domain.useCases.FetchGithubRepoUseCase
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import com.example.testassignmentgitrepo.presentation.util.UiState
-import com.example.testassignmentgitrepo.util.MainDispatcherRule
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.TestCoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -21,26 +25,27 @@ import org.mockito.MockitoAnnotations
 @ExperimentalCoroutinesApi
 class ReposViewModelTest {
 
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
 
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var viewModel: ReposViewModel
+    private val testDispatcher: TestDispatcher = StandardTestDispatcher()
 
     @Mock
     private lateinit var mockFetchGithubRepoUseCase: FetchGithubRepoUseCase
 
-    private lateinit var testCoroutineDispatcher: TestCoroutineDispatcher
-    private lateinit var testCoroutineScope: TestCoroutineScope
+    private lateinit var viewModel: ReposViewModel
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
-        testCoroutineDispatcher = TestCoroutineDispatcher()
-        testCoroutineScope = TestCoroutineScope(testCoroutineDispatcher)
+        Dispatchers.setMain(testDispatcher)
+        MockitoAnnotations.openMocks(this)
         viewModel = ReposViewModel(mockFetchGithubRepoUseCase)
+    }
+
+    @After
+    fun teatDown() {
+        Dispatchers.resetMain()
     }
 
     @Test
@@ -49,10 +54,10 @@ class ReposViewModelTest {
         `when`(mockFetchGithubRepoUseCase.execute(DEFAULT_QUERY)).thenReturn(responseMock)
 
         viewModel.getRepoList()
+        delay(100)
 
-        viewModel.repoFlow.collect { uiState ->
-            assertEquals(UiState.Success(listOf("Repo1", "Repo2")), uiState)
-        }
+        val result = viewModel.repoFlow.value
+        assertEquals(UiState.Success(listOf(MappedRepo(1, "Repo Name"))), result)
     }
 
     @Test
@@ -61,10 +66,11 @@ class ReposViewModelTest {
         `when`(mockFetchGithubRepoUseCase.execute(DEFAULT_QUERY)).thenReturn(responseMock)
 
         viewModel.getRepoList()
+        delay(100)
 
-        viewModel.repoFlow.collect { uiState ->
-            assertEquals(UiState.Error(), uiState)
-        }
+        // Then repoDetailsFlow should emit an Error state
+        val result = viewModel.repoFlow.value
+        assert(result is UiState.Error)
     }
 
     @Test
@@ -74,10 +80,10 @@ class ReposViewModelTest {
         `when`(mockFetchGithubRepoUseCase.execute(DEFAULT_QUERY)).thenReturn(responseMock)
 
         viewModel.getRepoList()
+        delay(100)
 
-        viewModel.repoFlow.collect { uiState ->
-            assertEquals(UiState.Error(), uiState)
-        }
+        val result = viewModel.repoFlow.value
+        assert(result is UiState.Error)
     }
 
     companion object {

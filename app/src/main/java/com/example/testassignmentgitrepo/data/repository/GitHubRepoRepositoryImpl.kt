@@ -26,7 +26,7 @@ class GitHubRepoRepositoryImpl @Inject constructor(
             } else {
                 NetworkResult.ApiError(
                     code = repoListResponse.code(),
-                    message = repoListResponse.message()
+                    message = repoListResponse.errorBody().toString()
                 )
             }
         } catch (e: HttpException) {
@@ -46,7 +46,7 @@ class GitHubRepoRepositoryImpl @Inject constructor(
             } else {
                 NetworkResult.ApiError(
                     code = repoDetailResponse.code(),
-                    message = repoDetailResponse.message()
+                    message = repoDetailResponse.errorBody().toString()
                 )
             }
         } catch (e: HttpException) {
