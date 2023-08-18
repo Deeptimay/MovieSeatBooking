@@ -17,7 +17,6 @@ object DateUtility {
             outputDateFormat.format(parsedDate)
 
         } catch (ex: Exception) {
-            Log.e("formatDate", "failed to format date")
             inputDate
         }
     }
