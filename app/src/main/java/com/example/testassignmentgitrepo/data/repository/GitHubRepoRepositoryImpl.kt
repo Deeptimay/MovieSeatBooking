@@ -18,12 +18,16 @@ class GitHubRepoRepositoryImpl @Inject constructor(
 
     override suspend fun fetchAllTrendingGitHubRepo(query: String): NetworkResult<List<MappedRepo>> {
         return try {
-            val response = githubApi.getTrendingRepoList(query, 1, 100)
-            if (response.isSuccessful) {
-                val mappedDetails = response.body()?.let { repoMapper.fromEntityList(it.repo) }
+            val repoListResponse = githubApi.getTrendingRepoList(query, 1, 100)
+            if (repoListResponse.isSuccessful) {
+                val mappedDetails =
+                    repoListResponse.body()?.let { repoMapper.fromEntityList(it.repo) }
                 NetworkResult.ApiSuccess(mappedDetails!!)
             } else {
-                NetworkResult.ApiError(code = response.code(), message = response.message())
+                NetworkResult.ApiError(
+                    code = repoListResponse.code(),
+                    message = repoListResponse.message()
+                )
             }
         } catch (e: HttpException) {
             NetworkResult.ApiError(code = e.code(), message = e.message())
@@ -34,12 +38,16 @@ class GitHubRepoRepositoryImpl @Inject constructor(
 
     override suspend fun getGitHubRepoDetails(repoId: String): NetworkResult<MappedRepo> {
         return try {
-            val response = githubApi.getRepoDetails(repoId)
-            if (response.isSuccessful) {
-                val mappedDetails = response.body()?.let { repoMapper.mapFromDomainModel(it) }
+            val repoDetailResponse = githubApi.getRepoDetails(repoId)
+            if (repoDetailResponse.isSuccessful) {
+                val mappedDetails =
+                    repoDetailResponse.body()?.let { repoMapper.mapFromDataModel(it) }
                 NetworkResult.ApiSuccess(mappedDetails!!)
             } else {
-                NetworkResult.ApiError(code = response.code(), message = response.message())
+                NetworkResult.ApiError(
+                    code = repoDetailResponse.code(),
+                    message = repoDetailResponse.message()
+                )
             }
         } catch (e: HttpException) {
             NetworkResult.ApiError(code = e.code(), message = e.message())

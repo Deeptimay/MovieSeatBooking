@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias=".4" />
 
-        <com.deeptimay.trendinggithubrepos.widget.CustomTextView
+        <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvErrorTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             app:layout_constraintTop_toBottomOf="@+id/ivErrorIndicator"
             app:textFont="bold" />
 
-        <com.deeptimay.trendinggithubrepos.widget.CustomTextView
+        <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvErrorSubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             app:textFont="regular" />
 
 
-        <com.deeptimay.trendinggithubrepos.widget.CustomButton
+        <com.example.testassignmentgitrepo.presentation.customViews.CustomButton
             android:id="@+id/lookUpButton"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"

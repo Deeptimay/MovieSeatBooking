@@ -15,7 +15,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.deeptimay.trendinggithubrepos.widget.CustomTextView
+        <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/toolbarTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

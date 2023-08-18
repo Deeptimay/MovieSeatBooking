@@ -24,11 +24,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class TrendingRepoFragment : Fragment(), ReposAdapter.RepoClickListener {
 
-    private var _binding: FragmentTrendingRepositoryBinding? = null
-
-    // with the backing property of the kotlin we extract
-    // the non null value of the _binding
-    private val binding get() = _binding!!
+    private var _fragmentTrendingRepositoryBinding: FragmentTrendingRepositoryBinding? = null
+    private val fragmentTrendingRepositoryBinding get() = _fragmentTrendingRepositoryBinding!!
 
     private val reposViewModel: ReposViewModel by lazy {
         ViewModelProvider(this)[ReposViewModel::class.java]
@@ -39,7 +36,8 @@ class TrendingRepoFragment : Fragment(), ReposAdapter.RepoClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTrendingRepositoryBinding.inflate(inflater, container, false)
+        _fragmentTrendingRepositoryBinding =
+            FragmentTrendingRepositoryBinding.inflate(inflater, container, false)
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -64,38 +62,35 @@ class TrendingRepoFragment : Fragment(), ReposAdapter.RepoClickListener {
         }
 
         reposViewModel.getRepoList()
-        return binding.root
+        return fragmentTrendingRepositoryBinding.root
     }
 
 
     private fun setupAdapter(mappedRepos: List<MappedRepo>) {
         reposAdapter = ReposAdapter(this, mappedRepos)
-        binding.apply {
-            binding.rvRepository.apply {
+        fragmentTrendingRepositoryBinding.apply {
+            fragmentTrendingRepositoryBinding.rvRepository.apply {
                 this.adapter = reposAdapter
             }
         }
     }
 
     private fun displayErrorState() {
-        binding.layoutError.clErrorMain.show()
-        binding.rvRepository.hide()
-        binding.loadingLayout.containerShimmer.hide()
-        binding.loadingLayout.containerShimmer.stopShimmer()
+        fragmentTrendingRepositoryBinding.layoutError.clErrorMain.show()
+        fragmentTrendingRepositoryBinding.rvRepository.hide()
+        fragmentTrendingRepositoryBinding.loadingLayout.clDetailsLoading.hide()
     }
 
     private fun displayLoadingState() {
-        binding.layoutError.clErrorMain.hide()
-        binding.rvRepository.hide()
-        binding.loadingLayout.containerShimmer.show()
-        binding.loadingLayout.containerShimmer.startShimmer()
+        fragmentTrendingRepositoryBinding.layoutError.clErrorMain.hide()
+        fragmentTrendingRepositoryBinding.rvRepository.hide()
+        fragmentTrendingRepositoryBinding.loadingLayout.clDetailsLoading.show()
     }
 
     private fun hideLoadingState() {
-        binding.layoutError.clErrorMain.hide()
-        binding.rvRepository.show()
-        binding.loadingLayout.containerShimmer.hide()
-        binding.loadingLayout.containerShimmer.stopShimmer()
+        fragmentTrendingRepositoryBinding.layoutError.clErrorMain.hide()
+        fragmentTrendingRepositoryBinding.rvRepository.show()
+        fragmentTrendingRepositoryBinding.loadingLayout.clDetailsLoading.hide()
     }
 
     override fun onRepoClicked(repoId: String) {

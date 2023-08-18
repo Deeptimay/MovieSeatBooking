@@ -30,7 +30,7 @@
 
             <include
                 android:id="@+id/loadingLayout"
-                layout="@layout/layout_status_loading"
+                layout="@layout/layout_loading_details"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone" />

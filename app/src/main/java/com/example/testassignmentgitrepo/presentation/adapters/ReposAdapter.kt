@@ -5,6 +5,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -27,14 +28,14 @@ class ReposAdapter(
         return RepoListViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RepoListViewHolder, position: Int) {
-        with(holder) {
+    override fun onBindViewHolder(repoListViewHolder: RepoListViewHolder, position: Int) {
+        with(repoListViewHolder) {
             with(repoList[position]) {
                 Glide.with(itemView)
                     .load(this.owner?.avatarUrl)
                     .centerCrop()
                     .error(android.R.drawable.stat_notify_error)
-                    .into(holder.binding.ivUserAvatar)
+                    .into(repoListViewHolder.binding.ivUserAvatar)
 
                 val str = SpannableString((this.owner?.login ?: "") + " / " + this.name)
                 str.setSpan(
@@ -43,15 +44,27 @@ class ReposAdapter(
                     str.length,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
-                holder.binding.tvUsername.text = str
-                holder.binding.tvRepoDesc.text = this.description
-                holder.binding.tvRepoLang.text = this.language
-                holder.binding.tvRepoStars.text = this.stargazersCount.toString()
-                holder.binding.tvRepoFork.text = this.forksCount.toString()
+                repoListViewHolder.binding.tvUsername.text = str
+                repoListViewHolder.binding.tvRepoDesc.text = this.description
 
-                ViewCompat.setTransitionName(holder.binding.ivUserAvatar, "avatar_${this.id}")
+                if (!this.language.isNullOrEmpty()) {
+                    repoListViewHolder.binding.tvRepoLang.text = this.language
+                    repoListViewHolder.binding.tvRepoLang.visibility = View.VISIBLE
+                    repoListViewHolder.binding.ivDot.visibility = View.VISIBLE
+                } else {
+                    repoListViewHolder.binding.tvRepoLang.visibility = View.GONE
+                    repoListViewHolder.binding.ivDot.visibility = View.GONE
+                }
 
-                holder.itemView.setOnClickListener {
+                repoListViewHolder.binding.tvRepoStars.text = this.stargazersCount.toString()
+                repoListViewHolder.binding.tvRepoFork.text = this.forksCount.toString()
+
+                ViewCompat.setTransitionName(
+                    repoListViewHolder.binding.ivUserAvatar,
+                    "avatar_${this.id}"
+                )
+
+                repoListViewHolder.itemView.setOnClickListener {
                     repoClickListener.onRepoClicked(this.id.toString())
                 }
             }

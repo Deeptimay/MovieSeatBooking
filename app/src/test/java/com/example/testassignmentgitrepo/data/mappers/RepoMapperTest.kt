@@ -17,7 +17,7 @@ class RepoMapperTest {
     }
 
     @Test
-    fun `mapToDomainModel returns expected Repo`() {
+    fun `mapToDataModel returns expected Repo`() {
         val mappedRepo = MappedRepo(
             1,
             "Repo Name",
@@ -33,11 +33,11 @@ class RepoMapperTest {
             "https://github.com/repo.git"
         )
 
-        val repo = repoMapper.mapToDomainModel(mappedRepo)
+        val repo = repoMapper.mapToDataModel(mappedRepo)
 
-        assertEquals("repoId", repo.id)
+        assertEquals(1, repo.id)
         assertEquals("Repo Name", repo.name)
-        assertEquals("Owner", repo.owner)
+        assertEquals(Owner(), repo.owner)
         assertEquals("Description", repo.description)
         assertEquals("2023-08-18T12:00:00Z", repo.createdAt)
         assertEquals("2023-08-18T13:00:00Z", repo.updatedAt)
@@ -50,7 +50,7 @@ class RepoMapperTest {
     }
 
     @Test
-    fun `mapFromDomainModel returns expected MappedRepo`() {
+    fun `mapFromDataModel returns expected MappedRepo`() {
         val repo = Repo(
             1,
             "Repo Name",
@@ -66,11 +66,11 @@ class RepoMapperTest {
             "2023-08-18T14:00:00Z"
         )
 
-        val mappedRepo = repoMapper.mapFromDomainModel(repo)
+        val mappedRepo = repoMapper.mapFromDataModel(repo)
 
-        assertEquals("repoId", mappedRepo.id)
+        assertEquals(1, mappedRepo.id)
         assertEquals("Repo Name", mappedRepo.name)
-        assertEquals("Owner", mappedRepo.owner)
+        assertEquals(Owner(), mappedRepo.owner)
         assertEquals("Description", mappedRepo.description)
         assertEquals("2023-08-18T12:00:00Z", mappedRepo.createdAt)
         assertEquals("2023-08-18T13:00:00Z", mappedRepo.updatedAt)
@@ -93,21 +93,21 @@ class RepoMapperTest {
                 Owner(),
                 false,
                 "git://github.com/repo1.git",
-                "Test Test",
+                "Description",
                 true,
                 "git://github.com/repo1.git",
                 "2023-08-18T14:00:00Z",
                 "2023-08-18T14:00:00Z"
             ),
             Repo(
-                1,
+                2,
                 "Repo Name 2",
                 "Owner 2",
                 "Description 2",
                 Owner(),
                 false,
                 "git://github.com/repo2.git",
-                "Test test",
+                "Description",
                 true,
                 "git://github.com/repo2.git",
                 "2023-08-18T12:00:00Z",
@@ -118,7 +118,7 @@ class RepoMapperTest {
         val mappedRepoList = repoMapper.fromEntityList(repoList)
 
         assertEquals(2, mappedRepoList.size)
-        assertEquals("repoId1", mappedRepoList[0].id)
-        assertEquals("repoId2", mappedRepoList[1].id)
+        assertEquals(1, mappedRepoList[0].id)
+        assertEquals(2, mappedRepoList[1].id)
     }
 }

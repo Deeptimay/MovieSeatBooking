@@ -19,9 +19,9 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.testassignmentgitrepo.databinding.FragmentRepositoryDetailsBinding
 import com.example.testassignmentgitrepo.domain.models.MappedRepo
-import com.example.testassignmentgitrepo.presentation.util.UiState
 import com.example.testassignmentgitrepo.presentation.homeScreen.ReposViewModel.Companion.SELECTED_REPO_ITEM
 import com.example.testassignmentgitrepo.presentation.util.DateUtility
+import com.example.testassignmentgitrepo.presentation.util.UiState
 import com.example.testassignmentgitrepo.presentation.util.hide
 import com.example.testassignmentgitrepo.presentation.util.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,8 +31,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class RepoDetailsFragment : Fragment() {
 
-    private var _binding: FragmentRepositoryDetailsBinding? = null
-    private val binding get() = _binding!!
+    private var _fragmentRepositoryDetailsBinding: FragmentRepositoryDetailsBinding? = null
+    private val fragmentRepositoryDetailsBinding get() = _fragmentRepositoryDetailsBinding!!
 
     private val repoDetailsViewModel: RepoDetailsViewModel by lazy {
         ViewModelProvider(this)[RepoDetailsViewModel::class.java]
@@ -41,7 +41,8 @@ class RepoDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRepositoryDetailsBinding.inflate(inflater, container, false)
+        _fragmentRepositoryDetailsBinding =
+            FragmentRepositoryDetailsBinding.inflate(inflater, container, false)
 
         observeState()
 
@@ -49,11 +50,11 @@ class RepoDetailsFragment : Fragment() {
             repoDetailsViewModel.getRepoDetails(it)
         }
 
-        binding.layoutError.lookUpButton.setOnClickListener {
+        fragmentRepositoryDetailsBinding.layoutError.lookUpButton.setOnClickListener {
             repoDetailsViewModel.getRepoDetails(repoDetailsViewModel.repoId)
         }
 
-        return binding.root
+        return fragmentRepositoryDetailsBinding.root
     }
 
     private fun observeState() {
@@ -84,7 +85,7 @@ class RepoDetailsFragment : Fragment() {
         Glide.with(this@RepoDetailsFragment).load(repo.owner?.avatarUrl)
             .centerCrop()
             .error(android.R.drawable.stat_notify_error)
-            .into(binding.detailsLayout.ivUserAvatar)
+            .into(fragmentRepositoryDetailsBinding.detailsLayout.ivUserAvatar)
 
         val str = SpannableString(
             (repo.owner?.login ?: "") + " / " + repo.name
@@ -95,15 +96,15 @@ class RepoDetailsFragment : Fragment() {
             str.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
-        binding.detailsLayout.tvUsername.text = str
-        binding.detailsLayout.tvRepoDesc.text = repo.description
-        binding.detailsLayout.tvRepoLang.text = repo.language
-        binding.detailsLayout.tvRepoStars.text =
+        fragmentRepositoryDetailsBinding.detailsLayout.tvUsername.text = str
+        fragmentRepositoryDetailsBinding.detailsLayout.tvRepoDesc.text = repo.description
+        fragmentRepositoryDetailsBinding.detailsLayout.tvRepoLang.text = repo.language
+        fragmentRepositoryDetailsBinding.detailsLayout.tvRepoStars.text =
             repo.stargazersCount.toString()
-        binding.detailsLayout.tvRepoFork.text =
+        fragmentRepositoryDetailsBinding.detailsLayout.tvRepoFork.text =
             repo.forksCount.toString()
 
-        binding.detailsLayout.tvCreatedAt.text = buildString {
+        fragmentRepositoryDetailsBinding.detailsLayout.tvCreatedAt.text = buildString {
             append("Created At: ")
             append(repo.createdAt?.let {
                 DateUtility.formatDate(
@@ -111,7 +112,7 @@ class RepoDetailsFragment : Fragment() {
                 )
             })
         }
-        binding.detailsLayout.tvUpdatedAt.text = buildString {
+        fragmentRepositoryDetailsBinding.detailsLayout.tvUpdatedAt.text = buildString {
             append("Updated At: ")
             append(repo.updatedAt?.let {
                 DateUtility.formatDate(
@@ -119,7 +120,7 @@ class RepoDetailsFragment : Fragment() {
                 )
             })
         }
-        binding.detailsLayout.tvPushedAt.text = buildString {
+        fragmentRepositoryDetailsBinding.detailsLayout.tvPushedAt.text = buildString {
             append("Pushed At: ")
             append(repo.pushedAt?.let {
                 DateUtility.formatDate(
@@ -128,38 +129,57 @@ class RepoDetailsFragment : Fragment() {
             })
         }
 
-        binding.detailsLayout.tvCloneUrl.text = buildString {
-            append("Clone Url: ")
-            append(repo.cloneUrl)
+        if (!repo.language.isNullOrEmpty()) {
+            fragmentRepositoryDetailsBinding.detailsLayout.tvRepoLang.text = repo.language
+            fragmentRepositoryDetailsBinding.detailsLayout.ivDot.visibility = View.VISIBLE
+            fragmentRepositoryDetailsBinding.detailsLayout.tvRepoLang.visibility = View.VISIBLE
+        } else {
+            fragmentRepositoryDetailsBinding.detailsLayout.ivDot.visibility = View.GONE
+            fragmentRepositoryDetailsBinding.detailsLayout.tvRepoLang.visibility = View.GONE
         }
 
-        binding.detailsLayout.tvGitUrl.text = buildString {
-            append("Git Url: ")
-            append(repo.gitUrl)
+        if (!repo.cloneUrl.isNullOrEmpty()) {
+            fragmentRepositoryDetailsBinding.detailsLayout.tvCloneUrl.text = buildString {
+                append("Clone Url: ")
+                append(repo.cloneUrl)
+            }
+            fragmentRepositoryDetailsBinding.detailsLayout.tvCloneUrl.visibility = View.VISIBLE
+        } else {
+            fragmentRepositoryDetailsBinding.detailsLayout.tvCloneUrl.visibility = View.GONE
+        }
+
+        if (!repo.gitUrl.isNullOrEmpty()) {
+            fragmentRepositoryDetailsBinding.detailsLayout.tvGitUrl.text = buildString {
+                append("Git Url: ")
+                append(repo.gitUrl)
+            }
+            fragmentRepositoryDetailsBinding.detailsLayout.tvGitUrl.visibility = View.VISIBLE
+        } else {
+            fragmentRepositoryDetailsBinding.detailsLayout.tvGitUrl.visibility = View.GONE
         }
 
         ViewCompat.setTransitionName(
-            this@RepoDetailsFragment.binding.detailsLayout.ivUserAvatar,
+            this@RepoDetailsFragment.fragmentRepositoryDetailsBinding.detailsLayout.ivUserAvatar,
             "avatar_${repo.id}"
         )
     }
 
     private fun displayErrorState() {
-        binding.detailsLayout.clDetailsLayout.hide()
-        binding.loadingLayout.clDetailsLoading.hide()
-        binding.layoutError.clErrorMain.show()
+        fragmentRepositoryDetailsBinding.detailsLayout.clDetailsLayout.hide()
+        fragmentRepositoryDetailsBinding.loadingLayout.clDetailsLoading.hide()
+        fragmentRepositoryDetailsBinding.layoutError.clErrorMain.show()
     }
 
     private fun displayLoadingState() {
-        binding.detailsLayout.clDetailsLayout.hide()
-        binding.loadingLayout.clDetailsLoading.show()
-        binding.layoutError.clErrorMain.hide()
+        fragmentRepositoryDetailsBinding.detailsLayout.clDetailsLayout.hide()
+        fragmentRepositoryDetailsBinding.loadingLayout.clDetailsLoading.show()
+        fragmentRepositoryDetailsBinding.layoutError.clErrorMain.hide()
     }
 
     private fun hideLoadingState() {
-        binding.detailsLayout.clDetailsLayout.show()
-        binding.loadingLayout.clDetailsLoading.hide()
-        binding.layoutError.clErrorMain.hide()
+        fragmentRepositoryDetailsBinding.detailsLayout.clDetailsLayout.show()
+        fragmentRepositoryDetailsBinding.loadingLayout.clDetailsLoading.hide()
+        fragmentRepositoryDetailsBinding.layoutError.clErrorMain.hide()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

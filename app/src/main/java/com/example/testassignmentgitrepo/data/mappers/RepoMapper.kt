@@ -5,28 +5,28 @@ import com.example.testassignmentgitrepo.domain.models.Repo
 import javax.inject.Inject
 
 class RepoMapper @Inject constructor() : DataMapper<MappedRepo, Repo> {
-    override fun mapToDomainModel(model: MappedRepo): Repo {
+    override fun mapToDataModel(model: MappedRepo): Repo {
         return Repo()
     }
 
-    override fun mapFromDomainModel(domainModel: Repo): MappedRepo {
+    override fun mapFromDataModel(dataModel: Repo): MappedRepo {
         return MappedRepo(
-            domainModel.id,
-            domainModel.name,
-            domainModel.owner,
-            domainModel.description,
-            domainModel.createdAt,
-            domainModel.updatedAt,
-            domainModel.pushedAt,
-            domainModel.stargazersCount,
-            domainModel.language,
-            domainModel.forksCount,
-            domainModel.gitUrl,
-            domainModel.cloneUrl
+            dataModel.id,
+            dataModel.name,
+            dataModel.owner,
+            dataModel.description,
+            dataModel.createdAt,
+            dataModel.updatedAt,
+            dataModel.pushedAt,
+            dataModel.stargazersCount,
+            dataModel.language,
+            dataModel.forksCount,
+            dataModel.gitUrl,
+            dataModel.cloneUrl
         )
     }
 
     fun fromEntityList(initial: List<Repo>): List<MappedRepo> {
-        return initial.map { mapFromDomainModel(it) }
+        return initial.map { mapFromDataModel(it) }
     }
 }

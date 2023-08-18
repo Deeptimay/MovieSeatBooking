@@ -20,7 +20,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.deeptimay.trendinggithubrepos.widget.CustomTextView
+        <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             app:textFont="regular"
             tools:text="Username" />
 
-        <com.deeptimay.trendinggithubrepos.widget.CustomTextView
+        <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvRepoName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             app:textFont="regular"
             tools:text="Repo Name" />
 
-        <com.deeptimay.trendinggithubrepos.widget.CustomTextView
+        <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvRepoDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                 android:padding="@dimen/_5dp"
                 app:srcCompat="@drawable/drawable_cricle_lang" />
 
-            <com.deeptimay.trendinggithubrepos.widget.CustomTextView
+            <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
                 android:id="@+id/tvRepoLang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                 android:layout_height="@dimen/_18dp"
                 app:srcCompat="@drawable/ic_repo_starts" />
 
-            <com.deeptimay.trendinggithubrepos.widget.CustomTextView
+            <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
                 android:id="@+id/tvRepoStars"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -128,7 +128,7 @@
                 android:layout_marginStart="@dimen/_15dp"
                 app:srcCompat="@drawable/ic_repo_fork" />
 
-            <com.deeptimay.trendinggithubrepos.widget.CustomTextView
+            <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
                 android:id="@+id/tvRepoFork"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -138,10 +138,9 @@
                 android:textSize="@dimen/md_text_size_mini"
                 app:textFont="regular"
                 tools:text="100" />
-
         </LinearLayout>
 
-        <com.deeptimay.trendinggithubrepos.widget.CustomTextView
+        <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvCreatedAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -155,7 +154,7 @@
             app:textFont="regular"
             tools:text="Created At" />
 
-        <com.deeptimay.trendinggithubrepos.widget.CustomTextView
+        <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvUpdatedAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -169,7 +168,7 @@
             app:textFont="regular"
             tools:text="Updated At" />
 
-        <com.deeptimay.trendinggithubrepos.widget.CustomTextView
+        <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvPushedAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -183,11 +182,12 @@
             app:textFont="regular"
             tools:text="Pushed At" />
 
-        <com.deeptimay.trendinggithubrepos.widget.CustomTextView
+        <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvCloneUrl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_18dp"
+            android:ellipsize="end"
             android:lines="1"
             android:textColor="@color/colorGrey800"
             android:textSize="@dimen/md_text_size_mini"
@@ -197,11 +197,12 @@
             app:textFont="regular"
             tools:text="Clone Url" />
 
-        <com.deeptimay.trendinggithubrepos.widget.CustomTextView
+        <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvGitUrl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5dp"
+            android:ellipsize="end"
             android:lines="1"
             android:textColor="@color/colorGrey800"
             android:textSize="@dimen/md_text_size_mini"
