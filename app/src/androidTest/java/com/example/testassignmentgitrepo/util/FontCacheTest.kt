@@ -28,8 +28,8 @@ class FontCacheUtilTest {
     @Test
     fun getTypeface_returns_cached_Typeface() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        val fontId = com.example.testassignmentgitrepo.R.font.roboto_bold // Valid fontId
-        val fontName = "roboto_bold" // Assuming "my_font" font
+        val fontId = com.example.testassignmentgitrepo.R.font.roboto_bold
+        val fontName = "roboto_bold"
 
         val typeface = getTypeface(fontName, fontId, context)
 
@@ -40,8 +40,8 @@ class FontCacheUtilTest {
     @Test
     fun getTypeface_loads_Typeface_from_ResourcesCompat() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        val fontId = com.example.testassignmentgitrepo.R.font.roboto_bold // Valid fontId
-        val fontName = "roboto_bold" // Assuming "my_font" font
+        val fontId = com.example.testassignmentgitrepo.R.font.roboto_bold
+        val fontName = "roboto_bold"
 
         val typeface = getTypeface(fontName, fontId, context)
 
