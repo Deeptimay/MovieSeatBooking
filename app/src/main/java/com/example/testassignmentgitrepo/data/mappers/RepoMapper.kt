@@ -4,7 +4,7 @@ import com.example.testassignmentgitrepo.domain.models.MappedRepo
 import com.example.testassignmentgitrepo.domain.models.Repo
 import javax.inject.Inject
 
-class RepoMapper @Inject constructor() : DomainMapper<MappedRepo, Repo> {
+class RepoMapper @Inject constructor() : DataMapper<MappedRepo, Repo> {
     override fun mapToDomainModel(model: MappedRepo): Repo {
         return Repo()
     }
