@@ -1,8 +1,9 @@
-package com.example.testassignmentgitrepo.domain.useCases.getRepoDetailsUseCase
+package com.example.testassignmentgitrepo.data.useCases
 
-import com.example.testassignmentgitrepo.data.models.MappedRepo
+import com.example.testassignmentgitrepo.domain.models.MappedRepo
 import com.example.testassignmentgitrepo.domain.repository.GitHubRepoRepository
-import com.example.testassignmentgitrepo.retrofitSetup.BaseResponse
+import com.example.testassignmentgitrepo.domain.useCases.GetGithubRepoDetailsUseCase
+import com.example.testassignmentgitrepo.data.network.BaseResponse
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton

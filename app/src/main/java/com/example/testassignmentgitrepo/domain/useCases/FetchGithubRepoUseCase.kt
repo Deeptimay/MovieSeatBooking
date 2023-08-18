@@ -1,7 +1,7 @@
-package com.example.testassignmentgitrepo.domain.useCases.fetchRepoUseCase
+package com.example.testassignmentgitrepo.domain.useCases
 
 import androidx.paging.PagingData
-import com.example.testassignmentgitrepo.data.models.MappedRepo
+import com.example.testassignmentgitrepo.domain.models.MappedRepo
 import kotlinx.coroutines.flow.Flow
 
 interface FetchGithubRepoUseCase {

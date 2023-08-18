@@ -1,4 +1,4 @@
-package com.example.testassignmentgitrepo.retrofitSetup
+package com.example.testassignmentgitrepo.data.network
 
 sealed class BaseResponse<T>(
     val status: Boolean? = null,

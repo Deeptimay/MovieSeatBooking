@@ -1,9 +1,9 @@
 package com.example.testassignmentgitrepo.di
 
-import com.example.testassignmentgitrepo.domain.useCases.fetchRepoUseCase.FetchGithubRepoUseCase
-import com.example.testassignmentgitrepo.domain.useCases.fetchRepoUseCase.FetchGithubRepoUseCaseImpl
-import com.example.testassignmentgitrepo.domain.useCases.getRepoDetailsUseCase.GetGithubRepoDetailsUseCase
-import com.example.testassignmentgitrepo.domain.useCases.getRepoDetailsUseCase.GetGithubRepoDetailsUseCaseImpl
+import com.example.testassignmentgitrepo.domain.useCases.FetchGithubRepoUseCase
+import com.example.testassignmentgitrepo.data.useCases.FetchGithubRepoUseCaseImpl
+import com.example.testassignmentgitrepo.domain.useCases.GetGithubRepoDetailsUseCase
+import com.example.testassignmentgitrepo.data.useCases.GetGithubRepoDetailsUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

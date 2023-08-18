@@ -12,15 +12,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.example.testassignmentgitrepo.R
-import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.databinding.FragmentTrendingRepositoryBinding
-import com.example.testassignmentgitrepo.presentation.ReposViewModel
-import com.example.testassignmentgitrepo.presentation.SELECTED_REPO_ITEM
 import com.example.testassignmentgitrepo.presentation.adapters.ReposAdapter
 import com.example.testassignmentgitrepo.presentation.adapters.ReposLoadStateAdapter
 import com.example.testassignmentgitrepo.util.hide
 import com.example.testassignmentgitrepo.util.show
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -33,7 +29,9 @@ class TrendingRepoFragment : Fragment(), ReposAdapter.OnItemClickListener {
     // the non null value of the _binding
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: ReposViewModel
+    private val reposViewModel: ReposViewModel by lazy {
+        ViewModelProvider(this)[ReposViewModel::class.java]
+    }
     private lateinit var reposAdapter: ReposAdapter
 
     override fun onCreateView(
@@ -42,14 +40,12 @@ class TrendingRepoFragment : Fragment(), ReposAdapter.OnItemClickListener {
     ): View {
         _binding = FragmentTrendingRepositoryBinding.inflate(inflater, container, false)
 
-        viewModel = ViewModelProvider(this)[ReposViewModel::class.java]
-
         displayLoadingState()
         setupAdapter()
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.repoListStateFlowData().collect { pagingData ->
+                reposViewModel.repoListStateFlowData().collect { pagingData ->
                     reposAdapter.submitData(this@TrendingRepoFragment.lifecycle, pagingData)
                 }
             }
@@ -122,11 +118,9 @@ class TrendingRepoFragment : Fragment(), ReposAdapter.OnItemClickListener {
         binding.loadingLayout.containerShimmer.stopShimmer()
     }
 
-    override fun onItemClicked(repo: MappedRepo) {
-        val gson = Gson()
-        val repoJsonString = gson.toJson(repo)
+    override fun onItemClicked(repoId: String) {
         val bundle = Bundle().apply {
-            putString(SELECTED_REPO_ITEM, repoJsonString)
+            putString(SELECTED_REPO_ITEM, repoId)
         }
         findNavController().navigate(
             R.id.action_trendingRepoFragment_to_repoDetailsFragment,

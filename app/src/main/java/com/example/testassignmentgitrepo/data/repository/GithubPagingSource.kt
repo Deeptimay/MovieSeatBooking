@@ -1,13 +1,13 @@
-package com.example.testassignmentgitrepo.domain.repository
+package com.example.testassignmentgitrepo.data.repository
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.testassignmentgitrepo.data.mappers.RepoMapper
-import com.example.testassignmentgitrepo.data.models.MappedRepo
-import com.example.testassignmentgitrepo.data.services.GithubApi
+import com.example.testassignmentgitrepo.data.network.GithubApi
+import com.example.testassignmentgitrepo.domain.models.MappedRepo
 import retrofit2.HttpException
 
-private const val STARTING_PAGE_INDEX = 1
+const val STARTING_PAGE_INDEX = 0
 
 class GithubPagingSource(
     private val githubApi: GithubApi,

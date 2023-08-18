@@ -1,13 +1,14 @@
-package com.example.testassignmentgitrepo.domain.repository
+package com.example.testassignmentgitrepo.data.repository
 
 import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.testassignmentgitrepo.data.mappers.RepoMapper
-import com.example.testassignmentgitrepo.data.models.MappedRepo
-import com.example.testassignmentgitrepo.data.services.GithubApi
-import com.example.testassignmentgitrepo.retrofitSetup.BaseResponse
+import com.example.testassignmentgitrepo.domain.models.MappedRepo
+import com.example.testassignmentgitrepo.data.network.GithubApi
+import com.example.testassignmentgitrepo.domain.repository.GitHubRepoRepository
+import com.example.testassignmentgitrepo.data.network.BaseResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

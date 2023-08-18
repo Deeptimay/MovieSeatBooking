@@ -4,10 +4,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
 import android.text.style.StyleSpan
-import android.text.style.URLSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,47 +17,40 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.databinding.FragmentRepositoryDetailsBinding
-import com.example.testassignmentgitrepo.presentation.ReposViewModel
-import com.example.testassignmentgitrepo.presentation.SELECTED_REPO_ITEM
+import com.example.testassignmentgitrepo.domain.models.MappedRepo
+import com.example.testassignmentgitrepo.presentation.homeScreen.SELECTED_REPO_ITEM
 import com.example.testassignmentgitrepo.util.DateUtility
 import com.example.testassignmentgitrepo.util.UiState
 import com.example.testassignmentgitrepo.util.hide
 import com.example.testassignmentgitrepo.util.show
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
 class RepoDetailsFragment : Fragment() {
-    private var _binding: FragmentRepositoryDetailsBinding? = null
 
-    // with the backing property of the kotlin we extract
-    // the non null value of the _binding
+    private var _binding: FragmentRepositoryDetailsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: ReposViewModel
-    private lateinit var repoId: String
+
+    private val repoDetailsViewModel: RepoDetailsViewModel by lazy {
+        ViewModelProvider(this)[RepoDetailsViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRepositoryDetailsBinding.inflate(inflater, container, false)
 
-        viewModel = ViewModelProvider(this)[ReposViewModel::class.java]
-
         observeState()
 
         arguments?.getString(SELECTED_REPO_ITEM)?.let {
-            val gson = Gson()
-            val repo = gson.fromJson(it, MappedRepo::class.java)
-            repoId = repo.id.toString()
-            viewModel.getRepoDetails(repoId)
+            repoDetailsViewModel.getRepoDetails(it)
         }
 
         binding.layoutError.lookUpButton.setOnClickListener {
-            viewModel.getRepoDetails(repoId)
+            repoDetailsViewModel.getRepoDetails(repoDetailsViewModel.repoId)
         }
 
         return binding.root
@@ -69,25 +59,18 @@ class RepoDetailsFragment : Fragment() {
     private fun observeState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.repoDetailsStateFlowData().collect { uiState ->
+                repoDetailsViewModel.repoDetailsStateFlowData().collect { uiState ->
                     when (uiState) {
                         is UiState.Loading -> {
-                            binding.detailsLayout.clDetailsLayout.hide()
-                            binding.loadingLayout.clDetailsLoading.show()
-                            binding.layoutError.clErrorMain.hide()
+                            displayLoadingState()
                         }
 
                         is UiState.Error -> {
-                            binding.detailsLayout.clDetailsLayout.hide()
-                            binding.loadingLayout.clDetailsLoading.hide()
-                            binding.layoutError.clErrorMain.show()
+                            displayErrorState()
                         }
 
                         is UiState.Success<*> -> {
-                            binding.detailsLayout.clDetailsLayout.show()
-                            binding.loadingLayout.clDetailsLoading.hide()
-                            binding.layoutError.clErrorMain.hide()
-
+                            hideLoadingState()
                             inflateData(uiState.content as MappedRepo)
                         }
                     }
@@ -147,20 +130,12 @@ class RepoDetailsFragment : Fragment() {
 
         binding.detailsLayout.tvCloneUrl.text = buildString {
             append("Clone Url: ")
-            append(repo.cloneUrl?.let {
-                SpannableStringBuilder().urlSpan(
-                    it
-                )
-            })
+            append(repo.cloneUrl)
         }
 
         binding.detailsLayout.tvGitUrl.text = buildString {
             append("Git Url: ")
-            append(repo.gitUrl?.let {
-                SpannableStringBuilder().urlSpan(
-                    it
-                )
-            })
+            append(repo.gitUrl)
         }
 
         ViewCompat.setTransitionName(
@@ -169,12 +144,22 @@ class RepoDetailsFragment : Fragment() {
         )
     }
 
-    private fun SpannableStringBuilder.urlSpan(value: String): SpannableStringBuilder {
-        val start = length
-        this.append(value)
-        val end = length
-        this.setSpan(URLSpan(value), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        return this
+    private fun displayErrorState() {
+        binding.detailsLayout.clDetailsLayout.hide()
+        binding.loadingLayout.clDetailsLoading.hide()
+        binding.layoutError.clErrorMain.show()
+    }
+
+    private fun displayLoadingState() {
+        binding.detailsLayout.clDetailsLayout.hide()
+        binding.loadingLayout.clDetailsLoading.show()
+        binding.layoutError.clErrorMain.hide()
+    }
+
+    private fun hideLoadingState() {
+        binding.detailsLayout.clDetailsLayout.show()
+        binding.loadingLayout.clDetailsLoading.hide()
+        binding.layoutError.clErrorMain.hide()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

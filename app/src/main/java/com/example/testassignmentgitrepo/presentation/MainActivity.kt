@@ -13,17 +13,27 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityLayoutMainBinding
+    private var _binding: ActivityLayoutMainBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var navController: NavController
     private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLayoutMainBinding.inflate(layoutInflater)
+        _binding = ActivityLayoutMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.mainToolbar)
 
+        /*
+        supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+        It does more than just finding the controller.
+        It traverses, creates fragment, creates views and throw an exception.
+        View binding just generates a binding class with all the views of your layout in it.
+        It is not meant for finding the navigation controller of the app.
+        Hence binding can't be used here.
+         */
         navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController

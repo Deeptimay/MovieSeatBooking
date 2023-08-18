@@ -116,4 +116,6 @@ dependencies {
     kaptTest("com.google.dagger:hilt-compiler:2.47")
     testImplementation("com.google.truth:truth:1.1.3")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+    testImplementation("com.jakewharton.timber:timber:5.0.1")
+    testImplementation("app.cash.turbine:turbine:0.12.1")
 }

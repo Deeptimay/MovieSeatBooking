@@ -1,7 +1,7 @@
-package com.example.testassignmentgitrepo.data.services
+package com.example.testassignmentgitrepo.data.network
 
-import com.example.testassignmentgitrepo.data.models.Repo
-import com.example.testassignmentgitrepo.data.models.TrendingRepoResponse
+import com.example.testassignmentgitrepo.domain.models.Repo
+import com.example.testassignmentgitrepo.domain.models.TrendingRepoResponse
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Path
@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface GithubApi {
     @Headers(
         "Accept: application/vnd.github+json",
-        "Authorization: Bearer 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",
+        "Authorization: Bearer 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",
         "X-GitHub-Api-Version: 2022-11-28"
     )
     @GET("search/repositories?sort=stars")
@@ -22,7 +22,7 @@ interface GithubApi {
 
     @Headers(
         "Accept: application/vnd.github+json",
-        "Authorization: Bearer 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",
+        "Authorization: Bearer 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",
         "X-GitHub-Api-Version: 2022-11-28"
     )
     @GET("repositories/{repo_id}")

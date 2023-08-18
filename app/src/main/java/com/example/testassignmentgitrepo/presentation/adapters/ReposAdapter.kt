@@ -12,8 +12,8 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.databinding.ItemTrendingRepoBinding
+import com.example.testassignmentgitrepo.domain.models.MappedRepo
 
 
 class ReposAdapter(private val onItemClickListener: OnItemClickListener) :
@@ -52,7 +52,7 @@ class ReposAdapter(private val onItemClickListener: OnItemClickListener) :
         position: Int
     ): View.OnClickListener {
         return View.OnClickListener {
-            snapshot()[position]?.let { onItemClickListener.onItemClicked(it) }
+            snapshot()[position]?.let { onItemClickListener.onItemClicked(it.id.toString()) }
         }
     }
 
@@ -90,6 +90,6 @@ class ReposAdapter(private val onItemClickListener: OnItemClickListener) :
     }
 
     interface OnItemClickListener {
-        fun onItemClicked(repo: MappedRepo)
+        fun onItemClicked(repoId: String)
     }
 }

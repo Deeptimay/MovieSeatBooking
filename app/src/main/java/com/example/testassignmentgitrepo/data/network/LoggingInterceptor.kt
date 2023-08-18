@@ -1,4 +1,4 @@
-package com.example.testassignmentgitrepo.retrofitSetup
+package com.example.testassignmentgitrepo.data.network
 
 import okhttp3.logging.HttpLoggingInterceptor
 
