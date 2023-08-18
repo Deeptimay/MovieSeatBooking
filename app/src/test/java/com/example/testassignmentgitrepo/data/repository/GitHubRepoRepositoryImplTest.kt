@@ -32,7 +32,7 @@ class GitHubRepoRepositoryImplTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        MockitoAnnotations.openMocks(this)
         repository = GitHubRepoRepositoryImpl(mockApi, RepoMapper())
     }
 

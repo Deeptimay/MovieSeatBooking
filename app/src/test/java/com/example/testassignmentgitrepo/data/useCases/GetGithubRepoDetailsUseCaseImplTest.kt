@@ -20,7 +20,7 @@ class GetGithubRepoDetailsUseCaseImplTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        MockitoAnnotations.openMocks(this)
         useCase = GetGithubRepoDetailsUseCaseImpl(mockGitHubRepoRepository)
     }
 
