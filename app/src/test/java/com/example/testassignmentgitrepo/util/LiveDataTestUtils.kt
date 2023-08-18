@@ -1,4 +1,4 @@
-package com.example.testassignmentgitrepo.presentation
+package com.example.testassignmentgitrepo.util
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
