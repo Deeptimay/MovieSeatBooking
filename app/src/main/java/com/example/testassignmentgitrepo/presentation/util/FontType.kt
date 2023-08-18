@@ -1,4 +1,4 @@
-package com.example.testassignmentgitrepo.util
+package com.example.testassignmentgitrepo.presentation.util
 
 enum class FontType(private val fontType: Int) {
     ROBOTO_LIGHT(0),

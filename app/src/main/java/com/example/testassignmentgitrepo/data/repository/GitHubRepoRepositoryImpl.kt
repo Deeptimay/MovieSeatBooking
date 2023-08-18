@@ -1,16 +1,11 @@
 package com.example.testassignmentgitrepo.data.repository
 
-import android.util.Log
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.example.testassignmentgitrepo.data.mappers.RepoMapper
-import com.example.testassignmentgitrepo.domain.models.MappedRepo
 import com.example.testassignmentgitrepo.data.network.GithubApi
+import com.example.testassignmentgitrepo.domain.models.MappedRepo
 import com.example.testassignmentgitrepo.domain.repository.GitHubRepoRepository
-import com.example.testassignmentgitrepo.data.network.BaseResponse
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import com.example.testassignmentgitrepo.domain.util.NetworkResult
+import retrofit2.HttpException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,27 +16,35 @@ class GitHubRepoRepositoryImpl @Inject constructor(
 ) :
     GitHubRepoRepository {
 
-    override fun fetchAllTrendingGitHubRepo(query: String): Flow<PagingData<MappedRepo>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 10,
-                maxSize = 1000,
-                enablePlaceholders = false
-            ),
-            pagingSourceFactory = { GithubPagingSource(githubApi, query, repoMapper) }
-        ).flow
+    override suspend fun fetchAllTrendingGitHubRepo(query: String): NetworkResult<List<MappedRepo>> {
+        return try {
+            val response = githubApi.getTrendingRepoList(query, 1, 100)
+            if (response.isSuccessful) {
+                val mappedDetails = response.body()?.let { repoMapper.fromEntityList(it.repo) }
+                NetworkResult.ApiSuccess(mappedDetails!!)
+            } else {
+                NetworkResult.ApiError(code = response.code(), message = response.message())
+            }
+        } catch (e: HttpException) {
+            NetworkResult.ApiError(code = e.code(), message = e.message())
+        } catch (e: Throwable) {
+            NetworkResult.ApiException(e)
+        }
     }
 
-    override suspend fun getGitHubRepoDetails(repoId: String): Flow<BaseResponse<MappedRepo>> {
-        return flow {
-            emit(BaseResponse.Loading())
-            try {
-                val response = repoMapper.mapFromDomainModel(githubApi.getRepoDetails(repoId))
-                emit(BaseResponse.Success(true, "Success", response))
-                Log.d("TAG", response.toString())
-            } catch (exp: Exception) {
-                emit(BaseResponse.Error(false, "Error", null))
+    override suspend fun getGitHubRepoDetails(repoId: String): NetworkResult<MappedRepo> {
+        return try {
+            val response = githubApi.getRepoDetails(repoId)
+            if (response.isSuccessful) {
+                val mappedDetails = response.body()?.let { repoMapper.mapFromDomainModel(it) }
+                NetworkResult.ApiSuccess(mappedDetails!!)
+            } else {
+                NetworkResult.ApiError(code = response.code(), message = response.message())
             }
+        } catch (e: HttpException) {
+            NetworkResult.ApiError(code = e.code(), message = e.message())
+        } catch (e: Throwable) {
+            NetworkResult.ApiException(e)
         }
     }
 }

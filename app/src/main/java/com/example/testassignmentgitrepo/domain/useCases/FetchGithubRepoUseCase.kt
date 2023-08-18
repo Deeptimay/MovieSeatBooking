@@ -1,9 +1,8 @@
 package com.example.testassignmentgitrepo.domain.useCases
 
-import androidx.paging.PagingData
 import com.example.testassignmentgitrepo.domain.models.MappedRepo
-import kotlinx.coroutines.flow.Flow
+import com.example.testassignmentgitrepo.domain.util.NetworkResult
 
 interface FetchGithubRepoUseCase {
-    fun execute(query: String): Flow<PagingData<MappedRepo>>
+    suspend fun execute(query: String): NetworkResult<List<MappedRepo>>
 }

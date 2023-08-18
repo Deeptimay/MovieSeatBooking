@@ -10,18 +10,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.paging.LoadState
 import com.example.testassignmentgitrepo.R
 import com.example.testassignmentgitrepo.databinding.FragmentTrendingRepositoryBinding
+import com.example.testassignmentgitrepo.domain.models.MappedRepo
 import com.example.testassignmentgitrepo.presentation.adapters.ReposAdapter
-import com.example.testassignmentgitrepo.presentation.adapters.ReposLoadStateAdapter
-import com.example.testassignmentgitrepo.util.hide
-import com.example.testassignmentgitrepo.util.show
+import com.example.testassignmentgitrepo.presentation.homeScreen.ReposViewModel.Companion.SELECTED_REPO_ITEM
+import com.example.testassignmentgitrepo.presentation.util.UiState
+import com.example.testassignmentgitrepo.presentation.util.hide
+import com.example.testassignmentgitrepo.presentation.util.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TrendingRepoFragment : Fragment(), ReposAdapter.OnItemClickListener {
+class TrendingRepoFragment : Fragment(), ReposAdapter.RepoClickListener {
 
     private var _binding: FragmentTrendingRepositoryBinding? = null
 
@@ -40,59 +41,38 @@ class TrendingRepoFragment : Fragment(), ReposAdapter.OnItemClickListener {
     ): View {
         _binding = FragmentTrendingRepositoryBinding.inflate(inflater, container, false)
 
-        displayLoadingState()
-        setupAdapter()
-
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                reposViewModel.repoListStateFlowData().collect { pagingData ->
-                    reposAdapter.submitData(this@TrendingRepoFragment.lifecycle, pagingData)
+                reposViewModel.repoListStateFlowData().collect { uiState ->
+                    when (uiState) {
+                        is UiState.Loading -> {
+                            displayLoadingState()
+                        }
+
+                        is UiState.Error -> {
+                            displayErrorState()
+                        }
+
+                        is UiState.Success<*> -> {
+                            hideLoadingState()
+                            val mappedRepoList = uiState.content as? List<MappedRepo>
+                            mappedRepoList?.let { setupAdapter(it) }
+                        }
+                    }
                 }
             }
         }
 
+        reposViewModel.getRepoList()
         return binding.root
     }
 
 
-    private fun setupAdapter() {
-
-        reposAdapter = ReposAdapter(this)
+    private fun setupAdapter(mappedRepos: List<MappedRepo>) {
+        reposAdapter = ReposAdapter(this, mappedRepos)
         binding.apply {
             binding.rvRepository.apply {
-                setHasFixedSize(true)
-                itemAnimator = null
-                this.adapter = reposAdapter.withLoadStateHeaderAndFooter(
-                    header = ReposLoadStateAdapter { reposAdapter.retry() },
-                    footer = ReposLoadStateAdapter { reposAdapter.retry() }
-                )
-                postponeEnterTransition()
-                viewTreeObserver.addOnPreDrawListener {
-                    startPostponedEnterTransition()
-                    true
-                }
-            }
-
-            binding.layoutError.lookUpButton.setOnClickListener {
-                reposAdapter.retry()
-            }
-        }
-
-        reposAdapter.addLoadStateListener { loadState ->
-            binding.apply {
-                when (loadState.source.refresh) {
-                    is LoadState.Loading -> {
-                        displayLoadingState()
-                    }
-
-                    is LoadState.NotLoading -> {
-                        hideLoadingState()
-                    }
-
-                    is LoadState.Error -> {
-                        displayErrorState()
-                    }
-                }
+                this.adapter = reposAdapter
             }
         }
     }
@@ -118,7 +98,7 @@ class TrendingRepoFragment : Fragment(), ReposAdapter.OnItemClickListener {
         binding.loadingLayout.containerShimmer.stopShimmer()
     }
 
-    override fun onItemClicked(repoId: String) {
+    override fun onRepoClicked(repoId: String) {
         val bundle = Bundle().apply {
             putString(SELECTED_REPO_ITEM, repoId)
         }

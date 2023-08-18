@@ -3,16 +3,16 @@ package com.deeptimay.trendinggithubrepos.widget
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatTextView
 import com.example.testassignmentgitrepo.R
-import com.example.testassignmentgitrepo.util.FontType
-import com.example.testassignmentgitrepo.util.getTypeface
-import com.google.android.material.button.MaterialButton
+import com.example.testassignmentgitrepo.presentation.util.FontType
+import com.example.testassignmentgitrepo.presentation.util.getTypeface
 
-class CustomButton @JvmOverloads constructor(
+class CustomTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : MaterialButton(context, attrs, defStyleAttr) {
+) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     init {
         if (attrs != null) {

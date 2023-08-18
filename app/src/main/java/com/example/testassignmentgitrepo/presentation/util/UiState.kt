@@ -1,4 +1,4 @@
-package com.example.testassignmentgitrepo.util
+package com.example.testassignmentgitrepo.presentation.util
 
 sealed interface UiState {
     object Loading : UiState

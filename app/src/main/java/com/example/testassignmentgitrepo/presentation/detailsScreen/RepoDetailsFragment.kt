@@ -19,11 +19,11 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.testassignmentgitrepo.databinding.FragmentRepositoryDetailsBinding
 import com.example.testassignmentgitrepo.domain.models.MappedRepo
-import com.example.testassignmentgitrepo.presentation.homeScreen.SELECTED_REPO_ITEM
-import com.example.testassignmentgitrepo.util.DateUtility
-import com.example.testassignmentgitrepo.util.UiState
-import com.example.testassignmentgitrepo.util.hide
-import com.example.testassignmentgitrepo.util.show
+import com.example.testassignmentgitrepo.presentation.util.UiState
+import com.example.testassignmentgitrepo.presentation.homeScreen.ReposViewModel.Companion.SELECTED_REPO_ITEM
+import com.example.testassignmentgitrepo.presentation.util.DateUtility
+import com.example.testassignmentgitrepo.presentation.util.hide
+import com.example.testassignmentgitrepo.presentation.util.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

@@ -1,12 +1,10 @@
 package com.example.testassignmentgitrepo.domain.repository
 
-import androidx.paging.PagingData
 import com.example.testassignmentgitrepo.domain.models.MappedRepo
-import com.example.testassignmentgitrepo.data.network.BaseResponse
-import kotlinx.coroutines.flow.Flow
+import com.example.testassignmentgitrepo.domain.util.NetworkResult
 
 
 interface GitHubRepoRepository {
-    fun fetchAllTrendingGitHubRepo(query: String): Flow<PagingData<MappedRepo>>
-    suspend fun getGitHubRepoDetails(repoId: String): Flow<BaseResponse<MappedRepo>>
+    suspend fun fetchAllTrendingGitHubRepo(query: String): NetworkResult<List<MappedRepo>>
+    suspend fun getGitHubRepoDetails(repoId: String): NetworkResult<MappedRepo>
 }

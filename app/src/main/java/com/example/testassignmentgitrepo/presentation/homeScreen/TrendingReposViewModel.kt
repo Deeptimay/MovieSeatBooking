@@ -2,27 +2,43 @@ package com.example.testassignmentgitrepo.presentation.homeScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.example.testassignmentgitrepo.domain.models.MappedRepo
 import com.example.testassignmentgitrepo.domain.useCases.FetchGithubRepoUseCase
+import com.example.testassignmentgitrepo.domain.util.NetworkResult
+import com.example.testassignmentgitrepo.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-const val SELECTED_REPO_ITEM = "selected_repo_item"
 
 @HiltViewModel
 class ReposViewModel @Inject constructor(
     private val fetchGithubRepoUseCase: FetchGithubRepoUseCase,
 ) : ViewModel() {
 
-    fun repoListStateFlowData() = repos
+    private val _repoFlow = MutableStateFlow<UiState>(UiState.Loading)
+    val repoFlow: StateFlow<UiState> = _repoFlow.asStateFlow()
 
-    private val repos: Flow<PagingData<MappedRepo>> =
-        fetchGithubRepoUseCase.execute(DEFAULT_QUERY).cachedIn(viewModelScope)
+    fun repoListStateFlowData() = repoFlow
+
+    fun getRepoList() {
+        viewModelScope.launch {
+            val response = fetchGithubRepoUseCase.execute(DEFAULT_QUERY)
+            _repoFlow.update {
+                when (response) {
+                    is NetworkResult.ApiError -> UiState.Error()
+                    is NetworkResult.ApiException -> UiState.Error()
+                    is NetworkResult.ApiSuccess -> UiState.Success(response.data)
+                }
+            }
+        }
+    }
 
     companion object {
         private const val DEFAULT_QUERY = "Q"
+        const val SELECTED_REPO_ITEM = "selected_repo_item"
     }
 }

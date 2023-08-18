@@ -2,9 +2,9 @@ package com.example.testassignmentgitrepo.presentation.detailsScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.testassignmentgitrepo.data.network.BaseResponse
 import com.example.testassignmentgitrepo.domain.useCases.GetGithubRepoDetailsUseCase
-import com.example.testassignmentgitrepo.util.UiState
+import com.example.testassignmentgitrepo.domain.util.NetworkResult
+import com.example.testassignmentgitrepo.presentation.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,16 +29,14 @@ class RepoDetailsViewModel @Inject constructor(
     fun getRepoDetails(repoId: String) {
         this.repoId = repoId
         viewModelScope.launch {
-            getGithubRepoDetailsUseCase.execute(repoId)
-                .collect { result ->
-                    _repoDetailsFlow.update {
-                        when (result) {
-                            is BaseResponse.Loading -> UiState.Loading
-                            is BaseResponse.Success -> UiState.Success(result.data!!)
-                            is BaseResponse.Error -> UiState.Error()
-                        }
-                    }
+            val response = getGithubRepoDetailsUseCase.execute(repoId)
+            _repoDetailsFlow.update {
+                when (response) {
+                    is NetworkResult.ApiError -> UiState.Error()
+                    is NetworkResult.ApiException -> UiState.Error()
+                    is NetworkResult.ApiSuccess -> UiState.Success(response.data)
                 }
+            }
         }
     }
 }

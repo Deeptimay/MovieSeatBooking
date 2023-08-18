@@ -1,6 +1,6 @@
 @file:JvmName("FontCache")
 
-package com.example.testassignmentgitrepo.util
+package com.example.testassignmentgitrepo.presentation.util
 
 import android.content.Context
 import android.graphics.Typeface
