@@ -27,7 +27,7 @@ class RepoDetailsViewModel @Inject constructor(
     fun getRepoDetails(repoId: String) {
         this.repoId = repoId
         viewModelScope.launch {
-            val response = getGithubRepoDetailsUseCase.execute(repoId)
+            val response = getGithubRepoDetailsUseCase(repoId)
             _repoDetailsFlow.update {
                 when (response) {
                     is NetworkResult.ApiError -> UiState.Error()

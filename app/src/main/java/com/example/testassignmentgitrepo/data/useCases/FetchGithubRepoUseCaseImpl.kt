@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Singleton
 internal class FetchGithubRepoUseCaseImpl @Inject constructor(private val gitHubRepoRepository: GitHubRepoRepository) :
     FetchGithubRepoUseCase {
-    override suspend fun execute(query: String): NetworkResult<List<MappedRepo>> {
+    override suspend operator fun invoke(query: String): NetworkResult<List<MappedRepo>> {
         return gitHubRepoRepository.fetchAllTrendingGitHubRepo(query)
     }
 }

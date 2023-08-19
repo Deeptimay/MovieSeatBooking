@@ -24,7 +24,7 @@ class ReposViewModel @Inject constructor(
 
     fun getRepoList() {
         viewModelScope.launch {
-            val response = fetchGithubRepoUseCase.execute(DEFAULT_QUERY)
+            val response = fetchGithubRepoUseCase(DEFAULT_QUERY)
             _repoFlow.update {
                 when (response) {
                     is NetworkResult.ApiError -> UiState.Error()

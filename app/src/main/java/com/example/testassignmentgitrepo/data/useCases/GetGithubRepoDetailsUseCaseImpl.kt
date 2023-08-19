@@ -12,7 +12,7 @@ internal class GetGithubRepoDetailsUseCaseImpl @Inject constructor(
     private val gitHubRepoRepository: GitHubRepoRepository
 ) :
     GetGithubRepoDetailsUseCase {
-    override suspend fun execute(repoId: String): NetworkResult<MappedRepo> {
+    override suspend operator fun invoke(repoId: String): NetworkResult<MappedRepo> {
         return gitHubRepoRepository.getGitHubRepoDetails(repoId)
     }
 }
