@@ -24,8 +24,6 @@ class RepoDetailsViewModel @Inject constructor(
 
     internal lateinit var repoId: String
 
-    fun repoDetailsStateFlowData() = repoDetailsFlow
-
     fun getRepoDetails(repoId: String) {
         this.repoId = repoId
         viewModelScope.launch {

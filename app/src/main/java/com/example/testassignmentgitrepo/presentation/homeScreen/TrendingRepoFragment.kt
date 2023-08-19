@@ -41,7 +41,7 @@ class TrendingRepoFragment : Fragment(), ReposAdapter.RepoClickListener {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                reposViewModel.repoListStateFlowData().collect { uiState ->
+                reposViewModel.repoFlow.collect { uiState ->
                     when (uiState) {
                         is UiState.Loading -> {
                             displayLoadingState()

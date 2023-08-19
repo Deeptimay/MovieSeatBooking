@@ -60,7 +60,7 @@ class RepoDetailsFragment : Fragment() {
     private fun observeState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                repoDetailsViewModel.repoDetailsStateFlowData().collect { uiState ->
+                repoDetailsViewModel.repoDetailsFlow.collect { uiState ->
                     when (uiState) {
                         is UiState.Loading -> {
                             displayLoadingState()

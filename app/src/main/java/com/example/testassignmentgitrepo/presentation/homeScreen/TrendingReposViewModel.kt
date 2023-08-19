@@ -22,8 +22,6 @@ class ReposViewModel @Inject constructor(
     private val _repoFlow = MutableStateFlow<UiState>(UiState.Loading)
     val repoFlow: StateFlow<UiState> = _repoFlow.asStateFlow()
 
-    fun repoListStateFlowData() = repoFlow
-
     fun getRepoList() {
         viewModelScope.launch {
             val response = fetchGithubRepoUseCase.execute(DEFAULT_QUERY)
