@@ -15,7 +15,7 @@ import com.example.testassignmentgitrepo.domain.models.MappedRepo
 
 
 class ReposAdapter(
-    private val repoClickListener: RepoClickListener,
+    private val repoClickListener: (String) -> Unit,
     private val repoList: List<MappedRepo>
 ) :
     RecyclerView.Adapter<ReposAdapter.RepoListViewHolder>() {
@@ -65,7 +65,7 @@ class ReposAdapter(
                 )
 
                 repoListViewHolder.itemView.setOnClickListener {
-                    repoClickListener.onRepoClicked(this.id.toString())
+                    repoClickListener(this.id.toString())
                 }
             }
         }
@@ -73,8 +73,4 @@ class ReposAdapter(
 
     inner class RepoListViewHolder(val binding: ItemTrendingRepoBinding) :
         RecyclerView.ViewHolder(binding.root)
-
-    interface RepoClickListener {
-        fun onRepoClicked(repoId: String)
-    }
 }

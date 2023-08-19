@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TrendingRepoFragment : Fragment(), ReposAdapter.RepoClickListener {
+class TrendingRepoFragment : Fragment(), (String) -> Unit {
 
     private var _fragmentTrendingRepositoryBinding: FragmentTrendingRepositoryBinding? = null
     private val fragmentTrendingRepositoryBinding get() = _fragmentTrendingRepositoryBinding!!
@@ -93,7 +93,7 @@ class TrendingRepoFragment : Fragment(), ReposAdapter.RepoClickListener {
         fragmentTrendingRepositoryBinding.loadingLayout.clDetailsLoading.hide()
     }
 
-    override fun onRepoClicked(repoId: String) {
+    override fun invoke(repoId: String) {
         val bundle = Bundle().apply {
             putString(SELECTED_REPO_ITEM, repoId)
         }
