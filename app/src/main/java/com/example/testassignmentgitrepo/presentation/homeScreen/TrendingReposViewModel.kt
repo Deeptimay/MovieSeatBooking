@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testassignmentgitrepo.domain.useCases.FetchGithubRepoUseCase
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
-import com.example.testassignmentgitrepo.presentation.util.UiState
+import com.example.testassignmentgitrepo.presentation.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

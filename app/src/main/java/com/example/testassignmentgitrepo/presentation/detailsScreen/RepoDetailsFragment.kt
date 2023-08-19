@@ -21,7 +21,7 @@ import com.example.testassignmentgitrepo.databinding.FragmentRepositoryDetailsBi
 import com.example.testassignmentgitrepo.domain.models.MappedRepo
 import com.example.testassignmentgitrepo.presentation.homeScreen.ReposViewModel.Companion.SELECTED_REPO_ITEM
 import com.example.testassignmentgitrepo.presentation.util.DateUtility
-import com.example.testassignmentgitrepo.presentation.util.UiState
+import com.example.testassignmentgitrepo.presentation.ui.UiState
 import com.example.testassignmentgitrepo.presentation.util.hide
 import com.example.testassignmentgitrepo.presentation.util.show
 import dagger.hilt.android.AndroidEntryPoint
