@@ -1,7 +1,7 @@
 package com.example.testassignmentgitrepo.data.network
 
-import com.example.testassignmentgitrepo.domain.models.Repo
-import com.example.testassignmentgitrepo.domain.models.TrendingRepoResponse
+import com.example.testassignmentgitrepo.data.models.Repo
+import com.example.testassignmentgitrepo.data.models.TrendingRepoResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers

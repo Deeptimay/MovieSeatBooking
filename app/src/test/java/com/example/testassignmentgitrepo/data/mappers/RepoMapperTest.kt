@@ -19,18 +19,18 @@ class RepoMapperTest {
     @Test
     fun `mapToDataModel returns expected Repo`() {
         val mappedRepo = MappedRepo(
-            1,
-            "Repo Name",
-            Owner(),
-            "Description",
-            "2023-08-18T12:00:00Z",
-            "2023-08-18T13:00:00Z",
-            "2023-08-18T14:00:00Z",
-            100,
-            "Kotlin",
-            50,
-            "git://github.com/repo.git",
-            "https://github.com/repo.git"
+            id = 1,
+            name = "Repo Name",
+            owner = Owner(),
+            description = "Description",
+            createdAt = "2023-08-18T12:00:00Z",
+            updatedAt = "2023-08-18T13:00:00Z",
+            pushedAt = "2023-08-18T14:00:00Z",
+            stargazersCount = 100,
+            language = "Kotlin",
+            forksCount = 50,
+            gitUrl = "git://github.com/repo.git",
+            cloneUrl = "https://github.com/repo.git"
         )
 
         val repo = repoMapper.mapToDataModel(mappedRepo)
@@ -52,18 +52,18 @@ class RepoMapperTest {
     @Test
     fun `mapFromDataModel returns expected MappedRepo`() {
         val repo = Repo(
-            1,
-            "Repo Name",
-            "Owner",
-            "Description",
-            Owner(),
-            false,
-            "git://github.com/repo.git",
-            "Test Test",
-            true,
-            "git://github.com/repo.git",
-            "git://github.com/repo.git",
-            "2023-08-18T14:00:00Z"
+            id = 1,
+            name = "Repo Name",
+            owner = Owner(),
+            description = "Description",
+            createdAt = "2023-08-18T12:00:00Z",
+            updatedAt = "2023-08-18T13:00:00Z",
+            pushedAt = "2023-08-18T14:00:00Z",
+            stargazersCount = 100,
+            language = "Kotlin",
+            forksCount = 50,
+            gitUrl = "git://github.com/repo.git",
+            cloneUrl = "https://github.com/repo.git"
         )
 
         val mappedRepo = repoMapper.mapFromDataModel(repo)

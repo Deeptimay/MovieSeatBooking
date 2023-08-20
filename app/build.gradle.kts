@@ -119,4 +119,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
     testImplementation("com.jakewharton.timber:timber:5.0.1")
     testImplementation("app.cash.turbine:turbine:0.12.1")
+    testImplementation("org.mockito:mockito-inline:3.9.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+
 }

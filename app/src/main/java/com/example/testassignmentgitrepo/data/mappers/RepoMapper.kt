@@ -6,7 +6,20 @@ import javax.inject.Inject
 
 class RepoMapper @Inject constructor() : DataMapper<MappedRepo, Repo> {
     override fun mapToDataModel(model: MappedRepo): Repo {
-        return Repo()
+        return Repo(
+            id = model.id,
+            name = model.name,
+            owner = model.owner,
+            description = model.description,
+            createdAt = model.createdAt,
+            updatedAt = model.updatedAt,
+            pushedAt = model.pushedAt,
+            stargazersCount = model.stargazersCount,
+            language = model.language,
+            forksCount = model.forksCount,
+            gitUrl = model.gitUrl,
+            cloneUrl = model.cloneUrl
+        )
     }
 
     override fun mapFromDataModel(dataModel: Repo): MappedRepo {
