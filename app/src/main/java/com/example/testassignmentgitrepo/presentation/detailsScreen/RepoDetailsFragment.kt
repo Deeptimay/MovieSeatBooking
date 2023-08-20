@@ -18,7 +18,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.testassignmentgitrepo.databinding.FragmentRepositoryDetailsBinding
-import com.example.testassignmentgitrepo.domain.models.MappedRepo
+import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.presentation.homeScreen.ReposViewModel.Companion.SELECTED_REPO_ITEM
 import com.example.testassignmentgitrepo.presentation.util.DateUtility
 import com.example.testassignmentgitrepo.presentation.ui.UiState

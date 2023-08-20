@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.testassignmentgitrepo.databinding.ItemTrendingRepoBinding
-import com.example.testassignmentgitrepo.domain.models.MappedRepo
+import com.example.testassignmentgitrepo.data.models.MappedRepo
 
 
 class ReposAdapter(

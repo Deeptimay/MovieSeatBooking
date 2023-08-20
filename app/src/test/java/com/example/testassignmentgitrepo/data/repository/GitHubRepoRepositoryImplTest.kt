@@ -2,9 +2,9 @@ package com.example.testassignmentgitrepo.data.repository
 
 import com.example.testassignmentgitrepo.data.mappers.RepoMapper
 import com.example.testassignmentgitrepo.data.network.GithubApi
-import com.example.testassignmentgitrepo.domain.models.MappedRepo
-import com.example.testassignmentgitrepo.domain.models.Repo
-import com.example.testassignmentgitrepo.domain.models.TrendingRepoResponse
+import com.example.testassignmentgitrepo.data.models.MappedRepo
+import com.example.testassignmentgitrepo.data.models.Repo
+import com.example.testassignmentgitrepo.data.models.TrendingRepoResponse
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import com.example.testassignmentgitrepo.util.MainDispatcherRule
 import kotlinx.coroutines.runBlocking

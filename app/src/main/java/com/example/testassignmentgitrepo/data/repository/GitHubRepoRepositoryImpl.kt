@@ -2,8 +2,8 @@ package com.example.testassignmentgitrepo.data.repository
 
 import com.example.testassignmentgitrepo.data.mappers.RepoMapper
 import com.example.testassignmentgitrepo.data.network.GithubApi
-import com.example.testassignmentgitrepo.domain.models.MappedRepo
-import com.example.testassignmentgitrepo.domain.repository.GitHubRepoRepository
+import com.example.testassignmentgitrepo.data.models.MappedRepo
+import com.example.testassignmentgitrepo.domain.repositoryAbstraction.GitHubRepoRepository
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import retrofit2.HttpException
 import javax.inject.Inject

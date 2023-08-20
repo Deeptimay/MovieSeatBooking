@@ -1,10 +1,10 @@
 package com.example.testassignmentgitrepo.presentation.detailsScreen
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.testassignmentgitrepo.domain.models.MappedRepo
-import com.example.testassignmentgitrepo.domain.useCases.GetGithubRepoDetailsUseCase
+import com.example.testassignmentgitrepo.data.models.MappedRepo
+import com.example.testassignmentgitrepo.domain.useCaseAbstraction.GetGithubRepoDetailsUseCase
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
-import com.example.testassignmentgitrepo.presentation.util.UiState
+import com.example.testassignmentgitrepo.presentation.ui.UiState
 import org.junit.Assert.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -53,7 +53,7 @@ class RepoDetailsViewModelTest {
             // Given a repoId and a successful response
             val mockData = UiState.Success(MappedRepo(1, "Repo Name"))
             val mockResponse = NetworkResult.ApiSuccess(MappedRepo(1, "Repo Name"))
-            Mockito.`when`(mockUseCase.execute(REPO_ID)).thenReturn(mockResponse)
+            Mockito.`when`(mockUseCase(REPO_ID)).thenReturn(mockResponse)
 
             viewModel.getRepoDetails(REPO_ID)
             delay(100)
@@ -73,7 +73,7 @@ class RepoDetailsViewModelTest {
         runTest {
             // Given a repoId and an error response
             val mockResponse = NetworkResult.ApiError<MappedRepo>(404, "Not found")
-            Mockito.`when`(mockUseCase.execute(REPO_ID)).thenReturn(mockResponse)
+            Mockito.`when`(mockUseCase(REPO_ID)).thenReturn(mockResponse)
 
             // When calling getRepoDetails
             viewModel.getRepoDetails(REPO_ID)
@@ -90,7 +90,7 @@ class RepoDetailsViewModelTest {
             // Given a repoId and an exception response
             val mockResponse =
                 NetworkResult.ApiException<MappedRepo>(RuntimeException("Test exception"))
-            Mockito.`when`(mockUseCase.execute(REPO_ID)).thenReturn(mockResponse)
+            Mockito.`when`(mockUseCase(REPO_ID)).thenReturn(mockResponse)
 
             // When calling getRepoDetails
             viewModel.getRepoDetails(REPO_ID)

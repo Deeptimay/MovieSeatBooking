@@ -1,6 +1,6 @@
-package com.example.testassignmentgitrepo.domain.useCases
+package com.example.testassignmentgitrepo.domain.useCaseAbstraction
 
-import com.example.testassignmentgitrepo.domain.models.MappedRepo
+import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 
 interface FetchGithubRepoUseCase {

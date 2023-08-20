@@ -1,10 +1,10 @@
 package com.example.testassignmentgitrepo.presentation.homeScreen
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.testassignmentgitrepo.domain.models.MappedRepo
-import com.example.testassignmentgitrepo.domain.useCases.FetchGithubRepoUseCase
+import com.example.testassignmentgitrepo.data.models.MappedRepo
+import com.example.testassignmentgitrepo.domain.useCaseAbstraction.FetchGithubRepoUseCase
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
-import com.example.testassignmentgitrepo.presentation.util.UiState
+import com.example.testassignmentgitrepo.presentation.ui.UiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -51,7 +51,7 @@ class ReposViewModelTest {
     @Test
     fun `getRepoList success`() = runTest {
         val responseMock = NetworkResult.ApiSuccess(listOf(MappedRepo(1, "Repo Name")))
-        `when`(mockFetchGithubRepoUseCase.execute(DEFAULT_QUERY)).thenReturn(responseMock)
+        `when`(mockFetchGithubRepoUseCase(DEFAULT_QUERY)).thenReturn(responseMock)
 
         viewModel.getRepoList()
         delay(100)
@@ -63,7 +63,7 @@ class ReposViewModelTest {
     @Test
     fun `getRepoList API error`() = runTest {
         val responseMock = NetworkResult.ApiError<List<MappedRepo>>(404, "Not Found")
-        `when`(mockFetchGithubRepoUseCase.execute(DEFAULT_QUERY)).thenReturn(responseMock)
+        `when`(mockFetchGithubRepoUseCase(DEFAULT_QUERY)).thenReturn(responseMock)
 
         viewModel.getRepoList()
         delay(100)
@@ -77,7 +77,7 @@ class ReposViewModelTest {
     fun `getRepoList API exception`() = runTest {
         val responseMock =
             NetworkResult.ApiException<List<MappedRepo>>(Exception("Network exception"))
-        `when`(mockFetchGithubRepoUseCase.execute(DEFAULT_QUERY)).thenReturn(responseMock)
+        `when`(mockFetchGithubRepoUseCase(DEFAULT_QUERY)).thenReturn(responseMock)
 
         viewModel.getRepoList()
         delay(100)

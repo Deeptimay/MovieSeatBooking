@@ -1,8 +1,8 @@
 package com.example.testassignmentgitrepo.data.mappers
 
-import com.example.testassignmentgitrepo.domain.models.MappedRepo
-import com.example.testassignmentgitrepo.domain.models.Owner
-import com.example.testassignmentgitrepo.domain.models.Repo
+import com.example.testassignmentgitrepo.data.models.MappedRepo
+import com.example.testassignmentgitrepo.data.models.Owner
+import com.example.testassignmentgitrepo.data.models.Repo
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

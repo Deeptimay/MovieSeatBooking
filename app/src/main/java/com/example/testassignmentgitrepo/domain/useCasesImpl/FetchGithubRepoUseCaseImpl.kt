@@ -1,8 +1,8 @@
-package com.example.testassignmentgitrepo.data.useCases
+package com.example.testassignmentgitrepo.domain.useCasesImpl
 
-import com.example.testassignmentgitrepo.domain.models.MappedRepo
-import com.example.testassignmentgitrepo.domain.repository.GitHubRepoRepository
-import com.example.testassignmentgitrepo.domain.useCases.FetchGithubRepoUseCase
+import com.example.testassignmentgitrepo.data.models.MappedRepo
+import com.example.testassignmentgitrepo.domain.repositoryAbstraction.GitHubRepoRepository
+import com.example.testassignmentgitrepo.domain.useCaseAbstraction.FetchGithubRepoUseCase
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import javax.inject.Inject
 import javax.inject.Singleton

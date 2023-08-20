@@ -1,7 +1,7 @@
 package com.example.testassignmentgitrepo.data.mappers
 
-import com.example.testassignmentgitrepo.domain.models.MappedRepo
-import com.example.testassignmentgitrepo.domain.models.Repo
+import com.example.testassignmentgitrepo.data.models.MappedRepo
+import com.example.testassignmentgitrepo.data.models.Repo
 import javax.inject.Inject
 
 class RepoMapper @Inject constructor() : DataMapper<MappedRepo, Repo> {

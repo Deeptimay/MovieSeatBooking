@@ -1,7 +1,8 @@
 package com.example.testassignmentgitrepo.data.useCases
 
-import com.example.testassignmentgitrepo.domain.models.MappedRepo
-import com.example.testassignmentgitrepo.domain.repository.GitHubRepoRepository
+import com.example.testassignmentgitrepo.data.models.MappedRepo
+import com.example.testassignmentgitrepo.domain.repositoryAbstraction.GitHubRepoRepository
+import com.example.testassignmentgitrepo.domain.useCasesImpl.GetGithubRepoDetailsUseCaseImpl
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -30,7 +31,7 @@ class GetGithubRepoDetailsUseCaseImplTest {
         val expectedResult = NetworkResult.ApiSuccess(MappedRepo(1, "Repo Name"))
         `when`(mockGitHubRepoRepository.getGitHubRepoDetails(repoId)).thenReturn(expectedResult)
 
-        val actualResult = useCase.execute(repoId)
+        val actualResult = useCase(repoId)
 
         assertEquals(expectedResult, actualResult)
     }
@@ -41,7 +42,7 @@ class GetGithubRepoDetailsUseCaseImplTest {
         val expectedResult = NetworkResult.ApiError<MappedRepo>(404, "Not Found")
         `when`(mockGitHubRepoRepository.getGitHubRepoDetails(repoId)).thenReturn(expectedResult)
 
-        val actualResult = useCase.execute(repoId)
+        val actualResult = useCase(repoId)
 
         assertEquals(expectedResult, actualResult)
     }
@@ -52,7 +53,7 @@ class GetGithubRepoDetailsUseCaseImplTest {
         val expectedResult = NetworkResult.ApiException<MappedRepo>(Exception("Network exception"))
         `when`(mockGitHubRepoRepository.getGitHubRepoDetails(repoId)).thenReturn(expectedResult)
 
-        val actualResult = useCase.execute(repoId)
+        val actualResult = useCase(repoId)
 
         assertEquals(expectedResult, actualResult)
     }

@@ -2,7 +2,7 @@ package com.example.testassignmentgitrepo.presentation.detailsScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.testassignmentgitrepo.domain.useCases.GetGithubRepoDetailsUseCase
+import com.example.testassignmentgitrepo.domain.useCaseAbstraction.GetGithubRepoDetailsUseCase
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import com.example.testassignmentgitrepo.presentation.ui.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
