@@ -6,7 +6,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -20,9 +19,6 @@ class HttpClientTest {
 
     @Test
     fun `test setupOkhttpClient`() {
-        // Configure the HttpLoggingInterceptor mock behavior
-        `when`(mockHttpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY))
-            .thenReturn(mockHttpLoggingInterceptor)
 
         // Call the method being tested
         val okHttpClient = httpClient.setupOkhttpClient(mockHttpLoggingInterceptor)

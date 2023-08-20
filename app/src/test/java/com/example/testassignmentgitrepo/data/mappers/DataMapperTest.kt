@@ -3,11 +3,17 @@ package com.example.testassignmentgitrepo.data.mappers
 import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.data.models.Repo
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 
 class DataMapperTest {
 
-    private val userDataMapper: DataMapper<Repo, MappedRepo> = RepoDataMapperImpl()
+    private lateinit var userDataMapper: DataMapper<Repo, MappedRepo>
+
+    @Before
+    fun setUp() {
+        userDataMapper = RepoDataMapperImpl()
+    }
 
     @Test
     fun `test mapToDataModel`() {

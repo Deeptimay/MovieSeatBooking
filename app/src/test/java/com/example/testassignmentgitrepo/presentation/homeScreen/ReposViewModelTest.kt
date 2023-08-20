@@ -5,15 +5,10 @@ import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.domain.useCaseAbstraction.FetchGithubRepoUseCase
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import com.example.testassignmentgitrepo.presentation.ui.UiState
-import kotlinx.coroutines.Dispatchers
+import com.example.testassignmentgitrepo.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -29,7 +24,8 @@ class ReposViewModelTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    private val testDispatcher: TestDispatcher = StandardTestDispatcher()
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     @Mock
     private lateinit var mockFetchGithubRepoUseCase: FetchGithubRepoUseCase
@@ -38,14 +34,8 @@ class ReposViewModelTest {
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(testDispatcher)
         MockitoAnnotations.openMocks(this)
         viewModel = ReposViewModel(mockFetchGithubRepoUseCase)
-    }
-
-    @After
-    fun teatDown() {
-        Dispatchers.resetMain()
     }
 
     @Test
