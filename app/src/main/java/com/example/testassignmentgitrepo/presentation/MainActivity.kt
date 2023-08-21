@@ -13,15 +13,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private var _activityLayoutMainBinding: ActivityLayoutMainBinding? = null
-    private val activityLayoutMainBinding get() = _activityLayoutMainBinding!!
+    private lateinit var activityLayoutMainBinding: ActivityLayoutMainBinding
 
     private lateinit var navController: NavController
     private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _activityLayoutMainBinding = ActivityLayoutMainBinding.inflate(layoutInflater)
+        activityLayoutMainBinding = ActivityLayoutMainBinding.inflate(layoutInflater)
         setContentView(activityLayoutMainBinding.root)
 
         setSupportActionBar(activityLayoutMainBinding.mainToolbar)

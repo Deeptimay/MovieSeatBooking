@@ -1,8 +1,8 @@
 package com.example.testassignmentgitrepo.data.repository
 
 import com.example.testassignmentgitrepo.data.mappers.RepoMapper
-import com.example.testassignmentgitrepo.data.network.GithubApi
 import com.example.testassignmentgitrepo.data.models.MappedRepo
+import com.example.testassignmentgitrepo.data.network.GithubApi
 import com.example.testassignmentgitrepo.domain.repositoryAbstraction.GitHubRepoRepository
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import retrofit2.HttpException
@@ -20,9 +20,14 @@ class GitHubRepoRepositoryImpl @Inject constructor(
         return try {
             val repoListResponse = githubApi.getTrendingRepoList(query, 1, 100)
             if (repoListResponse.isSuccessful) {
-                val mappedDetails =
+                val mappedRepoList =
                     repoListResponse.body()?.let { repoMapper.fromEntityList(it.repo) }
-                NetworkResult.ApiSuccess(mappedDetails!!)
+                mappedRepoList?.let { NetworkResult.ApiSuccess(it) } ?: kotlin.run {
+                    NetworkResult.ApiError(
+                        code = repoListResponse.code(),
+                        message = "data mapping error " + repoListResponse.body()
+                    )
+                }
             } else {
                 NetworkResult.ApiError(
                     code = repoListResponse.code(),
@@ -42,7 +47,12 @@ class GitHubRepoRepositoryImpl @Inject constructor(
             if (repoDetailResponse.isSuccessful) {
                 val mappedDetails =
                     repoDetailResponse.body()?.let { repoMapper.mapFromDataModel(it) }
-                NetworkResult.ApiSuccess(mappedDetails!!)
+                mappedDetails?.let { NetworkResult.ApiSuccess(it) } ?: kotlin.run {
+                    NetworkResult.ApiError(
+                        code = repoDetailResponse.code(),
+                        message = "data mapping error " + repoDetailResponse.body()
+                    )
+                }
             } else {
                 NetworkResult.ApiError(
                     code = repoDetailResponse.code(),

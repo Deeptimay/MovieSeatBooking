@@ -18,7 +18,7 @@ fun getTypeface(fontName: String, fontId: Int, context: Context): Typeface? {
             return null
         }
 
-        APP_FONT_CACHE[fontName] = typeface!!
+        typeface?.let { APP_FONT_CACHE[fontName] = it }
     }
 
     return typeface

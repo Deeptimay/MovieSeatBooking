@@ -31,8 +31,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class RepoDetailsFragment : Fragment() {
 
-    private var _fragmentRepositoryDetailsBinding: FragmentRepositoryDetailsBinding? = null
-    private val fragmentRepositoryDetailsBinding get() = _fragmentRepositoryDetailsBinding!!
+    private lateinit var fragmentRepositoryDetailsBinding: FragmentRepositoryDetailsBinding
 
     private val repoDetailsViewModel: RepoDetailsViewModel by lazy {
         ViewModelProvider(this)[RepoDetailsViewModel::class.java]
@@ -41,7 +40,7 @@ class RepoDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _fragmentRepositoryDetailsBinding =
+        fragmentRepositoryDetailsBinding =
             FragmentRepositoryDetailsBinding.inflate(inflater, container, false)
 
         observeState()

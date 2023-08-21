@@ -24,8 +24,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class TrendingRepoFragment : Fragment() {
 
-    private var _fragmentTrendingRepositoryBinding: FragmentTrendingRepositoryBinding? = null
-    private val fragmentTrendingRepositoryBinding get() = _fragmentTrendingRepositoryBinding!!
+    private lateinit var fragmentTrendingRepositoryBinding: FragmentTrendingRepositoryBinding
 
     private val reposViewModel: ReposViewModel by lazy {
         ViewModelProvider(this)[ReposViewModel::class.java]
@@ -36,7 +35,7 @@ class TrendingRepoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _fragmentTrendingRepositoryBinding =
+        fragmentTrendingRepositoryBinding =
             FragmentTrendingRepositoryBinding.inflate(inflater, container, false)
 
         setupAdapter()
@@ -79,7 +78,7 @@ class TrendingRepoFragment : Fragment() {
                         }
 
                         is UiState.Success<*> -> {
-                            hideLoadingState()
+                            dataSuccessState()
                             val mappedRepoList = uiState.content as? List<MappedRepo>
                             mappedRepoList?.let {
                                 reposAdapter.submitList(it)
@@ -103,7 +102,7 @@ class TrendingRepoFragment : Fragment() {
         fragmentTrendingRepositoryBinding.loadingLayout.clDetailsLoading.show()
     }
 
-    private fun hideLoadingState() {
+    private fun dataSuccessState() {
         fragmentTrendingRepositoryBinding.layoutError.clErrorMain.hide()
         fragmentTrendingRepositoryBinding.rvRepository.show()
         fragmentTrendingRepositoryBinding.loadingLayout.clDetailsLoading.hide()
