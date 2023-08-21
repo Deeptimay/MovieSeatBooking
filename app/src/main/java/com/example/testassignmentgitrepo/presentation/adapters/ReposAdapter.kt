@@ -8,19 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.testassignmentgitrepo.databinding.ItemTrendingRepoBinding
 import com.example.testassignmentgitrepo.data.models.MappedRepo
+import com.example.testassignmentgitrepo.databinding.ItemTrendingRepoBinding
 
 
 class ReposAdapter(
-    private val repoClickListener: (String) -> Unit,
-    private val repoList: List<MappedRepo>
-) :
-    RecyclerView.Adapter<ReposAdapter.RepoListViewHolder>() {
-
-    override fun getItemCount() = repoList.size
+    private val repoClickListener: (String) -> Unit
+) : ListAdapter<MappedRepo, ReposAdapter.RepoListViewHolder>(RepoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoListViewHolder {
         val binding =
@@ -28,14 +26,21 @@ class ReposAdapter(
         return RepoListViewHolder(binding)
     }
 
-    override fun onBindViewHolder(repoListViewHolder: RepoListViewHolder, position: Int) {
-        with(repoListViewHolder) {
-            with(repoList[position]) {
+    override fun onBindViewHolder(holder: RepoListViewHolder, position: Int) {
+        val repo = getItem(position)
+        holder.bind(repo, repoClickListener)
+    }
+
+    inner class RepoListViewHolder(private val itemTrendingRepoBinding: ItemTrendingRepoBinding) :
+        RecyclerView.ViewHolder(itemTrendingRepoBinding.root) {
+
+        fun bind(repo: MappedRepo, repoClickListener: (String) -> Unit) {
+            with(repo) {
                 Glide.with(itemView)
                     .load(this.owner?.avatarUrl)
                     .centerCrop()
                     .error(android.R.drawable.stat_notify_error)
-                    .into(repoListViewHolder.binding.ivUserAvatar)
+                    .into(itemTrendingRepoBinding.ivUserAvatar)
 
                 val str = SpannableString((this.owner?.login ?: "") + " / " + this.name)
                 str.setSpan(
@@ -44,33 +49,40 @@ class ReposAdapter(
                     str.length,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
-                repoListViewHolder.binding.tvUsername.text = str
-                repoListViewHolder.binding.tvRepoDesc.text = this.description
+                itemTrendingRepoBinding.tvUsername.text = str
+                itemTrendingRepoBinding.tvRepoDesc.text = this.description
 
                 if (!this.language.isNullOrEmpty()) {
-                    repoListViewHolder.binding.tvRepoLang.text = this.language
-                    repoListViewHolder.binding.tvRepoLang.visibility = View.VISIBLE
-                    repoListViewHolder.binding.ivDot.visibility = View.VISIBLE
+                    itemTrendingRepoBinding.tvRepoLang.text = this.language
+                    itemTrendingRepoBinding.tvRepoLang.visibility = View.VISIBLE
+                    itemTrendingRepoBinding.ivDot.visibility = View.VISIBLE
                 } else {
-                    repoListViewHolder.binding.tvRepoLang.visibility = View.GONE
-                    repoListViewHolder.binding.ivDot.visibility = View.GONE
+                    itemTrendingRepoBinding.tvRepoLang.visibility = View.GONE
+                    itemTrendingRepoBinding.ivDot.visibility = View.GONE
                 }
 
-                repoListViewHolder.binding.tvRepoStars.text = this.stargazersCount.toString()
-                repoListViewHolder.binding.tvRepoFork.text = this.forksCount.toString()
+                itemTrendingRepoBinding.tvRepoStars.text = this.stargazersCount.toString()
+                itemTrendingRepoBinding.tvRepoFork.text = this.forksCount.toString()
 
                 ViewCompat.setTransitionName(
-                    repoListViewHolder.binding.ivUserAvatar,
+                    itemTrendingRepoBinding.ivUserAvatar,
                     "avatar_${this.id}"
                 )
 
-                repoListViewHolder.itemView.setOnClickListener {
+                itemTrendingRepoBinding.root.setOnClickListener {
                     repoClickListener(this.id.toString())
                 }
             }
         }
     }
 
-    inner class RepoListViewHolder(val binding: ItemTrendingRepoBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    class RepoDiffCallback : DiffUtil.ItemCallback<MappedRepo>() {
+        override fun areItemsTheSame(oldItem: MappedRepo, newItem: MappedRepo): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: MappedRepo, newItem: MappedRepo): Boolean {
+            return oldItem == newItem
+        }
+    }
 }

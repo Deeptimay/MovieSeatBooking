@@ -2,7 +2,7 @@ package com.example.testassignmentgitrepo.data.useCases
 
 import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.domain.repositoryAbstraction.GitHubRepoRepository
-import com.example.testassignmentgitrepo.domain.useCasesImpl.FetchGithubRepoUseCaseImpl
+import com.example.testassignmentgitrepo.domain.useCasesImpl.FetchGithubRepoUseCase
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -12,17 +12,17 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
-class FetchGithubRepoUseCaseImplTest {
+class FetchGithubRepoUseCaseTest {
 
     @Mock
     private lateinit var mockGitHubRepoRepository: GitHubRepoRepository
 
-    private lateinit var useCase: FetchGithubRepoUseCaseImpl
+    private lateinit var useCase: FetchGithubRepoUseCase
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        useCase = FetchGithubRepoUseCaseImpl(mockGitHubRepoRepository)
+        useCase = FetchGithubRepoUseCase(mockGitHubRepoRepository)
     }
 
     @Test

@@ -11,8 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.testassignmentgitrepo.R
-import com.example.testassignmentgitrepo.databinding.FragmentTrendingRepositoryBinding
 import com.example.testassignmentgitrepo.data.models.MappedRepo
+import com.example.testassignmentgitrepo.databinding.FragmentTrendingRepositoryBinding
 import com.example.testassignmentgitrepo.presentation.adapters.ReposAdapter
 import com.example.testassignmentgitrepo.presentation.homeScreen.ReposViewModel.Companion.SELECTED_REPO_ITEM
 import com.example.testassignmentgitrepo.presentation.ui.UiState
@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TrendingRepoFragment : Fragment(), (String) -> Unit {
+class TrendingRepoFragment : Fragment() {
 
     private var _fragmentTrendingRepositoryBinding: FragmentTrendingRepositoryBinding? = null
     private val fragmentTrendingRepositoryBinding get() = _fragmentTrendingRepositoryBinding!!
@@ -39,6 +39,33 @@ class TrendingRepoFragment : Fragment(), (String) -> Unit {
         _fragmentTrendingRepositoryBinding =
             FragmentTrendingRepositoryBinding.inflate(inflater, container, false)
 
+        setupAdapter()
+        collectUiStates()
+        reposViewModel.getRepoList()
+
+        return fragmentTrendingRepositoryBinding.root
+    }
+
+    private fun setupAdapter() {
+        reposAdapter = ReposAdapter { repoId: String ->
+            run {
+                val bundle = Bundle().apply {
+                    putString(SELECTED_REPO_ITEM, repoId)
+                }
+                findNavController().navigate(
+                    R.id.action_trendingRepoFragment_to_repoDetailsFragment,
+                    bundle
+                )
+            }
+        }
+        fragmentTrendingRepositoryBinding.apply {
+            fragmentTrendingRepositoryBinding.rvRepository.apply {
+                this.adapter = reposAdapter
+            }
+        }
+    }
+
+    private fun collectUiStates() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 reposViewModel.repoFlow.collect { uiState ->
@@ -54,23 +81,12 @@ class TrendingRepoFragment : Fragment(), (String) -> Unit {
                         is UiState.Success<*> -> {
                             hideLoadingState()
                             val mappedRepoList = uiState.content as? List<MappedRepo>
-                            mappedRepoList?.let { setupAdapter(it) }
+                            mappedRepoList?.let {
+                                reposAdapter.submitList(it)
+                            }
                         }
                     }
                 }
-            }
-        }
-
-        reposViewModel.getRepoList()
-        return fragmentTrendingRepositoryBinding.root
-    }
-
-
-    private fun setupAdapter(mappedRepos: List<MappedRepo>) {
-        reposAdapter = ReposAdapter(this, mappedRepos)
-        fragmentTrendingRepositoryBinding.apply {
-            fragmentTrendingRepositoryBinding.rvRepository.apply {
-                this.adapter = reposAdapter
             }
         }
     }
@@ -91,15 +107,5 @@ class TrendingRepoFragment : Fragment(), (String) -> Unit {
         fragmentTrendingRepositoryBinding.layoutError.clErrorMain.hide()
         fragmentTrendingRepositoryBinding.rvRepository.show()
         fragmentTrendingRepositoryBinding.loadingLayout.clDetailsLoading.hide()
-    }
-
-    override fun invoke(repoId: String) {
-        val bundle = Bundle().apply {
-            putString(SELECTED_REPO_ITEM, repoId)
-        }
-        findNavController().navigate(
-            R.id.action_trendingRepoFragment_to_repoDetailsFragment,
-            bundle
-        )
     }
 }
