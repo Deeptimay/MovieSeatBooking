@@ -16,19 +16,10 @@ class DataMapperTest {
     }
 
     @Test
-    fun `test mapToDataModel`() {
-        val repo = Repo(id = 1, name = "Test")
-        val mappedRepo = userDataMapper.mapToDataModel(repo)
-
-        assertEquals(repo.id, mappedRepo.id)
-        assertEquals(repo.name, mappedRepo.name)
-    }
-
-    @Test
     fun `test mapFromDataModel`() {
 
         val mappedRepo = MappedRepo(id = 2, name = "Test")
-        val repo = userDataMapper.mapFromDataModel(mappedRepo)
+        val repo = userDataMapper.mapRepoToMappedRepoModel(mappedRepo)
 
         assertEquals(mappedRepo.id, repo.id)
         assertEquals(mappedRepo.name, repo.name)
@@ -36,11 +27,8 @@ class DataMapperTest {
 
 
     private class RepoDataMapperImpl : DataMapper<Repo, MappedRepo> {
-        override fun mapToDataModel(model: Repo): MappedRepo {
-            return MappedRepo(id = model.id, name = model.name)
-        }
 
-        override fun mapFromDataModel(dataModel: MappedRepo): Repo {
+        override fun mapRepoToMappedRepoModel(dataModel: MappedRepo): Repo {
             return Repo(id = dataModel.id, name = dataModel.name)
         }
     }

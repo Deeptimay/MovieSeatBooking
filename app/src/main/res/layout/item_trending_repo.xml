@@ -32,7 +32,7 @@
             app:layout_constraintStart_toEndOf="@+id/ivUserAvatar"
             app:layout_constraintTop_toTopOf="parent"
             app:textFont="regular"
-            tools:text="Username" />
+            tools:text="@string/user_name" />
 
         <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvRepoName"
@@ -47,7 +47,7 @@
             app:layout_constraintStart_toStartOf="@+id/tvUsername"
             app:layout_constraintTop_toBottomOf="@id/tvUsername"
             app:textFont="regular"
-            tools:text="Repo Name" />
+            tools:text="@string/repo_name" />
 
         <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvRepoDesc"
@@ -62,7 +62,7 @@
             app:layout_constraintStart_toStartOf="@+id/tvUsername"
             app:layout_constraintTop_toBottomOf="@id/tvUsername"
             app:textFont="regular"
-            tools:text="Repo Desc" />
+            tools:text="@string/repo_desc" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivDot"
@@ -73,7 +73,7 @@
             android:padding="@dimen/_5dp"
             app:layout_constraintStart_toEndOf="@id/ivUserAvatar"
             app:layout_constraintTop_toBottomOf="@id/tvRepoDesc"
-            app:srcCompat="@drawable/drawable_cricle_lang" />
+            app:srcCompat="@drawable/drawable_circle_lang" />
 
         <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvRepoLang"
@@ -87,7 +87,7 @@
             app:layout_constraintStart_toEndOf="@id/ivDot"
             app:layout_constraintTop_toTopOf="@+id/ivDot"
             app:textFont="regular"
-            tools:text="Android" />
+            tools:text="@string/android" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -114,7 +114,7 @@
                 app:layout_constraintStart_toEndOf="@id/ivUserAvatar"
                 app:layout_constraintTop_toBottomOf="@id/tvRepoLang"
                 app:textFont="regular"
-                tools:text="10000" />
+                tools:text="@string/_10000" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/_18dp"
@@ -133,7 +133,7 @@
                 app:layout_constraintStart_toEndOf="@id/tvRepoStars"
                 app:layout_constraintTop_toBottomOf="@id/tvRepoLang"
                 app:textFont="regular"
-                tools:text="100" />
+                tools:text="@string/_100" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

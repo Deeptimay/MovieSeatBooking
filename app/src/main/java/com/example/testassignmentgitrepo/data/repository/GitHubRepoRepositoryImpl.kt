@@ -46,7 +46,7 @@ class GitHubRepoRepositoryImpl @Inject constructor(
             val repoDetailResponse = githubApi.getRepoDetails(repoId)
             if (repoDetailResponse.isSuccessful) {
                 val mappedDetails =
-                    repoDetailResponse.body()?.let { repoMapper.mapFromDataModel(it) }
+                    repoDetailResponse.body()?.let { repoMapper.mapRepoToMappedRepoModel(it) }
                 mappedDetails?.let { NetworkResult.ApiSuccess(it) } ?: kotlin.run {
                     NetworkResult.ApiError(
                         code = repoDetailResponse.code(),

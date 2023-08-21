@@ -41,4 +41,18 @@
     <string name="search">Search</string>
     <string name="search_query">%s</string>
     <string name="query">language:%s</string>
+    <string name="user_name">User Name</string>
+    <string name="repo_name">Repo Name</string>
+    <string name="repo_desc">Repo Desc</string>
+    <string name="android">Android</string>
+    <string name="_10000">10000</string>
+    <string name="_100">100</string>
+
+    <string name="created_at">Created At : %s</string>
+    <string name="updated_at">Updated At : %s</string>
+    <string name="pushed_at">Pushed At : %s</string>
+    <string name="clone_url">Clone Url : %s</string>
+    <string name="git_url">Git Url : %s</string>
+    <string name="trending">Trending Repos</string>
+    <string name="repo_details">Repo Details</string>
 </resources>

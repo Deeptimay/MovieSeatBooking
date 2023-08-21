@@ -5,28 +5,11 @@ import com.example.testassignmentgitrepo.data.models.Repo
 import javax.inject.Inject
 
 class RepoMapper @Inject constructor() : DataMapper<MappedRepo, Repo> {
-    override fun mapToDataModel(model: MappedRepo): Repo {
-        return Repo(
-            id = model.id,
-            name = model.name,
-            owner = model.owner,
-            description = model.description,
-            createdAt = model.createdAt,
-            updatedAt = model.updatedAt,
-            pushedAt = model.pushedAt,
-            stargazersCount = model.stargazersCount,
-            language = model.language,
-            forksCount = model.forksCount,
-            gitUrl = model.gitUrl,
-            cloneUrl = model.cloneUrl
-        )
-    }
 
-    override fun mapFromDataModel(dataModel: Repo): MappedRepo {
+    override fun mapRepoToMappedRepoModel(dataModel: Repo): MappedRepo {
         return MappedRepo(
             dataModel.id,
             dataModel.name,
-            dataModel.owner,
             dataModel.description,
             dataModel.createdAt,
             dataModel.updatedAt,
@@ -35,11 +18,13 @@ class RepoMapper @Inject constructor() : DataMapper<MappedRepo, Repo> {
             dataModel.language,
             dataModel.forksCount,
             dataModel.gitUrl,
-            dataModel.cloneUrl
+            dataModel.cloneUrl,
+            dataModel.owner?.avatarUrl ?: "",
+            dataModel.owner?.login ?: ""
         )
     }
 
     fun fromEntityList(initial: List<Repo>): List<MappedRepo> {
-        return initial.map { mapFromDataModel(it) }
+        return initial.map { mapRepoToMappedRepoModel(it) }
     }
 }

@@ -17,6 +17,6 @@
         android:lines="1"
         android:textSize="@dimen/md_text_size_large"
         app:textFont="medium"
-        tools:text="Trending" />
+        tools:text="@string/trending" />
 
 </androidx.appcompat.widget.Toolbar>

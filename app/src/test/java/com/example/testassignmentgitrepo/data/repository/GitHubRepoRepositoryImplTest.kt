@@ -1,10 +1,10 @@
 package com.example.testassignmentgitrepo.data.repository
 
 import com.example.testassignmentgitrepo.data.mappers.RepoMapper
-import com.example.testassignmentgitrepo.data.network.GithubApi
 import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.data.models.TrendingRepoResponse
+import com.example.testassignmentgitrepo.data.network.GithubApi
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import com.example.testassignmentgitrepo.util.MainDispatcherRule
 import kotlinx.coroutines.runBlocking
@@ -41,7 +41,7 @@ class GitHubRepoRepositoryImplTest {
         val responseMock = Response.success(Repo(1, null, "Repo Name"))
         `when`(mockApi.getRepoDetails("repoId")).thenReturn(responseMock)
 
-        val expectedResult = MappedRepo(1, "Repo Name")
+        val expectedResult = MappedRepo(1, "Repo Name", ownerAvatar = "", ownerName = "")
         val actualResult = repository.getGitHubRepoDetails("repoId")
         assertEquals(NetworkResult.ApiSuccess(expectedResult), actualResult)
     }
@@ -97,7 +97,8 @@ class GitHubRepoRepositoryImplTest {
         )
         `when`(mockApi.getTrendingRepoList("query", 1, 100)).thenReturn(responseMock)
 
-        val expectedResult = listOf(MappedRepo(1, "Repo Name"))
+        val expectedResult =
+            listOf(MappedRepo(1, "Repo Name", ownerAvatar = "", ownerName = ""))
         val actualResult = repository.fetchAllTrendingGitHubRepo("query")
 
         assertEquals(NetworkResult.ApiSuccess(expectedResult), actualResult)

@@ -2,7 +2,7 @@ package com.example.testassignmentgitrepo.presentation.detailsScreen
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.testassignmentgitrepo.data.models.MappedRepo
-import com.example.testassignmentgitrepo.domain.useCaseAbstraction.GetGithubRepoDetailsUseCase
+import com.example.testassignmentgitrepo.domain.useCasesImpl.GetGithubRepoDetailsUseCase
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import com.example.testassignmentgitrepo.presentation.ui.UiState
 import com.example.testassignmentgitrepo.util.MainDispatcherRule

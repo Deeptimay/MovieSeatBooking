@@ -2,7 +2,6 @@ package com.example.testassignmentgitrepo.di
 
 import com.example.testassignmentgitrepo.data.network.GithubApi
 import com.example.testassignmentgitrepo.data.network.HttpClient
-import com.example.testassignmentgitrepo.data.network.LoggingInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +18,9 @@ import javax.inject.Singleton
 object RetrofitModule {
 
     @Provides
-    fun provideLoggingInterceptor(): HttpLoggingInterceptor = LoggingInterceptor.create()
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
 
     @Provides
     fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {

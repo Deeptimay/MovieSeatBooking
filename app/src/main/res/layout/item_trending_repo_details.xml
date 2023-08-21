@@ -33,7 +33,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivUserAvatar"
             app:textFont="regular"
-            tools:text="Username" />
+            tools:text="@string/user_name" />
 
         <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvRepoName"
@@ -48,7 +48,7 @@
             app:layout_constraintStart_toStartOf="@+id/tvUsername"
             app:layout_constraintTop_toBottomOf="@id/tvUsername"
             app:textFont="regular"
-            tools:text="Repo Name" />
+            tools:text="@string/repo_name" />
 
         <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvRepoDesc"
@@ -63,7 +63,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvUsername"
             app:textFont="regular"
-            tools:text="Repo Desc" />
+            tools:text="@string/repo_desc" />
 
         <LinearLayout
             android:id="@+id/llLan"
@@ -81,7 +81,7 @@
                 android:layout_width="@dimen/_18dp"
                 android:layout_height="@dimen/_18dp"
                 android:padding="@dimen/_5dp"
-                app:srcCompat="@drawable/drawable_cricle_lang" />
+                app:srcCompat="@drawable/drawable_circle_lang" />
 
             <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
                 android:id="@+id/tvRepoLang"
@@ -92,7 +92,7 @@
                 android:textColor="@color/colorGrey800"
                 android:textSize="@dimen/md_text_size_mini"
                 app:textFont="regular"
-                tools:text="Android" />
+                tools:text="@string/android" />
         </LinearLayout>
 
         <LinearLayout
@@ -120,7 +120,7 @@
                 android:textColor="@color/colorGrey800"
                 android:textSize="@dimen/md_text_size_mini"
                 app:textFont="regular"
-                tools:text="10000" />
+                tools:text="@string/_10000" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/_18dp"
@@ -137,7 +137,7 @@
                 android:textColor="@color/colorGrey800"
                 android:textSize="@dimen/md_text_size_mini"
                 app:textFont="regular"
-                tools:text="100" />
+                tools:text="@string/_100" />
         </LinearLayout>
 
         <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
@@ -152,7 +152,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llStarFork"
             app:textFont="regular"
-            tools:text="Created At" />
+            tools:text="@string/created_at" />
 
         <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvUpdatedAt"
@@ -166,7 +166,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCreatedAt"
             app:textFont="regular"
-            tools:text="Updated At" />
+            tools:text="@string/updated_at" />
 
         <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvPushedAt"
@@ -180,7 +180,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvUpdatedAt"
             app:textFont="regular"
-            tools:text="Pushed At" />
+            tools:text="@string/pushed_at" />
 
         <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvCloneUrl"
@@ -195,7 +195,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvPushedAt"
             app:textFont="regular"
-            tools:text="Clone Url" />
+            tools:text="@string/clone_url" />
 
         <com.example.testassignmentgitrepo.presentation.customViews.CustomTextView
             android:id="@+id/tvGitUrl"
@@ -210,7 +210,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCloneUrl"
             app:textFont="regular"
-            tools:text="Git Url" />
+            tools:text="@string/git_url" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
