@@ -16,35 +16,38 @@ class RepoListViewHolder(private val itemTrendingRepoBinding: ItemTrendingRepoBi
     fun bind(repo: MappedRepo, repoClickListener: (String) -> Unit) {
         with(repo) {
             Glide.with(itemView)
-                .load(this.ownerAvatar)
+                .load(ownerAvatar)
                 .centerCrop()
                 .error(android.R.drawable.stat_notify_error)
                 .into(itemTrendingRepoBinding.ivUserAvatar)
 
-            val str = SpannableString((this.ownerName) + " / " + this.name)
+            val str = SpannableString("$ownerName / $name")
             str.setSpan(
                 StyleSpan(Typeface.NORMAL),
-                this.ownerName?.length ?: 0,
+                ownerName?.length ?: 0,
                 str.length,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
             itemTrendingRepoBinding.tvUsername.text = str
-            itemTrendingRepoBinding.tvRepoDesc.text = this.description
+            itemTrendingRepoBinding.tvRepoDesc.text = description
 
-            if (!this.language.isNullOrEmpty()) {
-                itemTrendingRepoBinding.tvRepoLang.text = this.language
-                itemTrendingRepoBinding.tvRepoLang.visibility = View.VISIBLE
-                itemTrendingRepoBinding.ivDot.visibility = View.VISIBLE
-            } else {
-                itemTrendingRepoBinding.tvRepoLang.visibility = View.GONE
-                itemTrendingRepoBinding.ivDot.visibility = View.GONE
+            itemTrendingRepoBinding.tvRepoLang.apply {
+                if (!language.isNullOrEmpty()) {
+                    text = language
+                    visibility = View.VISIBLE
+                } else {
+                    visibility = View.GONE
+                }
             }
 
-            itemTrendingRepoBinding.tvRepoStars.text = this.stargazersCount.toString()
-            itemTrendingRepoBinding.tvRepoFork.text = this.forksCount.toString()
+            itemTrendingRepoBinding.ivDot.visibility =
+                if (!language.isNullOrEmpty()) View.VISIBLE else View.GONE
+
+            itemTrendingRepoBinding.tvRepoStars.text = stargazersCount.toString()
+            itemTrendingRepoBinding.tvRepoFork.text = forksCount.toString()
 
             itemTrendingRepoBinding.root.setOnClickListener {
-                repoClickListener(this.id.toString())
+                repoClickListener(id.toString())
             }
         }
     }

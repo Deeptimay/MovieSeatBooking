@@ -57,11 +57,7 @@ class TrendingRepoFragment : Fragment() {
                 )
             }
         }
-        fragmentTrendingRepositoryBinding.apply {
-            fragmentTrendingRepositoryBinding.rvRepository.apply {
-                this.adapter = reposAdapter
-            }
-        }
+        fragmentTrendingRepositoryBinding.rvRepository.adapter = reposAdapter
     }
 
     private fun collectUiStates() {
@@ -69,14 +65,8 @@ class TrendingRepoFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 reposViewModel.repoFlow.collect { uiState ->
                     when (uiState) {
-                        is UiState.Loading -> {
-                            displayLoadingState()
-                        }
-
-                        is UiState.Error -> {
-                            displayErrorState()
-                        }
-
+                        is UiState.Loading -> displayLoadingState()
+                        is UiState.Error -> displayErrorState()
                         is UiState.Success<*> -> {
                             dataSuccessState()
                             val mappedRepoList = uiState.content as? List<MappedRepo>
@@ -90,21 +80,28 @@ class TrendingRepoFragment : Fragment() {
         }
     }
 
+
     private fun displayErrorState() {
-        fragmentTrendingRepositoryBinding.layoutError.clErrorMain.show()
-        fragmentTrendingRepositoryBinding.rvRepository.hide()
-        fragmentTrendingRepositoryBinding.loadingLayout.clDetailsLoading.hide()
+        fragmentTrendingRepositoryBinding.apply {
+            layoutError.clErrorMain.show()
+            rvRepository.hide()
+            loadingLayout.clDetailsLoading.hide()
+        }
     }
 
     private fun displayLoadingState() {
-        fragmentTrendingRepositoryBinding.layoutError.clErrorMain.hide()
-        fragmentTrendingRepositoryBinding.rvRepository.hide()
-        fragmentTrendingRepositoryBinding.loadingLayout.clDetailsLoading.show()
+        fragmentTrendingRepositoryBinding.apply {
+            layoutError.clErrorMain.hide()
+            rvRepository.hide()
+            loadingLayout.clDetailsLoading.show()
+        }
     }
 
     private fun dataSuccessState() {
-        fragmentTrendingRepositoryBinding.layoutError.clErrorMain.hide()
-        fragmentTrendingRepositoryBinding.rvRepository.show()
-        fragmentTrendingRepositoryBinding.loadingLayout.clDetailsLoading.hide()
+        fragmentTrendingRepositoryBinding.apply {
+            layoutError.clErrorMain.hide()
+            rvRepository.show()
+            loadingLayout.clDetailsLoading.hide()
+        }
     }
 }

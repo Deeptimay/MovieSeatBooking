@@ -68,14 +68,8 @@ class RepoDetailsFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 repoDetailsViewModel.repoDetailsFlow.collect { uiState ->
                     when (uiState) {
-                        is UiState.Loading -> {
-                            displayLoadingState()
-                        }
-
-                        is UiState.Error -> {
-                            displayErrorState()
-                        }
-
+                        is UiState.Loading -> displayLoadingState()
+                        is UiState.Error -> displayErrorState()
                         is UiState.Success<*> -> {
                             hideLoadingState()
                             inflateData(uiState.content as MappedRepo)
@@ -87,69 +81,68 @@ class RepoDetailsFragment : Fragment() {
     }
 
     private fun inflateData(repo: MappedRepo) {
+        fragmentRepositoryDetailsBinding.detailsLayout.apply {
+            Glide.with(this@RepoDetailsFragment)
+                .load(repo.ownerAvatar)
+                .centerCrop()
+                .error(android.R.drawable.stat_notify_error)
+                .into(ivUserAvatar)
 
-        Glide.with(this@RepoDetailsFragment).load(repo.ownerAvatar)
-            .centerCrop()
-            .error(android.R.drawable.stat_notify_error)
-            .into(fragmentRepositoryDetailsBinding.detailsLayout.ivUserAvatar)
+            val str = SpannableString("${repo.ownerName} / ${repo.name}")
+            str.setSpan(
+                StyleSpan(Typeface.NORMAL),
+                repo.ownerName?.length ?: 0,
+                str.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            tvUsername.text = str
+            tvRepoDesc.text = repo.description
+            tvRepoLang.text = repo.language
+            tvRepoStars.text = repo.stargazersCount.toString()
+            tvRepoFork.text = repo.forksCount.toString()
 
-        val str = SpannableString(
-            (repo.ownerName) + " / " + repo.name
-        )
-        str.setSpan(
-            StyleSpan(Typeface.NORMAL),
-            repo.ownerName?.length ?: 0,
-            str.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        fragmentRepositoryDetailsBinding.detailsLayout.tvUsername.text = str
-        fragmentRepositoryDetailsBinding.detailsLayout.tvRepoDesc.text = repo.description
-        fragmentRepositoryDetailsBinding.detailsLayout.tvRepoLang.text = repo.language
-        fragmentRepositoryDetailsBinding.detailsLayout.tvRepoStars.text =
-            repo.stargazersCount.toString()
-        fragmentRepositoryDetailsBinding.detailsLayout.tvRepoFork.text =
-            repo.forksCount.toString()
+            tvCreatedAt.text =
+                getString(R.string.created_at, repo.createdAt?.let { DateUtility.formatDate(it) })
+            tvUpdatedAt.text =
+                getString(R.string.updated_at, repo.updatedAt?.let { DateUtility.formatDate(it) })
+            tvPushedAt.text =
+                getString(R.string.pushed_at, repo.pushedAt?.let { DateUtility.formatDate(it) })
 
-        fragmentRepositoryDetailsBinding.detailsLayout.tvCreatedAt.text =
-            getString(R.string.created_at, repo.createdAt?.let { DateUtility.formatDate(it) })
+            tvCloneUrl.text = getString(R.string.clone_url, repo.cloneUrl)
+            tvGitUrl.text = getString(R.string.git_url, repo.gitUrl)
 
-        fragmentRepositoryDetailsBinding.detailsLayout.tvUpdatedAt.text =
-            getString(R.string.updated_at, repo.updatedAt?.let { DateUtility.formatDate(it) })
-
-        fragmentRepositoryDetailsBinding.detailsLayout.tvPushedAt.text =
-            getString(R.string.pushed_at, repo.pushedAt?.let { DateUtility.formatDate(it) })
-
-        fragmentRepositoryDetailsBinding.detailsLayout.tvCloneUrl.text =
-            getString(R.string.clone_url, repo.cloneUrl)
-
-        fragmentRepositoryDetailsBinding.detailsLayout.tvGitUrl.text =
-            getString(R.string.git_url, repo.gitUrl)
-
-        if (!repo.language.isNullOrEmpty()) {
-            fragmentRepositoryDetailsBinding.detailsLayout.tvRepoLang.text = repo.language
-            fragmentRepositoryDetailsBinding.detailsLayout.ivDot.visibility = View.VISIBLE
-            fragmentRepositoryDetailsBinding.detailsLayout.tvRepoLang.visibility = View.VISIBLE
-        } else {
-            fragmentRepositoryDetailsBinding.detailsLayout.ivDot.visibility = View.GONE
-            fragmentRepositoryDetailsBinding.detailsLayout.tvRepoLang.visibility = View.GONE
+            if (!repo.language.isNullOrEmpty()) {
+                tvRepoLang.text = repo.language
+                ivDot.visibility = View.VISIBLE
+                tvRepoLang.visibility = View.VISIBLE
+            } else {
+                ivDot.visibility = View.GONE
+                tvRepoLang.visibility = View.GONE
+            }
         }
     }
 
     private fun displayErrorState() {
-        fragmentRepositoryDetailsBinding.detailsLayout.clDetailsLayout.hide()
-        fragmentRepositoryDetailsBinding.loadingLayout.clDetailsLoading.hide()
-        fragmentRepositoryDetailsBinding.layoutError.clErrorMain.show()
+        fragmentRepositoryDetailsBinding.apply {
+            detailsLayout.clDetailsLayout.hide()
+            loadingLayout.clDetailsLoading.hide()
+            layoutError.clErrorMain.show()
+        }
     }
 
     private fun displayLoadingState() {
-        fragmentRepositoryDetailsBinding.detailsLayout.clDetailsLayout.hide()
-        fragmentRepositoryDetailsBinding.loadingLayout.clDetailsLoading.show()
-        fragmentRepositoryDetailsBinding.layoutError.clErrorMain.hide()
+        fragmentRepositoryDetailsBinding.apply {
+            detailsLayout.clDetailsLayout.hide()
+            loadingLayout.clDetailsLoading.show()
+            layoutError.clErrorMain.hide()
+        }
     }
 
     private fun hideLoadingState() {
-        fragmentRepositoryDetailsBinding.detailsLayout.clDetailsLayout.show()
-        fragmentRepositoryDetailsBinding.loadingLayout.clDetailsLoading.hide()
-        fragmentRepositoryDetailsBinding.layoutError.clErrorMain.hide()
+        fragmentRepositoryDetailsBinding.apply {
+            detailsLayout.clDetailsLayout.show()
+            loadingLayout.clDetailsLoading.hide()
+            layoutError.clErrorMain.hide()
+        }
     }
 }
