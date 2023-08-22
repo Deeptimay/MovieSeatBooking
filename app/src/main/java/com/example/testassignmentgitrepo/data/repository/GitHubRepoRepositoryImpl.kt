@@ -37,7 +37,7 @@ class GitHubRepoRepositoryImpl @Inject constructor(
             is NetworkResult.ApiSuccess -> NetworkResult.ApiSuccess(transform(data))
             is NetworkResult.ApiError -> this
             is NetworkResult.ApiException -> this
+            else -> this
         }
     }
-
 }

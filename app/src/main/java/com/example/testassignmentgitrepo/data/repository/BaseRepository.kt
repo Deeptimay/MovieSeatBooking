@@ -1,6 +1,5 @@
 package com.example.testassignmentgitrepo.data.repository
 
-import com.example.testassignmentgitrepo.data.network.GithubApi
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import retrofit2.HttpException
 import retrofit2.Response
@@ -14,7 +13,12 @@ class BaseRepository @Inject constructor() {
         return try {
             val response = apiCall.invoke()
             if (response.isSuccessful) {
-                NetworkResult.ApiSuccess(response.body()!!)
+                response.body()?.let { NetworkResult.ApiSuccess(it) } ?: kotlin.run {
+                    NetworkResult.ApiError(
+                        code = response.code(),
+                        message = response.errorBody().toString()
+                    )
+                }
             } else {
                 NetworkResult.ApiError(
                     code = response.code(),

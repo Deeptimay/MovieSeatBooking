@@ -11,11 +11,12 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.mock
 
 class FetchGithubRepoUseCaseTest {
 
     @Mock
-    private lateinit var mockGitHubRepoRepository: GitHubRepoRepository
+    private var mockGitHubRepoRepository: GitHubRepoRepository = mock()
 
     private lateinit var useCase: FetchGithubRepoUseCase
 

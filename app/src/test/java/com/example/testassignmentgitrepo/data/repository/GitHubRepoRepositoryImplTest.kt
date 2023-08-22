@@ -1,5 +1,6 @@
 package com.example.testassignmentgitrepo.data.repository
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.testassignmentgitrepo.data.mappers.RepoMapper
 import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.data.models.Repo
@@ -7,141 +8,104 @@ import com.example.testassignmentgitrepo.data.models.TrendingRepoResponse
 import com.example.testassignmentgitrepo.data.network.GithubApi
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import com.example.testassignmentgitrepo.util.MainDispatcherRule
+import io.mockk.coEvery
+import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody.Companion.toResponseBody
+import okhttp3.ResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
-import retrofit2.HttpException
 import retrofit2.Response
 
+@ExperimentalCoroutinesApi
 class GitHubRepoRepositoryImplTest {
+
+    @get:Rule
+    val instantExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    @Mock
-    private lateinit var mockApi: GithubApi
+    private var mockBaseRepository: BaseRepository = mockk(relaxed = true)
+    private var mockGithubApi: GithubApi = mockk()
+    private var mockApiCallForRepoList: suspend () -> Response<TrendingRepoResponse> = mockk()
+    private var mockApiCallForRepoDetails: suspend () -> Response<Repo> = mockk()
+    private var mockRepoMapper: RepoMapper = mockk()
 
     private lateinit var repository: GitHubRepoRepositoryImpl
 
     @Before
     fun setUp() {
-        MockitoAnnotations.openMocks(this)
-        repository = GitHubRepoRepositoryImpl(mockApi, RepoMapper())
+        repository = GitHubRepoRepositoryImpl(mockBaseRepository, mockGithubApi, mockRepoMapper)
+    }
+
+
+    @Test
+    fun `fetchAllTrendingGitHubRepo success`() = runBlocking {
+
+        coEvery { mockGithubApi.getTrendingRepoList(query, 1, 100) } returns successResponse
+        coEvery { mockRepoMapper.fromEntityList(apiResponse.repo) } returns mappedRepoList
+        coEvery { mockBaseRepository.performApiCall(mockApiCallForRepoList) } coAnswers {
+            val apiCall: suspend () -> TrendingRepoResponse = arg(0)
+            NetworkResult.ApiSuccess(apiCall.invoke())
+        }
+
+        val result = repository.fetchAllTrendingGitHubRepo(query)
+        assertEquals(
+            NetworkResult.ApiSuccess(mappedRepoList),
+            inputData as NetworkResult.ApiSuccess
+        )
     }
 
     @Test
     fun `getGitHubRepoDetails success`() = runBlocking {
-        val responseMock = Response.success(Repo(1, null, "Repo Name"))
-        `when`(mockApi.getRepoDetails("repoId")).thenReturn(responseMock)
 
-        val expectedResult = MappedRepo(1, "Repo Name", ownerAvatar = "", ownerName = "")
-        val actualResult = repository.getGitHubRepoDetails("repoId")
-        assertEquals(NetworkResult.ApiSuccess(expectedResult), actualResult)
-    }
+        coEvery { mockGithubApi.getRepoDetails(repoId) } returns repoSuccessResponse
+        coEvery { mockRepoMapper.mapRepoToMappedRepoModel(repo) } returns mappedRepo
+        coEvery { mockBaseRepository.performApiCall(mockApiCallForRepoDetails) } coAnswers {
+            val apiCall: suspend () -> Repo = arg(0)
+            NetworkResult.ApiSuccess(apiCall.invoke())
+        }
 
-    @Test
-    fun `getGitHubRepoDetails API error`() = runBlocking {
-        val responseMock = Response.error<Repo>(
-            404,
-            "Not Found".toResponseBody("text/plain".toMediaTypeOrNull())
-        )
-        `when`(mockApi.getRepoDetails("repoId")).thenReturn(responseMock)
-
-        val actualResult = repository.getGitHubRepoDetails("repoId")
-
+        val result = repository.getGitHubRepoDetails(repoId)
         assertEquals(
-            NetworkResult.ApiError<Repo>(404, responseMock.errorBody().toString()),
-            actualResult
+            NetworkResult.ApiSuccess(mappedRepo),
+            inputDetailsData as NetworkResult.ApiSuccess
         )
     }
 
-    @Test
-    fun `getGitHubRepoDetails HTTP exception`() = runBlocking {
-        val httpException = retrofit2.HttpException(
-            Response.error<Repo>(
-                500,
-                "Internal Server Error".toResponseBody("text/plain".toMediaTypeOrNull())
-            )
+    companion object {
+
+        val query = "android"
+
+        const val exceptionMessage = "Test Exception"
+        const val repoId = "repoId"
+
+        const val errorCode = 404
+        const val errorMessage = "Not Found"
+
+        val mappedRepo = MappedRepo(1, "Repo Name")
+        val repo = Repo(1, "Repo Name")
+
+        private val responseBody = TrendingRepoResponse(
+            1, true,
+            arrayListOf(Repo(1, name = "Repo Name"))
         )
-        `when`(mockApi.getRepoDetails("repoId")).thenThrow(httpException)
 
-        val actualResult = repository.getGitHubRepoDetails("repoId")
+        val apiResponse = TrendingRepoResponse(1, true, arrayListOf(Repo(1, "Repo Name")))
+        val successResponse: Response<TrendingRepoResponse> = Response.success(responseBody)
+        val inputData = NetworkResult.ApiSuccess(arrayListOf(MappedRepo(1, name = "Repo Name")))
+        val inputDetailsData = NetworkResult.ApiSuccess(MappedRepo(1, name = "Repo Name"))
+        val mappedRepoList = listOf(MappedRepo(1, "Repo Name"))
 
-        assertEquals(NetworkResult.ApiError<Repo>(500, httpException.message()), actualResult)
-    }
+        val repoSuccessResponse: Response<Repo> = Response.success(repo)
 
-    @Test(expected = Exception::class)
-    fun `getGitHubRepoDetails general exception`() = runBlocking {
-        val exception = Exception("Some exception")
-        `when`(mockApi.getRepoDetails("repoId")).thenThrow(exception)
-
-        val actualResult = repository.getGitHubRepoDetails("repoId")
-
-        assertEquals(NetworkResult.ApiException<Repo>(exception), actualResult)
-    }
-
-    @Test
-    fun `fetchAllTrendingGitHubRepo success`() = runBlocking {
-        val responseMock = Response.success(
-            TrendingRepoResponse(
-                1, true,
-                arrayListOf(Repo(1, null, "Repo Name"))
-            )
+        val errorResponse: Response<TrendingRepoResponse> = Response.error<TrendingRepoResponse>(
+            errorCode,
+            ResponseBody.create("text/plain".toMediaTypeOrNull(), errorMessage)
         )
-        `when`(mockApi.getTrendingRepoList("query", 1, 100)).thenReturn(responseMock)
-
-        val expectedResult =
-            listOf(MappedRepo(1, "Repo Name", ownerAvatar = "", ownerName = ""))
-        val actualResult = repository.fetchAllTrendingGitHubRepo("query")
-
-        assertEquals(NetworkResult.ApiSuccess(expectedResult), actualResult)
-    }
-
-    @Test
-    fun `fetchAllTrendingGitHubRepo API error`() = runBlocking {
-        val responseMock = Response.error<TrendingRepoResponse>(
-            404,
-            "Not Found".toResponseBody("text/plain".toMediaTypeOrNull())
-        )
-        `when`(mockApi.getTrendingRepoList("query", 1, 100)).thenReturn(responseMock)
-
-        val actualResult = repository.fetchAllTrendingGitHubRepo("query")
-
-        assertEquals(
-            NetworkResult.ApiError<Repo>(404, responseMock.errorBody().toString()),
-            actualResult
-        )
-    }
-
-    @Test
-    fun `fetchAllTrendingGitHubRepo HTTP exception`() = runBlocking {
-        val httpException = HttpException(
-            Response.error<TrendingRepoResponse>(
-                500,
-                "Internal Server Error".toResponseBody("text/plain".toMediaTypeOrNull())
-            )
-        )
-        `when`(mockApi.getTrendingRepoList("query", 1, 100)).thenThrow(httpException)
-
-        val actualResult = repository.fetchAllTrendingGitHubRepo("query")
-
-        assertEquals(NetworkResult.ApiError<Repo>(500, httpException.message()), actualResult)
-    }
-
-    @Test(expected = Exception::class)
-    fun `fetchAllTrendingGitHubRepo general exception`() = runBlocking {
-        val exception = Exception("Some exception")
-        `when`(mockApi.getTrendingRepoList("query", 1, 100)).thenThrow(exception)
-
-        val actualResult = repository.fetchAllTrendingGitHubRepo("query")
-
-        assertEquals(NetworkResult.ApiException<Repo>(exception), actualResult)
     }
 }

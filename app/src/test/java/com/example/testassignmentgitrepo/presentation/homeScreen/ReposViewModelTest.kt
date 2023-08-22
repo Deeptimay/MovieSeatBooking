@@ -16,6 +16,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.mock
 
 @ExperimentalCoroutinesApi
 class ReposViewModelTest {
@@ -28,7 +29,7 @@ class ReposViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Mock
-    private lateinit var mockFetchGithubRepoUseCase: FetchGithubRepoUseCase
+    private var mockFetchGithubRepoUseCase: FetchGithubRepoUseCase = mock()
 
     private lateinit var viewModel: ReposViewModel
 

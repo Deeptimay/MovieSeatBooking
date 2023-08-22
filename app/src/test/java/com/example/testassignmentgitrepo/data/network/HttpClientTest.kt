@@ -7,12 +7,13 @@ import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.mock
 
 @RunWith(MockitoJUnitRunner::class)
 class HttpClientTest {
 
     @Mock
-    private lateinit var mockHttpLoggingInterceptor: HttpLoggingInterceptor
+    private var mockHttpLoggingInterceptor: HttpLoggingInterceptor = mock()
 
     @InjectMocks
     private lateinit var httpClient: HttpClient

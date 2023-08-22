@@ -121,5 +121,5 @@ dependencies {
     testImplementation("app.cash.turbine:turbine:0.12.1")
     testImplementation("org.mockito:mockito-inline:3.9.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
-
+    testImplementation("io.mockk:mockk:1.12.0")
 }

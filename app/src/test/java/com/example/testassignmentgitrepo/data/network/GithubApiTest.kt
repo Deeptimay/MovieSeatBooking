@@ -10,12 +10,13 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.mock
 import retrofit2.Response
 
 class GithubApiTest {
 
     @Mock
-    private lateinit var mockGithubApi: GithubApi
+    private var mockGithubApi: GithubApi = mock()
 
     @Before
     fun setup() {

@@ -16,7 +16,7 @@ class DataMapperTest {
     }
 
     @Test
-    fun `test mapFromDataModel`() {
+    fun `test mapRepoToMappedRepoModel`() {
 
         val mappedRepo = MappedRepo(id = 2, name = "Test")
         val repo = userDataMapper.mapRepoToMappedRepoModel(mappedRepo)

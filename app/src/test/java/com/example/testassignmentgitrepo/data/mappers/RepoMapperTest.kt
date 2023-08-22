@@ -16,7 +16,7 @@ class RepoMapperTest {
     }
 
     @Test
-    fun `mapFromDataModel returns expected MappedRepo`() {
+    fun `mapRepoToMappedRepoModel returns expected MappedRepo`() {
         val repo = Repo(
             id = 1,
             name = "Repo Name",
