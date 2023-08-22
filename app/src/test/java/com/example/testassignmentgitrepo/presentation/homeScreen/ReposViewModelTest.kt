@@ -3,6 +3,7 @@ package com.example.testassignmentgitrepo.presentation.homeScreen
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.domain.useCasesImpl.FetchGithubRepoUseCase
+import com.example.testassignmentgitrepo.domain.util.ErrorTypes
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import com.example.testassignmentgitrepo.presentation.ui.UiState
 import com.example.testassignmentgitrepo.util.MainDispatcherRule
@@ -77,8 +78,8 @@ class ReposViewModelTest {
     companion object {
         private const val DEFAULT_QUERY = "Q"
         val responseMockSuccess = NetworkResult.ApiSuccess(listOf(MappedRepo(1, "Repo Name")))
-        val responseMockError = NetworkResult.ApiError<List<MappedRepo>>(404, "Not Found")
+        val responseMockError = NetworkResult.ApiError<List<MappedRepo>>(ErrorTypes.CustomError(404, "Not Found"))
         val responseMockException =
-            NetworkResult.ApiException<List<MappedRepo>>(Exception("Network exception"))
+            NetworkResult.ApiError<List<MappedRepo>>(ErrorTypes.ExceptionError(Exception("Network exception")))
     }
 }

@@ -27,9 +27,8 @@ class ReposViewModel @Inject constructor(
             val response = fetchGithubRepoUseCase(DEFAULT_QUERY)
             _repoFlow.update {
                 when (response) {
-                    is NetworkResult.ApiError -> UiState.Error()
-                    is NetworkResult.ApiException -> UiState.Error()
                     is NetworkResult.ApiSuccess -> UiState.Success(response.data)
+                    is NetworkResult.ApiError ->  UiState.Error(response.errorData)
                 }
             }
         }

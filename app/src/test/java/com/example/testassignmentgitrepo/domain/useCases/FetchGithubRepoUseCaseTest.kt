@@ -3,6 +3,7 @@ package com.example.testassignmentgitrepo.domain.useCases
 import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.domain.repositoryAbstraction.GitHubRepoRepository
 import com.example.testassignmentgitrepo.domain.useCasesImpl.FetchGithubRepoUseCase
+import com.example.testassignmentgitrepo.domain.util.ErrorTypes
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -63,8 +64,9 @@ class FetchGithubRepoUseCaseTest {
     companion object {
         const val query = "query"
         val expectedResultSuccess = NetworkResult.ApiSuccess(listOf(MappedRepo(1, "Repo Name")))
-        val expectedResultError = NetworkResult.ApiError<List<MappedRepo>>(404, "Not Found")
+        val expectedResultError =
+            NetworkResult.ApiError<List<MappedRepo>>(ErrorTypes.CustomError(404, "Not Found"))
         val expectedResultException =
-            NetworkResult.ApiException<List<MappedRepo>>(Exception("Network exception"))
+            NetworkResult.ApiError<List<MappedRepo>>(ErrorTypes.ExceptionError(Exception("Network exception")))
     }
 }

@@ -3,6 +3,7 @@ package com.example.testassignmentgitrepo.presentation.detailsScreen
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.domain.useCasesImpl.GetGithubRepoDetailsUseCase
+import com.example.testassignmentgitrepo.domain.util.ErrorTypes
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import com.example.testassignmentgitrepo.presentation.ui.UiState
 import com.example.testassignmentgitrepo.util.MainDispatcherRule
@@ -84,8 +85,8 @@ class RepoDetailsViewModelTest {
         private const val REPO_ID = "repo_id"
         val mockData = UiState.Success(MappedRepo(1, "Repo Name"))
         val mockResponseSuccess = NetworkResult.ApiSuccess(MappedRepo(1, "Repo Name"))
-        val mockResponseError = NetworkResult.ApiError<MappedRepo>(404, "Not found")
+        val mockResponseError = NetworkResult.ApiError<MappedRepo>(ErrorTypes.CustomError(404, "Not found"))
         val mockResponseException =
-            NetworkResult.ApiException<MappedRepo>(RuntimeException("Test exception"))
+            NetworkResult.ApiError<MappedRepo>(ErrorTypes.ExceptionError(Exception("Test exception")))
     }
 }

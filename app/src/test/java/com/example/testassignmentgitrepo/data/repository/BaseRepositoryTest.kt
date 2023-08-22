@@ -2,6 +2,7 @@ package com.example.testassignmentgitrepo.data.repository
 
 import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.data.models.TrendingRepoResponse
+import com.example.testassignmentgitrepo.domain.util.ErrorTypes
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
 import com.example.testassignmentgitrepo.util.MainDispatcherRule
 import io.mockk.coEvery
@@ -15,7 +16,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
-import retrofit2.HttpException
 import retrofit2.Response
 
 @RunWith(MockitoJUnitRunner::class)
@@ -50,40 +50,42 @@ class BaseRepositoryTest {
         val result = baseRepository.performApiCall(apiCall)
 
         assertEquals(
-            NetworkResult.ApiError<Repo>(errorCode, errorMessage).code,
-            (result as NetworkResult.ApiError<Repo>).code
+            NetworkResult.ApiError<Repo>(ErrorTypes.CustomError(errorCode, errorMessage)).errorData.message,
+            (result as NetworkResult.ApiError<TrendingRepoResponse>).errorData.message
         )
     }
 
     @Test
     fun `performApiCall HTTP exception`() = runBlocking {
-        val httpException = HttpException(errorResponse)
 
-        val apiCall: suspend () -> Response<TrendingRepoResponse> = { throw httpException }
+        val apiCall: suspend () -> Response<TrendingRepoResponse> = { throw customError }
         val result = baseRepository.performApiCall(apiCall)
 
         assertEquals(
-            NetworkResult.ApiError<Repo>(httpException.code(), httpException.message()),
-            result
+            NetworkResult.ApiError<Repo>(ErrorTypes.CustomError(errorCode, errorMessage)).errorData.message,
+            (result as NetworkResult.ApiError<TrendingRepoResponse>).errorData.message
         )
     }
 
     @Test
     fun `performApiCall general exception`() = runBlocking {
 
-        val exception = RuntimeException(exceptionMessage)
-
         val apiCall: suspend () -> Response<TrendingRepoResponse> = { throw exception }
         val result = baseRepository.performApiCall(apiCall)
 
-        assertEquals(NetworkResult.ApiException<Repo>(exception), result)
+        assertEquals(
+            NetworkResult.ApiError<Repo>(ErrorTypes.ExceptionError(exception)).errorData,
+            (result as NetworkResult.ApiError<TrendingRepoResponse>).errorData
+        )
     }
 
     companion object {
-        const val exceptionMessage = "Test Exception"
+        private const val exceptionMessage = "Test Exception"
+        val exception = ErrorTypes.ExceptionError(Exception(exceptionMessage))
 
         const val errorCode = 404
         const val errorMessage = "Not Found"
+        val customError = ErrorTypes.CustomError(errorCode, errorMessage)
 
         val response = mockk<Response<TrendingRepoResponse>>()
 

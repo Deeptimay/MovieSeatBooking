@@ -12,8 +12,6 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -80,12 +78,7 @@ class GitHubRepoRepositoryImplTest {
     companion object {
 
         val query = "android"
-
-        const val exceptionMessage = "Test Exception"
         const val repoId = "repoId"
-
-        const val errorCode = 404
-        const val errorMessage = "Not Found"
 
         val mappedRepo = MappedRepo(1, "Repo Name")
         val repo = Repo(1, "Repo Name")
@@ -97,15 +90,11 @@ class GitHubRepoRepositoryImplTest {
 
         val apiResponse = TrendingRepoResponse(1, true, arrayListOf(Repo(1, "Repo Name")))
         val successResponse: Response<TrendingRepoResponse> = Response.success(responseBody)
+
+        val mappedRepoList = listOf(MappedRepo(1, "Repo Name"))
         val inputData = NetworkResult.ApiSuccess(arrayListOf(MappedRepo(1, name = "Repo Name")))
         val inputDetailsData = NetworkResult.ApiSuccess(MappedRepo(1, name = "Repo Name"))
-        val mappedRepoList = listOf(MappedRepo(1, "Repo Name"))
 
         val repoSuccessResponse: Response<Repo> = Response.success(repo)
-
-        val errorResponse: Response<TrendingRepoResponse> = Response.error<TrendingRepoResponse>(
-            errorCode,
-            ResponseBody.create("text/plain".toMediaTypeOrNull(), errorMessage)
-        )
     }
 }
