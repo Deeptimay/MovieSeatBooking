@@ -32,12 +32,15 @@ class GitHubRepoRepositoryImpl @Inject constructor(
         } as NetworkResult<MappedRepo>
     }
 
-    private inline fun <T : Any, R : Any> NetworkResult<T>.mapSuccess(transform: (T) -> R): NetworkResult<out Any> {
+    private inline fun <T : Any, R : Any> NetworkResult<T>.mapSuccess(transform: (T) -> R): NetworkResult<R> {
         return when (this) {
             is NetworkResult.ApiSuccess -> NetworkResult.ApiSuccess(transform(data))
-            is NetworkResult.ApiError -> this
-            is NetworkResult.ApiException -> this
-            else -> this
+            is NetworkResult.ApiError -> NetworkResult.ApiError<R>(
+                this.code,
+                this.message
+            )
+            is NetworkResult.ApiException -> NetworkResult.ApiException<R>(this.e)
+            else -> NetworkResult.ApiException<R>(Throwable())
         }
     }
 }
