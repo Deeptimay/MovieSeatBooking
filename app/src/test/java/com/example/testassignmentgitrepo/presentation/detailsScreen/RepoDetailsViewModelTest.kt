@@ -41,15 +41,12 @@ class RepoDetailsViewModelTest {
     @Test
     fun `test getRepoDetails updates repoDetailsFlow with success state`() =
         runTest {
-            // Given a repoId and a successful response
-            val mockData = UiState.Success(MappedRepo(1, "Repo Name"))
-            val mockResponse = NetworkResult.ApiSuccess(MappedRepo(1, "Repo Name"))
-            Mockito.`when`(mockUseCase(REPO_ID)).thenReturn(mockResponse)
+
+            Mockito.`when`(mockUseCase(REPO_ID)).thenReturn(mockResponseSuccess)
 
             viewModel.getRepoDetails(REPO_ID)
             delay(100)
 
-            // Then repoDetailsFlow should emit an Success state
             val result = viewModel.repoDetailsFlow.value
             assertEquals(
                 UiState.Success(MappedRepo(1, "Repo Name")),
@@ -62,15 +59,11 @@ class RepoDetailsViewModelTest {
     @Test
     fun `test getRepoDetails updates repoDetailsFlow with error state`() =
         runTest {
-            // Given a repoId and an error response
-            val mockResponse = NetworkResult.ApiError<MappedRepo>(404, "Not found")
-            Mockito.`when`(mockUseCase(REPO_ID)).thenReturn(mockResponse)
+            Mockito.`when`(mockUseCase(REPO_ID)).thenReturn(mockResponseError)
 
-            // When calling getRepoDetails
             viewModel.getRepoDetails(REPO_ID)
             delay(100)
 
-            // Then repoDetailsFlow should emit an Error state
             val result = viewModel.repoDetailsFlow.value
             assert(result is UiState.Error)
         }
@@ -78,21 +71,21 @@ class RepoDetailsViewModelTest {
     @Test
     fun `test getRepoDetails updates repoDetailsFlow with exception state`() =
         runTest {
-            // Given a repoId and an exception response
-            val mockResponse =
-                NetworkResult.ApiException<MappedRepo>(RuntimeException("Test exception"))
-            Mockito.`when`(mockUseCase(REPO_ID)).thenReturn(mockResponse)
+            Mockito.`when`(mockUseCase(REPO_ID)).thenReturn(mockResponseException)
 
-            // When calling getRepoDetails
             viewModel.getRepoDetails(REPO_ID)
             delay(100)
 
-            // Then repoDetailsFlow should emit an Error state
             val result = viewModel.repoDetailsFlow.value
             assert(result is UiState.Error)
         }
 
     companion object {
         private const val REPO_ID = "repo_id"
+        val mockData = UiState.Success(MappedRepo(1, "Repo Name"))
+        val mockResponseSuccess = NetworkResult.ApiSuccess(MappedRepo(1, "Repo Name"))
+        val mockResponseError = NetworkResult.ApiError<MappedRepo>(404, "Not found")
+        val mockResponseException =
+            NetworkResult.ApiException<MappedRepo>(RuntimeException("Test exception"))
     }
 }

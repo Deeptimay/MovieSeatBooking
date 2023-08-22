@@ -41,8 +41,7 @@ class ReposViewModelTest {
 
     @Test
     fun `getRepoList success`() = runTest {
-        val responseMock = NetworkResult.ApiSuccess(listOf(MappedRepo(1, "Repo Name")))
-        `when`(mockFetchGithubRepoUseCase(DEFAULT_QUERY)).thenReturn(responseMock)
+        `when`(mockFetchGithubRepoUseCase(DEFAULT_QUERY)).thenReturn(responseMockSuccess)
 
         viewModel.getRepoList()
         delay(100)
@@ -53,8 +52,7 @@ class ReposViewModelTest {
 
     @Test
     fun `getRepoList API error`() = runTest {
-        val responseMock = NetworkResult.ApiError<List<MappedRepo>>(404, "Not Found")
-        `when`(mockFetchGithubRepoUseCase(DEFAULT_QUERY)).thenReturn(responseMock)
+        `when`(mockFetchGithubRepoUseCase(DEFAULT_QUERY)).thenReturn(responseMockError)
 
         viewModel.getRepoList()
         delay(100)
@@ -66,9 +64,8 @@ class ReposViewModelTest {
 
     @Test
     fun `getRepoList API exception`() = runTest {
-        val responseMock =
-            NetworkResult.ApiException<List<MappedRepo>>(Exception("Network exception"))
-        `when`(mockFetchGithubRepoUseCase(DEFAULT_QUERY)).thenReturn(responseMock)
+
+        `when`(mockFetchGithubRepoUseCase(DEFAULT_QUERY)).thenReturn(responseMockException)
 
         viewModel.getRepoList()
         delay(100)
@@ -79,5 +76,9 @@ class ReposViewModelTest {
 
     companion object {
         private const val DEFAULT_QUERY = "Q"
+        val responseMockSuccess = NetworkResult.ApiSuccess(listOf(MappedRepo(1, "Repo Name")))
+        val responseMockError = NetworkResult.ApiError<List<MappedRepo>>(404, "Not Found")
+        val responseMockException =
+            NetworkResult.ApiException<List<MappedRepo>>(Exception("Network exception"))
     }
 }

@@ -28,35 +28,43 @@ class FetchGithubRepoUseCaseTest {
 
     @Test
     fun `execute success`() = runBlocking {
-        val query = "query"
-        val expectedResult = NetworkResult.ApiSuccess(listOf(MappedRepo(1, "Repo Name")))
-        `when`(mockGitHubRepoRepository.fetchAllTrendingGitHubRepo(query)).thenReturn(expectedResult)
+
+        `when`(mockGitHubRepoRepository.fetchAllTrendingGitHubRepo(query)).thenReturn(
+            expectedResultSuccess
+        )
 
         val actualResult = useCase(query)
 
-        assertEquals(expectedResult, actualResult)
+        assertEquals(expectedResultSuccess, actualResult)
     }
 
     @Test
     fun `execute API error`() = runBlocking {
-        val query = "query"
-        val expectedResult = NetworkResult.ApiError<List<MappedRepo>>(404, "Not Found")
-        `when`(mockGitHubRepoRepository.fetchAllTrendingGitHubRepo(query)).thenReturn(expectedResult)
 
+        `when`(mockGitHubRepoRepository.fetchAllTrendingGitHubRepo(query)).thenReturn(
+            expectedResultError
+        )
         val actualResult = useCase(query)
 
-        assertEquals(expectedResult, actualResult)
+        assertEquals(expectedResultError, actualResult)
     }
 
     @Test
     fun `execute API exception`() = runBlocking {
-        val query = "query"
-        val expectedResult =
-            NetworkResult.ApiException<List<MappedRepo>>(Exception("Network exception"))
-        `when`(mockGitHubRepoRepository.fetchAllTrendingGitHubRepo(query)).thenReturn(expectedResult)
 
+        `when`(mockGitHubRepoRepository.fetchAllTrendingGitHubRepo(query)).thenReturn(
+            expectedResultException
+        )
         val actualResult = useCase(query)
 
-        assertEquals(expectedResult, actualResult)
+        assertEquals(expectedResultException, actualResult)
+    }
+
+    companion object {
+        const val query = "query"
+        val expectedResultSuccess = NetworkResult.ApiSuccess(listOf(MappedRepo(1, "Repo Name")))
+        val expectedResultError = NetworkResult.ApiError<List<MappedRepo>>(404, "Not Found")
+        val expectedResultException =
+            NetworkResult.ApiException<List<MappedRepo>>(Exception("Network exception"))
     }
 }

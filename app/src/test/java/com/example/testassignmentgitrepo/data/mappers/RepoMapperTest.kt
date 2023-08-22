@@ -17,22 +17,8 @@ class RepoMapperTest {
 
     @Test
     fun `mapRepoToMappedRepoModel returns expected MappedRepo`() {
-        val repo = Repo(
-            id = 1,
-            name = "Repo Name",
-            owner = Owner(),
-            description = "Description",
-            createdAt = "2023-08-18T12:00:00Z",
-            updatedAt = "2023-08-18T13:00:00Z",
-            pushedAt = "2023-08-18T14:00:00Z",
-            stargazersCount = 100,
-            language = "Kotlin",
-            forksCount = 50,
-            gitUrl = "git://github.com/repo.git",
-            cloneUrl = "https://github.com/repo.git"
-        )
 
-        val mappedRepo = repoMapper.mapRepoToMappedRepoModel(repo)
+        val mappedRepo = repoMapper.mapRepoToMappedRepoModel(repoFirst)
 
         assertEquals(1, mappedRepo.id)
         assertEquals("Repo Name", mappedRepo.name)
@@ -49,41 +35,43 @@ class RepoMapperTest {
 
     @Test
     fun `fromEntityList returns expected list of MappedRepo`() {
-        val repoList = listOf(
-            Repo(
-                1,
-                "Repo Name 1",
-                "Owner 1",
-                "Description 1",
-                Owner(),
-                false,
-                "git://github.com/repo1.git",
-                "Description",
-                true,
-                "git://github.com/repo1.git",
-                "2023-08-18T14:00:00Z",
-                "2023-08-18T14:00:00Z"
-            ),
-            Repo(
-                2,
-                "Repo Name 2",
-                "Owner 2",
-                "Description 2",
-                Owner(),
-                false,
-                "git://github.com/repo2.git",
-                "Description",
-                true,
-                "git://github.com/repo2.git",
-                "2023-08-18T12:00:00Z",
-                "2023-08-18T12:00:00Z"
-            )
-        )
+        val repoList = listOf(repoFirst, repoSecond)
 
         val mappedRepoList = repoMapper.fromEntityList(repoList)
 
         assertEquals(2, mappedRepoList.size)
         assertEquals(1, mappedRepoList[0].id)
         assertEquals(2, mappedRepoList[1].id)
+    }
+
+    companion object {
+        val repoFirst = Repo(
+            id = 1,
+            name = "Repo Name",
+            owner = Owner(),
+            description = "Description",
+            createdAt = "2023-08-18T12:00:00Z",
+            updatedAt = "2023-08-18T13:00:00Z",
+            pushedAt = "2023-08-18T14:00:00Z",
+            stargazersCount = 100,
+            language = "Kotlin",
+            forksCount = 50,
+            gitUrl = "git://github.com/repo.git",
+            cloneUrl = "https://github.com/repo.git"
+        )
+        val repoSecond = Repo(
+            id = 2,
+            name = "Repo Name",
+            owner = Owner(),
+            description = "Description",
+            createdAt = "2023-08-18T12:00:00Z",
+            updatedAt = "2023-08-18T13:00:00Z",
+            pushedAt = "2023-08-18T14:00:00Z",
+            stargazersCount = 100,
+            language = "Kotlin",
+            forksCount = 50,
+            gitUrl = "git://github.com/repo.git",
+            cloneUrl = "https://github.com/repo.git"
+        )
     }
 }

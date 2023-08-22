@@ -25,11 +25,6 @@ class GithubApiTest {
 
     @Test
     fun `test getTrendingRepoList success`() = runBlocking {
-        val fakeResponse = TrendingRepoResponse(
-            totalCount = 100,
-            incompleteResults = false,
-            repo = arrayListOf(Repo(id = 1, name = "Repo 1"))
-        )
 
         Mockito.`when`(
             mockGithubApi.getTrendingRepoList(
@@ -38,17 +33,15 @@ class GithubApiTest {
                 Mockito.anyInt()
             )
         )
-            .thenReturn(Response.success(fakeResponse))
+            .thenReturn(Response.success(fakeResponseTrendingRepoResponse))
 
         val response = mockGithubApi.getTrendingRepoList("android", 1, 10)
 
-        assertEquals(fakeResponse, response.body())
+        assertEquals(fakeResponseTrendingRepoResponse, response.body())
     }
 
     @Test
     fun `test getTrendingRepoList error`() = runBlocking {
-        val errorResponseBody = ResponseBody.create(null, "Error message")
-        val fakeErrorResponse = Response.error<TrendingRepoResponse>(400, errorResponseBody)
 
         Mockito.`when`(
             mockGithubApi.getTrendingRepoList(
@@ -57,7 +50,7 @@ class GithubApiTest {
                 Mockito.anyInt()
             )
         )
-            .thenReturn(fakeErrorResponse)
+            .thenReturn(fakeErrorResponseTrendingRepoResponse)
 
         val response = mockGithubApi.getTrendingRepoList("android", 1, 10)
 
@@ -66,7 +59,6 @@ class GithubApiTest {
 
     @Test
     fun `test getRepoDetails success`() = runBlocking {
-        val fakeResponse = Repo(id = 1, name = "Repo 1")
 
         Mockito.`when`(mockGithubApi.getRepoDetails(Mockito.anyString()))
             .thenReturn(Response.success(fakeResponse))
@@ -78,8 +70,6 @@ class GithubApiTest {
 
     @Test
     fun `test getRepoDetails error`() = runBlocking {
-        val errorResponseBody = ResponseBody.create(null, "Error message")
-        val fakeErrorResponse = Response.error<Repo>(404, errorResponseBody)
 
         Mockito.`when`(mockGithubApi.getRepoDetails(Mockito.anyString()))
             .thenReturn(fakeErrorResponse)
@@ -87,5 +77,22 @@ class GithubApiTest {
         val response = mockGithubApi.getRepoDetails("repository_id")
 
         assertEquals(404, response.code())
+    }
+
+    companion object {
+
+        val fakeResponse = Repo(id = 1, name = "Repo 1")
+
+        val fakeResponseTrendingRepoResponse = TrendingRepoResponse(
+            totalCount = 100,
+            incompleteResults = false,
+            repo = arrayListOf(Repo(id = 1, name = "Repo 1"))
+        )
+
+        private val errorResponseBody = ResponseBody.create(null, "Error message")
+        val fakeErrorResponse: Response<Repo> = Response.error<Repo>(404, errorResponseBody)
+        val fakeErrorResponseTrendingRepoResponse: Response<TrendingRepoResponse> =
+            Response.error<TrendingRepoResponse>(400, errorResponseBody)
+
     }
 }

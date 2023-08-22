@@ -28,34 +28,42 @@ class GetGithubRepoDetailsUseCaseTest {
 
     @Test
     fun `execute success`() = runBlocking {
-        val repoId = "repoId"
-        val expectedResult = NetworkResult.ApiSuccess(MappedRepo(1, "Repo Name"))
-        `when`(mockGitHubRepoRepository.getGitHubRepoDetails(repoId)).thenReturn(expectedResult)
+
+        `when`(mockGitHubRepoRepository.getGitHubRepoDetails(repoId)).thenReturn(
+            expectedResultSuccess
+        )
 
         val actualResult = useCase(repoId)
 
-        assertEquals(expectedResult, actualResult)
+        assertEquals(expectedResultSuccess, actualResult)
     }
 
     @Test
     fun `execute API error`() = runBlocking {
-        val repoId = "repoId"
-        val expectedResult = NetworkResult.ApiError<MappedRepo>(404, "Not Found")
-        `when`(mockGitHubRepoRepository.getGitHubRepoDetails(repoId)).thenReturn(expectedResult)
+
+        `when`(mockGitHubRepoRepository.getGitHubRepoDetails(repoId)).thenReturn(expectedResultError)
 
         val actualResult = useCase(repoId)
 
-        assertEquals(expectedResult, actualResult)
+        assertEquals(expectedResultError, actualResult)
     }
 
     @Test
     fun `execute API exception`() = runBlocking {
-        val repoId = "repoId"
-        val expectedResult = NetworkResult.ApiException<MappedRepo>(Exception("Network exception"))
-        `when`(mockGitHubRepoRepository.getGitHubRepoDetails(repoId)).thenReturn(expectedResult)
+        `when`(mockGitHubRepoRepository.getGitHubRepoDetails(repoId)).thenReturn(
+            expectedResultException
+        )
 
         val actualResult = useCase(repoId)
 
-        assertEquals(expectedResult, actualResult)
+        assertEquals(expectedResultException, actualResult)
+    }
+
+    companion object {
+        const val repoId = "repoId"
+        val expectedResultSuccess = NetworkResult.ApiSuccess(MappedRepo(1, "Repo Name"))
+        val expectedResultError = NetworkResult.ApiError<MappedRepo>(404, "Not Found")
+        val expectedResultException =
+            NetworkResult.ApiException<MappedRepo>(Exception("Network exception"))
     }
 }
