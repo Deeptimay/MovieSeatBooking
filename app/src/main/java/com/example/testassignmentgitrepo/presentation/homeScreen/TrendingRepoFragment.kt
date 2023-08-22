@@ -57,7 +57,7 @@ class TrendingRepoFragment : Fragment() {
                 )
             }
         }
-        fragmentTrendingRepositoryBinding.rvRepository.adapter = reposAdapter
+        fragmentTrendingRepositoryBinding.rvRepoList.adapter = reposAdapter
     }
 
     private fun collectUiStates() {
@@ -84,7 +84,7 @@ class TrendingRepoFragment : Fragment() {
     private fun displayErrorState() {
         fragmentTrendingRepositoryBinding.apply {
             layoutError.clErrorMain.show()
-            rvRepository.hide()
+            rvRepoList.hide()
             loadingLayout.clDetailsLoading.hide()
         }
     }
@@ -92,7 +92,7 @@ class TrendingRepoFragment : Fragment() {
     private fun displayLoadingState() {
         fragmentTrendingRepositoryBinding.apply {
             layoutError.clErrorMain.hide()
-            rvRepository.hide()
+            rvRepoList.hide()
             loadingLayout.clDetailsLoading.show()
         }
     }
@@ -100,7 +100,7 @@ class TrendingRepoFragment : Fragment() {
     private fun displaySuccessState() {
         fragmentTrendingRepositoryBinding.apply {
             layoutError.clErrorMain.hide()
-            rvRepository.show()
+            rvRepoList.show()
             loadingLayout.clDetailsLoading.hide()
         }
     }
