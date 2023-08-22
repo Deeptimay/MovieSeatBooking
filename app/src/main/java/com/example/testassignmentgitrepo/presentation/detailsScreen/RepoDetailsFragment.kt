@@ -71,7 +71,7 @@ class RepoDetailsFragment : Fragment() {
                         is UiState.Loading -> displayLoadingState()
                         is UiState.Error -> displayErrorState()
                         is UiState.Success<*> -> {
-                            hideLoadingState()
+                            displaySuccessState()
                             inflateData(uiState.content as MappedRepo)
                         }
                     }
@@ -138,7 +138,7 @@ class RepoDetailsFragment : Fragment() {
         }
     }
 
-    private fun hideLoadingState() {
+    private fun displaySuccessState() {
         fragmentRepositoryDetailsBinding.apply {
             detailsLayout.clDetailsLayout.show()
             loadingLayout.clDetailsLoading.hide()

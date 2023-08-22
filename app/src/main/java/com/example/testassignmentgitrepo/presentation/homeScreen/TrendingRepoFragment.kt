@@ -68,7 +68,7 @@ class TrendingRepoFragment : Fragment() {
                         is UiState.Loading -> displayLoadingState()
                         is UiState.Error -> displayErrorState()
                         is UiState.Success<*> -> {
-                            dataSuccessState()
+                            displaySuccessState()
                             val mappedRepoList = uiState.content as? List<MappedRepo>
                             mappedRepoList?.let {
                                 reposAdapter.submitList(it)
@@ -97,7 +97,7 @@ class TrendingRepoFragment : Fragment() {
         }
     }
 
-    private fun dataSuccessState() {
+    private fun displaySuccessState() {
         fragmentTrendingRepositoryBinding.apply {
             layoutError.clErrorMain.hide()
             rvRepository.show()
