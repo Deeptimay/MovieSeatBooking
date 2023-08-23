@@ -20,7 +20,7 @@ class GitHubRepoRepositoryImpl @Inject constructor(
     override suspend fun fetchAllTrendingGitHubRepo(query: String): NetworkResult<List<MappedRepo>> {
         return baseRepository.performApiCall {
             githubApi.getTrendingRepoList(query, 1, 100)
-        }.mapSuccess {
+        } mapSuccess {
             repoMapper.fromEntityList(it.repo)
         }
     }
@@ -28,12 +28,12 @@ class GitHubRepoRepositoryImpl @Inject constructor(
     override suspend fun getGitHubRepoDetails(repoId: String): NetworkResult<MappedRepo> {
         return baseRepository.performApiCall {
             githubApi.getRepoDetails(repoId)
-        }.mapSuccess {
+        } mapSuccess {
             repoMapper.mapRepoToMappedRepoModel(it)
         }
     }
 
-    private inline fun <T : Any, R : Any> NetworkResult<T>.mapSuccess(transform: (T) -> R): NetworkResult<R> {
+    private inline infix fun <T : Any, R : Any> NetworkResult<T>.mapSuccess(transform: (T) -> R): NetworkResult<R> {
         return when (this) {
             is NetworkResult.ApiSuccess -> NetworkResult.ApiSuccess(transform(data))
             is NetworkResult.ApiError -> NetworkResult.ApiError<R>(this.errorData)
