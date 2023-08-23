@@ -18,7 +18,7 @@ class GitHubRepoRepositoryImpl @Inject constructor(
     GitHubRepoRepository {
 
     override suspend fun fetchAllTrendingGitHubRepo(query: String): NetworkResult<List<MappedRepo>> {
-        return baseRepository.performApiCall {
+        return baseRepository performApiCall {
             githubApi.getTrendingRepoList(query, 1, 100)
         } mapSuccess {
             repoMapper.fromEntityList(it.repo)
@@ -26,7 +26,7 @@ class GitHubRepoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getGitHubRepoDetails(repoId: String): NetworkResult<MappedRepo> {
-        return baseRepository.performApiCall {
+        return baseRepository performApiCall {
             githubApi.getRepoDetails(repoId)
         } mapSuccess {
             repoMapper.mapRepoToMappedRepoModel(it)

@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @Singleton
 class BaseRepository @Inject constructor() {
 
-    suspend fun <T : Any> performApiCall(apiCall: suspend () -> Response<T>): NetworkResult<T> {
+    suspend infix fun <T : Any> performApiCall(apiCall: suspend () -> Response<T>): NetworkResult<T> {
         return try {
             val response = apiCall.invoke()
             if (response.isSuccessful) {
