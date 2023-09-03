@@ -1,6 +1,5 @@
 package com.example.testassignmentgitrepo.data.models
 
-
 data class MappedRepo(
     var id: Int? = null,
     var name: String? = null,

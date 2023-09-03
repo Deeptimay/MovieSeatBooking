@@ -42,7 +42,6 @@ class RepoDetailsViewModelTest {
     @Test
     fun `test getRepoDetails updates repoDetailsFlow with success state`() =
         runTest {
-
             Mockito.`when`(mockUseCase(REPO_ID)).thenReturn(mockResponseSuccess)
 
             viewModel.getRepoDetails(REPO_ID)
@@ -85,8 +84,12 @@ class RepoDetailsViewModelTest {
         private const val REPO_ID = "repo_id"
         val mockData = UiState.Success(MappedRepo(1, "Repo Name"))
         val mockResponseSuccess = NetworkResult.ApiSuccess(MappedRepo(1, "Repo Name"))
-        val mockResponseError = NetworkResult.ApiError<MappedRepo>(ErrorTypes.CustomError(404, "Not found"))
+        val mockResponseError = NetworkResult.ApiError<MappedRepo>(
+            ErrorTypes.CustomError(404, "Not found")
+        )
         val mockResponseException =
-            NetworkResult.ApiError<MappedRepo>(ErrorTypes.ExceptionError(Exception("Test exception")))
+            NetworkResult.ApiError<MappedRepo>(
+                ErrorTypes.ExceptionError(Exception("Test exception"))
+            )
     }
 }

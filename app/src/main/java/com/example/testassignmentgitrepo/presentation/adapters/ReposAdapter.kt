@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.databinding.ItemTrendingRepoBinding
 
-
 class ReposAdapter(
     private val repoClickListener: (String) -> Unit
 ) : ListAdapter<MappedRepo, RepoListViewHolder>(RepoDiffCallback()) {

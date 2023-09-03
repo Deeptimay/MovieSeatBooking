@@ -7,7 +7,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GetGithubRepoDetailsUseCase @Inject constructor(private val gitHubRepoRepository: GitHubRepoRepository) {
+class GetGithubRepoDetailsUseCase @Inject constructor(
+    private val gitHubRepoRepository: GitHubRepoRepository
+) {
     suspend operator fun invoke(repoId: String): NetworkResult<MappedRepo> {
         return gitHubRepoRepository.getGitHubRepoDetails(repoId)
     }

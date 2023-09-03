@@ -1,8 +1,8 @@
 package com.example.testassignmentgitrepo.domain.util
 
+import java.net.SocketTimeoutException
 import okio.IOException
 import retrofit2.HttpException
-import java.net.SocketTimeoutException
 
 sealed class ErrorTypes : Throwable() {
     data class ExceptionError(val exception: Throwable) : ErrorTypes()

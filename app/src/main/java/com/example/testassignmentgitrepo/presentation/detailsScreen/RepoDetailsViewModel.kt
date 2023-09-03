@@ -13,10 +13,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class RepoDetailsViewModel @Inject constructor(
-    private val getGithubRepoDetailsUseCase: GetGithubRepoDetailsUseCase,
+    private val getGithubRepoDetailsUseCase: GetGithubRepoDetailsUseCase
 ) : ViewModel() {
 
     private val _repoDetailsFlow = MutableStateFlow<UiState>(UiState.Loading)

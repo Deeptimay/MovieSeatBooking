@@ -1,6 +1,5 @@
 package com.example.testassignmentgitrepo.presentation.util
 
-import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -15,7 +14,6 @@ object DateUtility {
 
             val parsedDate = inputDateFormat.parse(inputDate) ?: return inputDate
             outputDateFormat.format(parsedDate)
-
         } catch (ex: Exception) {
             inputDate
         }

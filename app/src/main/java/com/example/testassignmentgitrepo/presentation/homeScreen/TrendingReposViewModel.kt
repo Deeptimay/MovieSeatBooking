@@ -13,10 +13,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class ReposViewModel @Inject constructor(
-    private val fetchGithubRepoUseCase: FetchGithubRepoUseCase,
+    private val fetchGithubRepoUseCase: FetchGithubRepoUseCase
 ) : ViewModel() {
 
     private val _repoFlow = MutableStateFlow<UiState>(UiState.Loading)
@@ -28,14 +27,13 @@ class ReposViewModel @Inject constructor(
             _repoFlow.update {
                 when (response) {
                     is NetworkResult.ApiSuccess -> UiState.Success(response.data)
-                    is NetworkResult.ApiError ->  UiState.Error(response.errorData)
+                    is NetworkResult.ApiError -> UiState.Error(response.errorData)
                 }
             }
         }
     }
 
-    companion object {
+    private companion object {
         private const val DEFAULT_QUERY = "Q"
-        const val SELECTED_REPO_ITEM = "selected_repo_item"
     }
 }

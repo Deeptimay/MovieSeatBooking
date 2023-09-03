@@ -19,14 +19,12 @@ import com.bumptech.glide.Glide
 import com.example.testassignmentgitrepo.R
 import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.databinding.FragmentRepositoryDetailsBinding
-import com.example.testassignmentgitrepo.presentation.homeScreen.ReposViewModel.Companion.SELECTED_REPO_ITEM
 import com.example.testassignmentgitrepo.presentation.ui.UiState
 import com.example.testassignmentgitrepo.presentation.util.DateUtility
 import com.example.testassignmentgitrepo.presentation.util.hide
 import com.example.testassignmentgitrepo.presentation.util.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
 
 @AndroidEntryPoint
 class RepoDetailsFragment : Fragment() {
@@ -45,7 +43,9 @@ class RepoDetailsFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         fragmentRepositoryDetailsBinding =
             FragmentRepositoryDetailsBinding.inflate(inflater, container, false)
@@ -144,5 +144,9 @@ class RepoDetailsFragment : Fragment() {
             loadingLayout.clDetailsLoading.hide()
             layoutError.clErrorMain.hide()
         }
+    }
+
+    private companion object {
+        const val SELECTED_REPO_ITEM = "selected_repo_item"
     }
 }

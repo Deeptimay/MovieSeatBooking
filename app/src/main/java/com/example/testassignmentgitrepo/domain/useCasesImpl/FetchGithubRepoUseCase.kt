@@ -7,7 +7,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FetchGithubRepoUseCase @Inject constructor(private val gitHubRepoRepository: GitHubRepoRepository) {
+class FetchGithubRepoUseCase @Inject constructor(
+    private val gitHubRepoRepository: GitHubRepoRepository
+) {
     suspend operator fun invoke(query: String): NetworkResult<List<MappedRepo>> {
         return gitHubRepoRepository.fetchAllTrendingGitHubRepo(query)
     }

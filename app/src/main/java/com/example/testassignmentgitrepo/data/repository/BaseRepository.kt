@@ -2,12 +2,12 @@ package com.example.testassignmentgitrepo.data.repository
 
 import com.example.testassignmentgitrepo.domain.util.ErrorTypes
 import com.example.testassignmentgitrepo.domain.util.NetworkResult
-import okio.IOException
-import retrofit2.HttpException
-import retrofit2.Response
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 import javax.inject.Singleton
+import okio.IOException
+import retrofit2.HttpException
+import retrofit2.Response
 
 @Singleton
 class BaseRepository @Inject constructor() {

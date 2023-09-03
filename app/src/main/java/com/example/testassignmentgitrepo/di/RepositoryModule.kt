@@ -1,7 +1,7 @@
 package com.example.testassignmentgitrepo.di
 
-import com.example.testassignmentgitrepo.domain.repositoryAbstraction.GitHubRepoRepository
 import com.example.testassignmentgitrepo.data.repository.GitHubRepoRepositoryImpl
+import com.example.testassignmentgitrepo.domain.repositoryAbstraction.GitHubRepoRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

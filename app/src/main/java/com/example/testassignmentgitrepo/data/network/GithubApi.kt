@@ -11,7 +11,7 @@ import retrofit2.http.Query
 interface GithubApi {
     @Headers(
         "Accept: application/vnd.github+json",
-        "Authorization: Bearer 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",
+        "Authorization: Bearer ghp_pOH38iAkUWi7pDuQcagFhOi3VUHCXo4FzAU",
         "X-GitHub-Api-Version: 2022-11-28"
     )
     @GET("search/repositories?sort=stars")
@@ -23,7 +23,7 @@ interface GithubApi {
 
     @Headers(
         "Accept: application/vnd.github+json",
-        "Authorization: Bearer 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",
+        "Authorization: Bearer ghp_pOH38iAkUWi7pDuQcagFhOi3VUHCXo4FzAU",
         "X-GitHub-Api-Version: 2022-11-28"
     )
     @GET("repositories/{repo_id}")

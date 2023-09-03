@@ -14,7 +14,6 @@ import com.example.testassignmentgitrepo.R
 import com.example.testassignmentgitrepo.data.models.MappedRepo
 import com.example.testassignmentgitrepo.databinding.FragmentTrendingRepositoryBinding
 import com.example.testassignmentgitrepo.presentation.adapters.ReposAdapter
-import com.example.testassignmentgitrepo.presentation.homeScreen.ReposViewModel.Companion.SELECTED_REPO_ITEM
 import com.example.testassignmentgitrepo.presentation.ui.UiState
 import com.example.testassignmentgitrepo.presentation.util.hide
 import com.example.testassignmentgitrepo.presentation.util.show
@@ -32,7 +31,8 @@ class TrendingRepoFragment : Fragment() {
     private lateinit var reposAdapter: ReposAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         fragmentTrendingRepositoryBinding =
@@ -80,7 +80,6 @@ class TrendingRepoFragment : Fragment() {
         }
     }
 
-
     private fun displayErrorState() {
         fragmentTrendingRepositoryBinding.apply {
             layoutError.clErrorMain.show()
@@ -103,5 +102,9 @@ class TrendingRepoFragment : Fragment() {
             rvRepoList.show()
             loadingLayout.clDetailsLoading.hide()
         }
+    }
+
+    private companion object {
+        const val SELECTED_REPO_ITEM = "selected_repo_item"
     }
 }

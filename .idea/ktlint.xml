@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="KtlintProjectConfiguration">
+    <androidMode>true</androidMode>
+    <formatOnSave>true</formatOnSave>
+    <disabledRules>
+      <list>
+        <option value="ktlint-disable filename" />
+        <option value="ktlint-disable max-line-length" />
+      </list>
+    </disabledRules>
+  </component>
+</project>
