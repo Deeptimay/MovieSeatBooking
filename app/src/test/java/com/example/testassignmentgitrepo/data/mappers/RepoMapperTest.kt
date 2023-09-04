@@ -20,17 +20,19 @@ class RepoMapperTest {
 
         val mappedRepo = repoMapper.mapRepoToMappedRepoModel(repoFirst)
 
-        assertEquals(1, mappedRepo.id)
-        assertEquals("Repo Name", mappedRepo.name)
-        assertEquals("Description", mappedRepo.description)
-        assertEquals("2023-08-18T12:00:00Z", mappedRepo.createdAt)
-        assertEquals("2023-08-18T13:00:00Z", mappedRepo.updatedAt)
-        assertEquals("2023-08-18T14:00:00Z", mappedRepo.pushedAt)
-        assertEquals(100, mappedRepo.stargazersCount)
-        assertEquals("Kotlin", mappedRepo.language)
-        assertEquals(50, mappedRepo.forksCount)
-        assertEquals("git://github.com/repo.git", mappedRepo.gitUrl)
-        assertEquals("https://github.com/repo.git", mappedRepo.cloneUrl)
+        assertEquals(repoFirst.id, mappedRepo.id)
+        assertEquals(repoFirst.name, mappedRepo.name)
+        assertEquals(repoFirst.description, mappedRepo.description)
+        assertEquals(repoFirst.createdAt, mappedRepo.createdAt)
+        assertEquals(repoFirst.updatedAt, mappedRepo.updatedAt)
+        assertEquals(repoFirst.pushedAt, mappedRepo.pushedAt)
+        assertEquals(repoFirst.stargazersCount, mappedRepo.stargazersCount)
+        assertEquals(repoFirst.language, mappedRepo.language)
+        assertEquals(repoFirst.forksCount, mappedRepo.forksCount)
+        assertEquals(repoFirst.gitUrl, mappedRepo.gitUrl)
+        assertEquals(repoFirst.cloneUrl, mappedRepo.cloneUrl)
+        assertEquals(repoFirst.owner?.avatarUrl, mappedRepo.ownerAvatar)
+        assertEquals(repoFirst.owner?.login, mappedRepo.ownerName)
     }
 
     @Test
@@ -48,7 +50,7 @@ class RepoMapperTest {
         val repoFirst = Repo(
             id = 1,
             name = "Repo Name",
-            owner = Owner(),
+            owner = Owner(avatarUrl = "git://github.com/repo.git", login = "TestUser"),
             description = "Description",
             createdAt = "2023-08-18T12:00:00Z",
             updatedAt = "2023-08-18T13:00:00Z",
@@ -62,7 +64,7 @@ class RepoMapperTest {
         val repoSecond = Repo(
             id = 2,
             name = "Repo Name",
-            owner = Owner(),
+            owner = Owner(avatarUrl = "git://github.com/repo.git", login = "TestUser"),
             description = "Description",
             createdAt = "2023-08-18T12:00:00Z",
             updatedAt = "2023-08-18T13:00:00Z",
