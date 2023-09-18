@@ -3,7 +3,7 @@ package com.example.testassignmentgitrepo.data.network
 import com.example.testassignmentgitrepo.data.models.Repo
 import com.example.testassignmentgitrepo.data.models.TrendingRepoResponse
 import kotlinx.coroutines.runBlocking
-import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -89,7 +89,7 @@ class GithubApiTest {
             repo = arrayListOf(Repo(id = 1, name = "Repo 1"))
         )
 
-        private val errorResponseBody = ResponseBody.create(null, "Error message")
+        private val errorResponseBody = "Error message".toResponseBody(null)
         val fakeErrorResponse: Response<Repo> = Response.error<Repo>(404, errorResponseBody)
         val fakeErrorResponseTrendingRepoResponse: Response<TrendingRepoResponse> =
             Response.error<TrendingRepoResponse>(400, errorResponseBody)

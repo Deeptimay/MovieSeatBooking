@@ -69,8 +69,8 @@ dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
 
     //Nav Fragment
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.0")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.1")
 
     //Jetpack suits libs
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")

@@ -1,7 +1,7 @@
 ﻿# TestAssignmentGitRepo
 
 # Shortly
-A two page mobile app for feting trending github repos using the public GitHub APIs. With well handeled loading, error states and retry capabilities.
+A two page mobile app for feting trending github repos using the public GitHub APIs. With well handled loading, error states and retry capabilities.
 
 # Features:
 * Kotlin<br>
@@ -30,7 +30,7 @@ This app requires minimum Android SDK 24 and Android Studio Giraffe
 * Material Design Build beautiful, usable products using Material Components for Android.<br>
 * PagingDataAdapter class is a convenience wrapper around AsyncPagingDataDiffer that implements common default behavior for item counting, and listening to update events.
 * Mock web server A scriptable web server for testing HTTP clients.<br>
-* JUnit and Mokito for testing.
+* JUnit and Mockito for testing.
 
 # Screen Recording
 

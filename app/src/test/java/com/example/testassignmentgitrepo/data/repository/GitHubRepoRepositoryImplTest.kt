@@ -77,7 +77,7 @@ class GitHubRepoRepositoryImplTest {
 
     companion object {
 
-        val query = "android"
+        const val query = "android"
         const val repoId = "repoId"
 
         val mappedRepo = MappedRepo(1, "Repo Name")

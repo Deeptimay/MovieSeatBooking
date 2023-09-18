@@ -9,7 +9,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -50,7 +50,12 @@ class BaseRepositoryTest {
         val result = baseRepository.performApiCall(apiCall)
 
         assertEquals(
-            NetworkResult.ApiError<Repo>(ErrorTypes.CustomError(errorCode, errorMessage)).errorData.message,
+            NetworkResult.ApiError<Repo>(
+                ErrorTypes.CustomError(
+                    errorCode,
+                    errorMessage
+                )
+            ).errorData.message,
             (result as NetworkResult.ApiError<TrendingRepoResponse>).errorData.message
         )
     }
@@ -62,7 +67,12 @@ class BaseRepositoryTest {
         val result = baseRepository.performApiCall(apiCall)
 
         assertEquals(
-            NetworkResult.ApiError<Repo>(ErrorTypes.CustomError(errorCode, errorMessage)).errorData.message,
+            NetworkResult.ApiError<Repo>(
+                ErrorTypes.CustomError(
+                    errorCode,
+                    errorMessage
+                )
+            ).errorData.message,
             (result as NetworkResult.ApiError<TrendingRepoResponse>).errorData.message
         )
     }
@@ -96,7 +106,7 @@ class BaseRepositoryTest {
 
         val errorResponse: Response<TrendingRepoResponse> = Response.error<TrendingRepoResponse>(
             errorCode,
-            ResponseBody.create("text/plain".toMediaTypeOrNull(), errorMessage)
+            errorMessage.toResponseBody("text/plain".toMediaTypeOrNull())
         )
     }
 }
